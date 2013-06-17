@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<info>
+    <id>user_otp</id>
+    <name>User OTP Extension</name>
+    <description>adding One Time Password support</description>
+    <version>1.0</version>
+    <licence>AGPL</licence>
+    <author>Frank Bongrand</author>
+    <require>5.0</require>
+	<shipped>true</shipped>
+    <types>
+        <authentication/>
+    </types>
+</info>
+
