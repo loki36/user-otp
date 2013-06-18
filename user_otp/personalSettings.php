@@ -1,4 +1,5 @@
 <?php
+<<<<<<< HEAD
 /**
  * ownCloud - One Time Password plugin
  *
@@ -22,6 +23,8 @@
  * @license http://opensource.org/licenses/AGPL-3.0 GNU AFFERO GENERAL PUBLIC LICENSE
  *
  */
+=======
+>>>>>>> b0c3d8eb670cc54fcb5668bde845f19fc597c695
 OCP\Util::addscript('user_otp', 'personalSettings');
 
 $mOtp =  new multiotp(

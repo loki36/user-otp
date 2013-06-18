@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?php
 /**
  * ownCloud - One Time Password plugin
@@ -23,6 +24,8 @@
  *
  */
 ?>
+=======
+>>>>>>> b0c3d8eb670cc54fcb5668bde845f19fc597c695
 <form id='user_otp_form' method="POST" action="#">
     <div id="userotpSettings" class="personalblock">
         <ul>
