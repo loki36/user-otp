@@ -68,10 +68,6 @@ class OC_User_OTP extends OC_User_Database{
      * @param string $password value of the password
      * @return boolean
      */
-    public function userExists($uid) {
-        return $this->mOtp->CheckUserExists($uid);
-    }
-
     public function checkPassword($uid, $password) {
 //    $tmp = $this->userExists($uid);
 //    var_dump($tmp);
