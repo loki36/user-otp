@@ -1,0 +1,17 @@
+This application is distributed WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU AFFERO GENERAL PUBLIC LICENSE for more details.
+
+One Time Password Backend can create TOTP and HOTP and generate QrCode
+test with Owncloud 5.0.7
+test with Google Authenticator and android Token
+
+Installation:
+Upload user_otp directory under the 'apps' directory of your ownCloud.
+Navigate to the 'Apps' page in Admin.
+Click on 'user_otp' in the application list. Then click the 'Enable' button.
+
+Usage:
+- Navigate to the 'Admin' page to set the server encryption key;
+- Click 'Save';
+- Navigate to 'Personal' page  to create Your OTP
