@@ -54,15 +54,6 @@ class OC_User_OTP extends OC_User_Database{
     }
 
     /**
-     * Test if user exist in th db file of OTP
-     * @param string $uid user id
-     * @return boolean
-     */
-    public function userExists($uid) {
-        return $this->mOtp->CheckUserExists($uid);
-    }
-
-    /**
      * check password function
      * @param string $uid user id
      * @param string $password value of the password
@@ -73,7 +64,8 @@ class OC_User_OTP extends OC_User_Database{
 //    var_dump($tmp);
 //    echo $uid.'toto'.$this->mOtp->GetUsersFolder();
 //    exit;
-        if(!$this->userExists($uid)){
+        //if(!$this->userExists($uid)){
+        if(!$this->mOtp->CheckUserExists($uid)){
             return parent::checkPassword($uid, $password);
         }else{
             $this->mOtp->SetUser($uid);
