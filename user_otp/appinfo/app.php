@@ -23,6 +23,8 @@
  *
  */
 
+include_once("user_otp/lib/otp.php");
+
 OC::$CLASSPATH['OC_USER_OTP'] = 'user_otp/lib/otp.php';
 
 OCP\App::registerAdmin('user_otp','adminSettings');
@@ -32,10 +34,18 @@ OCP\App::registerPersonal('user_otp','personalSettings');
 //    OCP\Util::connectHook('OC_User','pre_createUser','OC_USER_OTP','deleteBackends');
 //}
 
-if(OCP\Config::getAppValue('user_otp','disableBackends')){
+//if(OCP\Config::getAppValue('user_otp','disableBackends')){
+//    OC_User::clearBackends();
+//}
+
+if(OCP\Config::getAppValue('user_otp','authMethod',_AUTH_DEFAULT_)!==_AUTH_STANDARD_){
     OC_User::clearBackends();
+    OC_User::useBackend('OTP');
 }
 
-OC_User::useBackend('OTP');
+if (!OCP\User::isLoggedIn() && OCP\Config::getAppValue('user_otp','authMethod',_AUTH_DEFAULT_) === _AUTH_TWOFACTOR_) {
+    // Load js code in order to add passcode field into the normal login form
+    OCP\Util::addScript('user_otp', 'utils');
+}
 
 ?>
