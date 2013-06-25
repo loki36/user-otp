@@ -43,7 +43,7 @@
                             <?php $name=$input['name']; ?>
                             <br/>
                             <?php foreach ($input['values'] as $radio): ?>
-                            <input type="radio" name="<?php p($name); ?>" value="<?php p($radio['value'])?>" <?php if ($_[$input['name']]===$radio['value']) p(' checked'); ?>> <?php p($radio['label'])?><br/>
+                            <input type="radio" name="<?php p($name); ?>" value="<?php p($radio['value'])?>" <?php if ($_[$input['name']]===$radio['value']) p(' checked'); ?>> <?php p($_[$input['name']]); p($radio['label'])?><br/>
                             <?php endforeach; ?>
                         <?php } ?>
                     </p>

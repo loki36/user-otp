@@ -32,11 +32,14 @@ OCP\App::registerPersonal('user_otp','personalSettings');
 //    OCP\Util::connectHook('OC_User','pre_createUser','OC_USER_OTP','deleteBackends');
 //}
 
-if(OCP\Config::getAppValue('user_otp','disableBackends')){
-    OC_User::clearBackends();
-}
+//if(OCP\Config::getAppValue('user_otp','disableBackends')){
+//    OC_User::clearBackends();
+//}
 
-OC_User::useBackend('OTP');
+if(OCP\Config::getAppValue('user_otp','authMethod',_AUTH_DEFAULT_)!==_AUTH_STANDARD_){
+    OC_User::clearBackends();
+    OC_User::useBackend('OTP');
+}
 
 $authMethode = 2; //Tow Factor
 if (!OCP\User::isLoggedIn() && OCP\Config::getAppValue('user_otp','authMethod',_AUTH_DEFAULT_) === _AUTH_TWOFACTOR_) {
