@@ -23,6 +23,8 @@
  *
  */
 
+include_once("user_otp/lib/otp.php");
+
 OC::$CLASSPATH['OC_USER_OTP'] = 'user_otp/lib/otp.php';
 
 OCP\App::registerAdmin('user_otp','adminSettings');
@@ -41,7 +43,6 @@ if(OCP\Config::getAppValue('user_otp','authMethod',_AUTH_DEFAULT_)!==_AUTH_STAND
     OC_User::useBackend('OTP');
 }
 
-$authMethode = 2; //Tow Factor
 if (!OCP\User::isLoggedIn() && OCP\Config::getAppValue('user_otp','authMethod',_AUTH_DEFAULT_) === _AUTH_TWOFACTOR_) {
     // Load js code in order to add passcode field into the normal login form
     OCP\Util::addScript('user_otp', 'utils');
