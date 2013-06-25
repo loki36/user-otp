@@ -39,6 +39,12 @@
                             <input type="text" name="<?php p($input['name']); ?>" value="<?php echo $_[$input['name']]?>">
                         <?php }else if ($input['type'] === "checkbox") { ?>
                             <input type="checkbox" name="<?php p($input['name']); ?>" id="<?php p($input['name']); ?>" <?php if ($_[$input['name']]) p(' checked'); ?>>
+                        <?php }else if ($input['type'] === "radio") { ?>
+                            <?php $name=$input['name']; ?>
+                            <br/>
+                            <?php foreach ($input['values'] as $radio): ?>
+                            <input type="radio" name="<?php p($name); ?>" value="<?php p($radio['value'])?>" <?php if ($_[$input['name']]===$radio['value']) p(' checked'); ?>> <?php p($radio['label'])?><br/>
+                            <?php endforeach; ?>
                         <?php } ?>
                     </p>
                 <?php endforeach; ?>

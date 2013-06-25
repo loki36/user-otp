@@ -30,7 +30,7 @@ $tmpl = new OCP\Template('user_otp', 'adminSettings');
 // configuration tab
 $i=0;
 $allTab[$i]['name'] = "userotpSettings-1";
-$allTab[$i]['label'] = "Configuration";
+$allTab[$i]['label'] = "Authenticator method";
 $allTab[$i]['arrayConf'] = "config";$i++;
 
 $allTab[$i]['name'] = "userotpSettings-2";
@@ -39,15 +39,29 @@ $allTab[$i]['arrayConf'] = "configOtp";$i++;
 
 // input type process general tab
 $i=0;
-$config[$i]['name']='forceCreateUsers'; 
-$config[$i]['label']='Force user_otp backend to create new users?';
-$config[$i]['type']='checkbox';
-$config[$i]['default_value']=false; $i++;
+//$config[$i]['name']='forceCreateUsers'; 
+//$config[$i]['label']='Force user_otp backend to create new users?';
+//$config[$i]['type']='checkbox';
+//$config[$i]['default_value']=false; $i++;
 
-$config[$i]['name']='disableBackends'; 
-$config[$i]['label']='Disable other backends? (if checked user needs TOTP to connect if is user is in the TOTP db file)';
-$config[$i]['type']='checkbox';
-$config[$i]['default_value']=false; $i++;
+$config[$i]['name']='authMethod'; 
+$config[$i]['label']='Select authenticator method';
+$config[$i]['type']='radio';
+$config[$i]['default_value']=_AUTH_DEFAULT_;
+$config[$i]['values']['_AUTH_STANDARD_']['value']=_AUTH_OTP_OR_STANDARD_;  
+$config[$i]['values']['_AUTH_STANDARD_']['label']="Standard authentication";
+$config[$i]['values']['_AUTH_OTP_OR_STANDARD_']['value']=_AUTH_OTP_OR_STANDARD_;  
+$config[$i]['values']['_AUTH_OTP_OR_STANDARD_']['label']="Standard OR OTP authentication (user can used password OR OTP) ";
+$config[$i]['values']['_AUTH_OTP_']['value']=_AUTH_OTP_;  
+$config[$i]['values']['_AUTH_OTP_']['label']="Replace password by OTP (User needs OTP to connect if is user is in the OTP db file) ";
+$config[$i]['values']['_AUTH_TWOFACTOR_']['value']=_AUTH_TWOFACTOR_;  
+$config[$i]['values']['_AUTH_TWOFACTOR_']['label']="Two factor authenticator (User needs password AND OTP to connect if is user is in the OTP db file) ";
+$i++;
+
+//$config[$i]['name']='disableBackends'; 
+//$config[$i]['label']='Disable other backends? (if checked user needs TOTP to connect if is user is in the TOTP db file)';
+//$config[$i]['type']='checkbox';
+//$config[$i]['default_value']=false; $i++;
 
 // input type process tab OTP config
 $i=0;

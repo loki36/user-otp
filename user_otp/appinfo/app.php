@@ -38,4 +38,10 @@ if(OCP\Config::getAppValue('user_otp','disableBackends')){
 
 OC_User::useBackend('OTP');
 
+$authMethode = 2; //Tow Factor
+if (!OCP\User::isLoggedIn() && OCP\Config::getAppValue('user_otp','authMethod',_AUTH_DEFAULT_) === _AUTH_TWOFACTOR_) {
+    // Load js code in order to add passcode field into the normal login form
+    OCP\Util::addScript('user_otp', 'utils');
+}
+
 ?>
