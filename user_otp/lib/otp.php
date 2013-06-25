@@ -98,7 +98,7 @@ class OC_User_OTP extends OC_User_Database{
                     return false;
                 break;
                 case _AUTH_TWOFACTOR_:
-                  $result = $this->mOtp->CheckToken($password);
+                  $result = $this->mOtp->CheckToken($_POST['otpPassword']);
                     if ($result===0){
                       return parent::checkPassword($uid, $password);
                     }else{
