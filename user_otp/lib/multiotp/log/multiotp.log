@@ -28,3 +28,12 @@ multiotp 4.0.0beta5
 ========================================
 multiotp 4.0.0beta5
 2013-06-20 13:52:42 Information: user frank successfully deleted
+========================================
+multiotp 4.0.0beta5
+2013-06-20 14:10:39 Error: authentication failed for user frank
+========================================
+multiotp 4.0.0beta5
+2013-06-20 14:10:53 OK: user frank successfully logged in
+========================================
+multiotp 4.0.0beta5
+2013-06-20 14:11:03 Information: user frank successfully deleted
