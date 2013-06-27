@@ -25,9 +25,9 @@
 
 $l=OC_L10N::get('settings');
 
-OC_JSON::checkLoggedIn();
+OCP\JSON::checkLoggedIn();
+OCP\JSON::checkAppEnabled('user_otp');
 OCP\JSON::callCheck();
-OC_JSON::checkAppEnabled('user_otp');
 
 // Get data
 $mOtp =  new multiotp(OCP\Config::getAppValue(
@@ -48,9 +48,9 @@ if(
    $mOtp->CheckUserExists(OCP\User::getUser())
 ){
     if($mOtp->DeleteUser(OCP\User::getUser())){
-        OC_JSON::success(array("data" => array( "message" => $l->t("OTP Changed") )));
+        OCP\JSON::success(array("data" => array( "message" => $l->t("OTP Changed") )));
     }else{
-        OC_JSON::error(array("data" => array( "message" => $l->t("Invalid request") )));
+        OCP\JSON::error(array("data" => array( "message" => $l->t("Invalid request") )));
     }
 }else if (
     $_POST &&
@@ -76,10 +76,10 @@ if(
         OCP\Config::getAppValue('user_otp','UserTokenTimeIntervalOrLastEvent','30')
     );
     if($result){
-        OC_JSON::success(array("data" => array( "message" => $l->t("OTP Changed") )));
+        OCP\JSON::success(array("data" => array( "message" => $l->t("OTP Changed") )));
     }else{
-        OC_JSON::error(array("data" => array( "message" => $l->t("Invalid request") )));
+        OCP\JSON::error(array("data" => array( "message" => $l->t("Invalid request") )));
     }
 }else{
-    OC_JSON::error(array("data" => array( "message" => $l->t("Invalid request") )));
+    OCP\JSON::error(array("data" => array( "message" => $l->t("Invalid request") )));
 }
