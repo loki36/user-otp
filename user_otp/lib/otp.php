@@ -59,12 +59,14 @@ class OC_User_OTP extends OC_User_Backend{
                 'user_otp','UsersFolder',getcwd()."/apps/user_otp/lib/multiotp/users/"
             )
         );
-        if(DEBUG===1){
+        if($DEBUG===1){
             $this->mOtp->EnableVerboseLog();
         }
         $this->mOtp->SetMaxBlockFailures(
             OCP\Config::getAppValue('user_otp','MaxBlockFailures',6)
         );
+        $this->bakends = OC_User::getBackends();
+        OC_User::clearBackends();
     }
 
     /**
