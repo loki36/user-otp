@@ -66,6 +66,7 @@ class OC_User_OTP extends OC_User_Backend{
             OCP\Config::getAppValue('user_otp','MaxBlockFailures',6)
         );
         $this->bakends = OC_User::getBackends();
+        OC_Log::write('user_otp', 'Delete all user backend.', OC_Log::DEBUG);
         OC_User::clearBackends();
     }
 
