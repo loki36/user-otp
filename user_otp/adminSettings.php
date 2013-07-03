@@ -23,6 +23,8 @@
  *
  */
 
+OC_Util::checkAdminUser();
+
 OCP\Util::addscript('user_otp', 'adminSettings');
 
 $tmpl = new OCP\Template('user_otp', 'adminSettings');

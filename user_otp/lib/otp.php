@@ -32,10 +32,19 @@ define("_AUTH_TWOFACTOR_","3");
 define("_AUTH_DEFAULT_",_AUTH_OTP_OR_STANDARD_);
 
 /**
- * Class for user management with OTP if exist else in a SQL Database (e.g. MySQL, SQLite)
+ * Class for user management with OTP if user exist in otp db
+ * act as manager for other backend
  * @package user_otp
  */
-class OC_User_OTP extends OC_User_Database{
+class OC_User_OTP extends OC_User_Backend{
+	/**
+ 	 * @var \OC_User_Backend[] $backends
+	 */
+	private $backends = array();
+	
+	/**
+ 	 * @var Multiotp $mOtp
+	 */
     private $mOtp;
 
     /**
