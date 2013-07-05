@@ -36,16 +36,18 @@ define("_AUTH_DEFAULT_",_AUTH_OTP_OR_STANDARD_);
  * act as manager for other backend
  * @package user_otp
  */
-class OC_User_OTP extends OC_User_Backend{
+class OC_USER_OTP extends OC_User_Backend{
 	/**
  	 * @var \OC_User_Backend[] $backends
 	 */
-	private $backends = array();
+	private static $_backends = array();
 	
 	/**
  	 * @var Multiotp $mOtp
 	 */
     private $mOtp;
+    
+    private $_userBackend = null;
 
     /**
      * Constructor sets up {@link $firstvar}
@@ -59,16 +61,68 @@ class OC_User_OTP extends OC_User_Backend{
                 'user_otp','UsersFolder',getcwd()."/apps/user_otp/lib/multiotp/users/"
             )
         );
-        if($DEBUG===1){
+        if(DEBUG===1){
             $this->mOtp->EnableVerboseLog();
         }
         $this->mOtp->SetMaxBlockFailures(
             OCP\Config::getAppValue('user_otp','MaxBlockFailures',6)
         );
-        $this->bakends = OC_User::getBackends();
+        foreach (OC_User::getUsedBackends() as $backend){
+          self::$_backends[$backend] = new $backend();
+        }
+//~ var_dump(self::$_backends);
         OC_Log::write('user_otp', 'Delete all user backend.', OC_Log::DEBUG);
         OC_User::clearBackends();
+//~ echo "<br/>toto<br/>";
+//var_dump(OC_User::getUsedBackends());
+//~ exit;
     }
+
+	/**
+	 * @brief check if a user exists
+	 * @param string $uid the username
+	 * @return boolean
+	 */
+	public function userExists($uid) {
+        if(!OCP\User::isLoggedIn() && $this->mOtp->CheckUserExists($uid)){
+			return true;
+		}
+//~ var_dump(self::$_backends);
+		return ($this->getRealBackend($uid)->userExists($uid)!==null);
+	}
+	
+	/**
+	 * @brief get user real backend
+	 * @param string $uid the username
+	 * @return backend
+	 */
+	public function getRealBackend($uid) {
+		if($this->_userBackend !== null){
+			return $this->_userBackend;
+		}
+//echo "toto ".$uid;
+//var_dump(OC_User::getUsedBackends());
+//~ var_dump(self::$_backends);
+//~ exit;
+		foreach (self::$_backends as $backend) {
+			//~ var_dump($backend); echo "toto<br/>";
+			if ($backend->userExists($uid)) {
+				$this->_userBackend=$backend;
+				return $this->_userBackend;
+			}
+		}
+		return null;
+	}
+	
+	public function __call($name, $arguments){
+		$userBackend=$this->getRealBackend($uid);
+		if($userBackend===null){
+			return false;
+		}
+		
+		$reflectionMethod = new ReflectionMethod(get_class($userBackend),$name);
+		return $reflectionMethod->invokeArgs($userBackend,$arguments);
+	}
 
     /**
      * check password function
@@ -77,23 +131,30 @@ class OC_User_OTP extends OC_User_Backend{
      * @return boolean
      */
     public function checkPassword($uid, $password) {
-//    $tmp = $this->userExists($uid);
-//    var_dump($tmp);
+		$userBackend=$this->getRealBackend($uid);
+//~ var_dump($userBackend);
+		//~ OC_User::getManager()->removeBackend("OC_USER_OTP");
+//~ echo "toto";exit;
+		if ($userBackend===null){
+			return false;
+		}
+    //~ $tmp = $this->userExists($uid);
+    //~ var_dump($tmp);
 //    echo $uid.'toto'.$this->mOtp->GetUsersFolder();
 //    var_dump($_POST);
 //    exit;
         //if(!$this->userExists($uid)){
         if(!$this->mOtp->CheckUserExists($uid)){
-            return parent::checkPassword($uid, $password);
+            return $userBackend->checkPassword($uid, $password);
         }else{
             $this->mOtp->SetUser($uid);
             $authMethode=OCP\Config::getAppValue('user_otp','authMethod',_AUTH_DEFAULT_);
             switch($authMethode){
                 case _AUTH_STANDARD_:
-                    return parent::checkPassword($uid, $password);
+                    return $userBackend->checkPassword($uid, $password);
                     break;
                 case _AUTH_OTP_OR_STANDARD_:
-                    $result = parent::checkPassword($uid, $password);
+                    $result = $userBackend->checkPassword($uid, $password);
                     if($result){
                         return $result;
                     }
@@ -112,7 +173,7 @@ class OC_User_OTP extends OC_User_Backend{
                 case _AUTH_TWOFACTOR_:
                   $result = $this->mOtp->CheckToken($_POST['otpPassword']);
                     if ($result===0){
-                      return parent::checkPassword($uid, $password);
+                      return $userBackend->checkPassword($uid, $password);
                     }else{
                         if(isset($this->mOtp->_errors_text[$result])){
                             echo $this->mOtp->_errors_text[$result];

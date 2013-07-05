@@ -41,8 +41,12 @@ OCP\App::registerPersonal('user_otp','personalSettings');
 // Nothing to do if user is already logged
 if (!OCP\User::isLoggedIn()){
 	if(OCP\Config::getAppValue('user_otp','authMethod',_AUTH_DEFAULT_)!==_AUTH_STANDARD_){
+		//$usedBackends = OC_User::getUsedBackends();
 		//OC_User::clearBackends();
 		OC_User::useBackend('OTP');
+		//~ foreach($usedBackends as $backend){
+			//~ OC_User::useBackend($backend);
+		//~ }
 	}
 
 	if (OCP\Config::getAppValue('user_otp','authMethod',_AUTH_DEFAULT_) === _AUTH_TWOFACTOR_) {
