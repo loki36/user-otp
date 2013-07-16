@@ -8,6 +8,7 @@ test with Google Authenticator and android Token
 
 Installation:
 Upload user_otp directory under the 'apps' directory of your ownCloud.
+user_otp folder should have read write permission for the web server user (under debian/ubutnu : chown -R www-data:www-data user_otp)
 Navigate to the 'Apps' page in Admin.
 Click on 'user_otp' in the application list. Then click the 'Enable' button.
 

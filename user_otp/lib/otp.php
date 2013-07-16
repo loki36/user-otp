@@ -40,7 +40,7 @@ class OC_USER_OTP extends OC_User_Backend{
 	/**
  	 * @var \OC_User_Backend[] $backends
 	 */
-	private static $_backends = array();
+	private static $_backends = null;
 	
 	/**
  	 * @var Multiotp $mOtp
@@ -53,6 +53,7 @@ class OC_USER_OTP extends OC_User_Backend{
      * Constructor sets up {@link $firstvar}
      */
     public function __construct(){
+		OC_Log::write('OC_USER_OTP', __FUNCTION__.'().', OC_Log::DEBUG);
         $this->mOtp =  new multiotp(OCP\Config::getAppValue(
             'user_otp','EncryptionKey','DefaultCliEncryptionKey')
         );
@@ -61,22 +62,24 @@ class OC_USER_OTP extends OC_User_Backend{
                 'user_otp','UsersFolder',getcwd()."/apps/user_otp/lib/multiotp/users/"
             )
         );
-        if(DEBUG===1){
+        if(DEBUG===true){
             $this->mOtp->EnableVerboseLog();
         }
         $this->mOtp->SetMaxBlockFailures(
             OCP\Config::getAppValue('user_otp','MaxBlockFailures',6)
         );
-        foreach (OC_User::getUsedBackends() as $backend){
-          self::$_backends[$backend] = new $backend();
-        }
-//~ var_dump(self::$_backends);
-        OC_Log::write('user_otp', 'Delete all user backend.', OC_Log::DEBUG);
-        OC_User::clearBackends();
-//~ echo "<br/>toto<br/>";
-//var_dump(OC_User::getUsedBackends());
-//~ exit;
+        
     }
+    
+    public static function registerBackends($usedBackends){
+		OC_Log::write('OC_USER_OTP', __FUNCTION__.'().', OC_Log::DEBUG);
+		if(self::$_backends === null){
+			foreach ($usedBackends as $backend){
+				OC_Log::write('user_otp', 'instance '.$backend.' backend.', OC_Log::DEBUG);
+				self::$_backends[$backend] = new $backend();
+			}
+		}
+	}
 
 	/**
 	 * @brief check if a user exists
@@ -84,11 +87,16 @@ class OC_USER_OTP extends OC_User_Backend{
 	 * @return boolean
 	 */
 	public function userExists($uid) {
-        if(!OCP\User::isLoggedIn() && $this->mOtp->CheckUserExists($uid)){
+		OC_Log::write('OC_USER_OTP', __FUNCTION__.'().', OC_Log::DEBUG);
+        if($this->mOtp->CheckUserExists($uid)){
 			return true;
 		}
-//~ var_dump(self::$_backends);
-		return ($this->getRealBackend($uid)->userExists($uid)!==null);
+		$backend = $this->getRealBackend($uid);
+		if($backend===null){
+			return false;
+		}else{
+			return true;
+		}
 	}
 	
 	/**
@@ -97,15 +105,12 @@ class OC_USER_OTP extends OC_User_Backend{
 	 * @return backend
 	 */
 	public function getRealBackend($uid) {
+		OC_Log::write('OC_USER_OTP', __FUNCTION__.'().', OC_Log::DEBUG);
 		if($this->_userBackend !== null){
 			return $this->_userBackend;
 		}
-//echo "toto ".$uid;
-//var_dump(OC_User::getUsedBackends());
-//~ var_dump(self::$_backends);
-//~ exit;
+
 		foreach (self::$_backends as $backend) {
-			//~ var_dump($backend); echo "toto<br/>";
 			if ($backend->userExists($uid)) {
 				$this->_userBackend=$backend;
 				return $this->_userBackend;
@@ -115,6 +120,7 @@ class OC_USER_OTP extends OC_User_Backend{
 	}
 	
 	public function __call($name, $arguments){
+		OC_Log::write('OC_USER_OTP', $name.'().', OC_Log::DEBUG);
 		$userBackend=$this->getRealBackend($uid);
 		if($userBackend===null){
 			return false;
@@ -131,19 +137,12 @@ class OC_USER_OTP extends OC_User_Backend{
      * @return boolean
      */
     public function checkPassword($uid, $password) {
+		OC_Log::write('OC_USER_OTP', __FUNCTION__.'().', OC_Log::DEBUG);
 		$userBackend=$this->getRealBackend($uid);
-//~ var_dump($userBackend);
-		//~ OC_User::getManager()->removeBackend("OC_USER_OTP");
-//~ echo "toto";exit;
 		if ($userBackend===null){
 			return false;
 		}
-    //~ $tmp = $this->userExists($uid);
-    //~ var_dump($tmp);
-//    echo $uid.'toto'.$this->mOtp->GetUsersFolder();
-//    var_dump($_POST);
-//    exit;
-        //if(!$this->userExists($uid)){
+
         if(!$this->mOtp->CheckUserExists($uid)){
             return $userBackend->checkPassword($uid, $password);
         }else{
