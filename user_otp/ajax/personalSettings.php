@@ -50,7 +50,7 @@ if(
     if($mOtp->DeleteUser(OCP\User::getUser())){
         OCP\JSON::success(array("data" => array( "message" => $l->t("OTP Changed") )));
     }else{
-        OCP\JSON::error(array("data" => array( "message" => $l->t("Invalid request") )));
+        OCP\JSON::error(array("data" => array( "message" => $l->t("check apps folder rights") )));
     }
 }else if (
     $_POST &&
@@ -59,11 +59,12 @@ if(
 ){
     // format token seed :
     if($_POST["UserTokenSeed"]===""){
-        $UserTokenSeed="";
-    }else if (OCP\Config::getAppValue('user_otp','TokenBase32Encode',true)){
-        $UserTokenSeed=bin2hex(base32_decode($_POST["UserTokenSeed"]));
+        $UserTokenSeed=substr(md5(date("YmdHis").rand(100000,999999)),0,20).substr(md5(rand(100000,999999).date("YmdHis")),0,20);
     }else{
-        $UserTokenSeed=$_POST["UserTokenSeed"];
+		$UserTokenSeed=$_POST["UserTokenSeed"];
+	}
+    if (OCP\Config::getAppValue('user_otp','TokenBase32Encode',true)){
+        $UserTokenSeed=bin2hex(base32_decode($UserTokenSeed));
     }
 
     $result = $mOtp->CreateUser(
@@ -78,7 +79,7 @@ if(
     if($result){
         OCP\JSON::success(array("data" => array( "message" => $l->t("OTP Changed") )));
     }else{
-        OCP\JSON::error(array("data" => array( "message" => $l->t("Invalid request") )));
+        OCP\JSON::error(array("data" => array( "message" => $l->t("check apps folder rights") )));
     }
 }else{
     OCP\JSON::error(array("data" => array( "message" => $l->t("Invalid request") )));
