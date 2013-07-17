@@ -50,6 +50,7 @@
                 <?php endforeach; ?>
             </fieldset>
         <?php endforeach; ?>
-        <input type='submit' value='Save'>
+        <input type="hidden" name="requesttoken" value="<?php p($_['requesttoken']);?>" />
+        <input type='submit' value='<?php p($l->t('Save'));?>'>
     </div>
 </form>

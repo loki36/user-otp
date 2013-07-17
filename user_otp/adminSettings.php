@@ -111,8 +111,8 @@ foreach ($allTab as $tab){
     foreach ($$tab["arrayConf"] as $input){
         switch ($input['type']){
             case "checkbox":
-                if(isset($_POST[$input['name']])){
-                    if($_POST[$input['name']]===true or $_POST[$input['name']]==='on' or $_POST[$input['name']]===1){
+                if(isset($_POST['authMethod'])){
+                    if(isset($_POST[$input['name']])){
 						OCP\Config::setAppValue('user_otp',$input['name'],true);
 					}else{
 						OCP\Config::setAppValue('user_otp',$input['name'],false);
