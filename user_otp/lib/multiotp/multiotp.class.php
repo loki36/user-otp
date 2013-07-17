@@ -1774,7 +1774,7 @@ class Multiotp
      * @return  boolean or binary
      *
      *********************************************************************/
-    function GetUserTokenQrCode($user = '', $display_name = '', $file_name = 'binary')
+    function GetUserTokenQrCode($user = '', $display_name = '', $file_name = 'binary',$ga_encode=true)
     {
         $result = FALSE;
         if ('' != $user)
@@ -1794,14 +1794,20 @@ class Multiotp
             $q_seed         = $this->GetUserTokenSeed();
             $q_counter      = $this->GetUserTokenLastEvent() + 1;
             $q_display_name = (('' != $display_name)?$display_name:$the_user);
+            
+            if($ga_encode){
+				$q_seed=base32_encode(hex2bin($q_seed));
+			}else{
+				$q_seed=hex2bin($q_seed);
+			}
 
             switch (strtolower($q_algorithm))
             {
                 case 'totp':
-                    $result = $this->qrcode('otpauth://'.$q_algorithm.'/'.rawurlencode($q_display_name).'?period='.$q_period.'&digits='.$q_digits.'&secret='.base32_encode(hex2bin($q_seed)), $file_name);
+                    $result = $this->qrcode('otpauth://'.$q_algorithm.'/'.rawurlencode($q_display_name).'?period='.$q_period.'&digits='.$q_digits.'&secret='.$q_seed, $file_name);
                     break;
                 case 'hotp':
-                    $result = $this->qrcode('otpauth://'.$q_algorithm.'/'.rawurlencode($q_display_name).'?counter='.$q_counter.'&digits='.$q_digits.'&secret='.base32_encode(hex2bin($q_seed)), $file_name);
+                    $result = $this->qrcode('otpauth://'.$q_algorithm.'/'.rawurlencode($q_display_name).'?counter='.$q_counter.'&digits='.$q_digits.'&secret='.$q_seed, $file_name);
                     break;
                     /*
                 case 'motp':
@@ -1897,7 +1903,7 @@ class Multiotp
      * @return  boolean (FALSE) or string
      *
      *********************************************************************/
-    function GetUserTokenUrlLink($user = '', $display_name = '')
+    function GetUserTokenUrlLink($user = '', $display_name = '',$ga_encode=true)
     {
         $result = FALSE;
         if ('' != $user)
@@ -1914,14 +1920,20 @@ class Multiotp
             $q_seed         = $this->GetUserTokenSeed();
             $q_counter      = $this->GetUserTokenLastEvent() + 1;
             $q_display_name = (('' != $display_name)?$display_name:$the_user);
+            
+            if($ga_encode){
+				$q_seed=base32_encode(hex2bin($q_seed));
+			}else{
+				$q_seed=hex2bin($q_seed);
+			}
 
             switch (strtolower($q_algorithm))
             {
                 case 'totp':
-                    $result = 'otpauth://'.$q_algorithm.'/'.rawurlencode($q_display_name).'?period='.$q_period.'&digits='.$q_digits.'&secret='.base32_encode(hex2bin($q_seed));
+                    $result = 'otpauth://'.$q_algorithm.'/'.rawurlencode($q_display_name).'?period='.$q_period.'&digits='.$q_digits.'&secret='.$q_seed;
                     break;
                 case 'hotp':
-                    $result = 'otpauth://'.$q_algorithm.'/'.rawurlencode($q_display_name).'?counter='.$q_counter.'&digits='.$q_digits.'&secret='.base32_encode(hex2bin($q_seed));
+                    $result = 'otpauth://'.$q_algorithm.'/'.rawurlencode($q_display_name).'?counter='.$q_counter.'&digits='.$q_digits.'&secret='.$q_seed;
                     break;
                     /*
                 case 'motp':

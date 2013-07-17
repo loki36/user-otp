@@ -93,7 +93,7 @@ $configOtp[$i]['type']='text';
 $configOtp[$i]['default_value']='TOTP'; $i++;
 
 $configOtp[$i]['name']='TokenBase32Encode'; 
-$configOtp[$i]['label']='Token Base32 Encode (need for Google Authenticator';
+$configOtp[$i]['label']='Token Base32 Encode (need for Google Authenticator)';
 $configOtp[$i]['type']='checkbox';
 $configOtp[$i]['default_value']=true; $i++;
 
@@ -111,11 +111,13 @@ foreach ($allTab as $tab){
     foreach ($$tab["arrayConf"] as $input){
         switch ($input['type']){
             case "checkbox":
-                if(isset($_POST[$input['name']]) || $input['default_value']){
-                    OCP\Config::setAppValue('user_otp',$input['name'],true);
-                }else{
-                    OCP\Config::setAppValue('user_otp',$input['name'],false);
-                }
+                if(isset($_POST[$input['name']])){
+                    if($_POST[$input['name']]===true or $_POST[$input['name']]==='on' or $_POST[$input['name']]===1){
+						OCP\Config::setAppValue('user_otp',$input['name'],true);
+					}else{
+						OCP\Config::setAppValue('user_otp',$input['name'],false);
+					}
+                }                 
                 $tmpl->assign(
                     $input['name'],
                     OCP\Config::getAppValue(

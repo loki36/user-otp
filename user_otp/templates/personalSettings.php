@@ -45,10 +45,12 @@
                 Token Url Link : <a href="<?php p($_['UserTokenUrlLink']); ?>"><?php p($_['UserTokenUrlLink']); ?></a>
             </p>
             <p>
+				QRcode seems to works well with Google Authenticator<br/>
+				QRcode seems to works with android token only if seed is composed with number beetween 2 and 7<br/>
 				<?php if($_['TokenBase32Encode']) {?>
-				  Token seed is base32 encode, so Qrcode will only works with Google Authenticator<br/>
+				  Token seed is base32 encode, so Qrcode will works with Google Authenticator<br/> 
 				<?php }else{ ?>
-				  Token seed is not base32 encode, so Qrcode will not works with Google Authenticator but with android token<br/>
+				  Token seed is not base32 encode, so Qrcode will not works with Google Authenticator<br/>
 				<?php } ?>
                 UserTokenQrCode : <img src="<?php p($_['UserTokenQrCode']); ?>">
             </p>

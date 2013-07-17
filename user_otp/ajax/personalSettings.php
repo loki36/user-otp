@@ -61,14 +61,19 @@ if(
 ){
     // format token seed :
     if($_POST["UserTokenSeed"]===""){
-		$GA_VALID_CHAR = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
-        $UserTokenSeed=generateRandomString(16,256,8,$GA_VALID_CHAR);
+		if (OCP\Config::getAppValue('user_otp','TokenBase32Encode',true) ){
+			//$GA_VALID_CHAR = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
+			$GA_VALID_CHAR = "234567";
+			$UserTokenSeed=generateRandomString(16,256,8,$GA_VALID_CHAR);
+		}
     }else{
 		$UserTokenSeed=$_POST["UserTokenSeed"];
 	}
     if (OCP\Config::getAppValue('user_otp','TokenBase32Encode',true)){
         $UserTokenSeed=bin2hex(base32_decode($UserTokenSeed));
-    }
+    }else{
+		 $UserTokenSeed=bin2hex($UserTokenSeed);
+	}
 
     $result = $mOtp->CreateUser(
         OCP\User::getUser(),

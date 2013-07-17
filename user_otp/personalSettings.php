@@ -57,7 +57,7 @@ if($mOtp->CheckUserExists(OCP\User::getUser())){
         $tmpl->assign('UserTokenSeed',base32_encode(hex2bin($mOtp->GetUserTokenSeed())));
         $tmpl->assign('TokenBase32Encode',true);
     }else{
-        $tmpl->assign('UserTokenSeed',$mOtp->GetUserTokenSeed());    
+        $tmpl->assign('UserTokenSeed',hex2bin($mOtp->GetUserTokenSeed()));    
     }
     $tmpl->assign('UserPin',$mOtp->GetUserPin());
     $tmpl->assign('UserPrefixPin',$mOtp->GetUserPrefixPin());
