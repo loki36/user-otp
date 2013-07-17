@@ -55,6 +55,7 @@ if($mOtp->CheckUserExists(OCP\User::getUser())){
     $tmpl->assign('UserTokenQrCode',$img);
     if(OCP\Config::getAppValue('user_otp','TokenBase32Encode',true)){
         $tmpl->assign('UserTokenSeed',base32_encode(hex2bin($mOtp->GetUserTokenSeed())));
+        $tmpl->assign('TokenBase32Encode',true);
     }else{
         $tmpl->assign('UserTokenSeed',$mOtp->GetUserTokenSeed());    
     }

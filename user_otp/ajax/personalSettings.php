@@ -23,6 +23,8 @@
  *
  */
 
+include_once("user_otp/lib/utils.php");
+
 $l=OC_L10N::get('settings');
 
 OCP\JSON::checkLoggedIn();
@@ -59,7 +61,8 @@ if(
 ){
     // format token seed :
     if($_POST["UserTokenSeed"]===""){
-        $UserTokenSeed=substr(md5(date("YmdHis").rand(100000,999999)),0,20).substr(md5(rand(100000,999999).date("YmdHis")),0,20);
+		$GA_VALID_CHAR = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
+        $UserTokenSeed=generateRandomString(16,256,8,$GA_VALID_CHAR);
     }else{
 		$UserTokenSeed=$_POST["UserTokenSeed"];
 	}

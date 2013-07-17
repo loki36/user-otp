@@ -45,6 +45,11 @@
                 Token Url Link : <a href="<?php p($_['UserTokenUrlLink']); ?>"><?php p($_['UserTokenUrlLink']); ?></a>
             </p>
             <p>
+				<?php if($_['TokenBase32Encode']) {?>
+				  Token seed is base32 encode, so Qrcode will only works with Google Authenticator<br/>
+				<?php }else{ ?>
+				  Token seed is not base32 encode, so Qrcode will not works with Google Authenticator but with android token<br/>
+				<?php } ?>
                 UserTokenQrCode : <img src="<?php p($_['UserTokenQrCode']); ?>">
             </p>
             <input type="hidden" id="otp_action" name="otp_action" value="delete_otp">
