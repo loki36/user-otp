@@ -62,7 +62,7 @@ class OC_USER_OTP extends OC_User_Backend{
                 'user_otp','UsersFolder',getcwd()."/apps/user_otp/lib/multiotp/users/"
             )
         );
-        if(DEBUG===true){
+        if(defined('DEBUG') && DEBUG===true){
             $this->mOtp->EnableVerboseLog();
         }
         $this->mOtp->SetMaxBlockFailures(
