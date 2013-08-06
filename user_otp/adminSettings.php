@@ -47,17 +47,17 @@ $i=0;
 //$config[$i]['default_value']=false; $i++;
 
 $config[$i]['name']='authMethod'; 
-$config[$i]['label']='Select authenticator method';
+$config[$i]['label']='Select authentication method';
 $config[$i]['type']='radio';
 $config[$i]['default_value']=_AUTH_DEFAULT_;
 $config[$i]['values']['_AUTH_STANDARD_']['value']=_AUTH_STANDARD_;  
 $config[$i]['values']['_AUTH_STANDARD_']['label']="Standard authentication";
 $config[$i]['values']['_AUTH_OTP_OR_STANDARD_']['value']=_AUTH_OTP_OR_STANDARD_;  
-$config[$i]['values']['_AUTH_OTP_OR_STANDARD_']['label']="Standard OR OTP authentication (user can used password OR OTP) ";
+$config[$i]['values']['_AUTH_OTP_OR_STANDARD_']['label']="Standard OR OTP authentication (User can use password OR OTP) ";
 $config[$i]['values']['_AUTH_OTP_ONLY_']['value']=_AUTH_OTP_ONLY_;  
-$config[$i]['values']['_AUTH_OTP_ONLY_']['label']="Replace password by OTP (User needs OTP to connect if is user is in the OTP db file) ";
+$config[$i]['values']['_AUTH_OTP_ONLY_']['label']="Replace password by OTP (User needs OTP to connect, if user is in the OTP db file) ";
 $config[$i]['values']['_AUTH_TWOFACTOR_']['value']=_AUTH_TWOFACTOR_;  
-$config[$i]['values']['_AUTH_TWOFACTOR_']['label']="Two factor authenticator (User needs password AND OTP to connect if is user is in the OTP db file) ";
+$config[$i]['values']['_AUTH_TWOFACTOR_']['label']="Two-factor authentication (User needs password AND OTP to connect, if user is in the OTP db file) ";
 $i++;
 
 //$config[$i]['name']='disableBackends'; 
