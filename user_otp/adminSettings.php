@@ -91,7 +91,7 @@ $configOtp[$i]['type']='text';
 $configOtp[$i]['default_value']='TOTP'; $i++;
 
 $configOtp[$i]['name']='TokenBase32Encode'; 
-$configOtp[$i]['label']='Token Base32 Encode (need for Google Authenticator';
+$configOtp[$i]['label']='Token Base32 Encode (need for Google Authenticator)';
 $configOtp[$i]['type']='checkbox';
 $configOtp[$i]['default_value']=true; $i++;
 
