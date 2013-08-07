@@ -142,6 +142,15 @@ class OC_USER_OTP extends OC_User_Backend{
 		if ($userBackend===null){
 			return false;
 		}
+		
+		//if access is made by remote.php and option is note set to force mtop, keep standard auth methode
+		// this for keep working webdav access and sync apps
+		if(
+			basename($_SERVER['SCRIPT_NAME']) === 'remote.php'
+			&& OCP\Config::getAppValue('user_otp','disableOtpOnRemoteScript',true)
+		){
+			return $userBackend->checkPassword($uid, $password);
+		}
 
         if(!$this->mOtp->CheckUserExists($uid)){
             return $userBackend->checkPassword($uid, $password);

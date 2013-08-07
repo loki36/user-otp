@@ -107,6 +107,11 @@ $configOtp[$i]['label']='User Token Time Interval Or Last Event';
 $configOtp[$i]['type']='text';
 $configOtp[$i]['default_value']='30'; $i++;
 
+$configOtp[$i]['name']='disableOtpOnRemoteScript'; 
+$configOtp[$i]['label']='Disable OTP with remote.php (webdav and sync)';
+$configOtp[$i]['type']='checkbox';
+$configOtp[$i]['default_value']=true; $i++;
+
 foreach ($allTab as $tab){
     foreach ($$tab["arrayConf"] as $input){
         switch ($input['type']){
