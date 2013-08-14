@@ -58,9 +58,9 @@
             <input id="otp_submit_action" type='button' value='Delete'>
         <?php }else{ ?>
             <p>
-                User Token Seed : <input type="text" name="UserTokenSeed" value="">
+                User Token Seed (if left blank, it will be generated automatically) : <input type="text" name="UserTokenSeed" value="">
                 <?php if($_['UserPrefixPin']){ ?>
-                    / User Pin :  <input type="text" name="UserPin" value="">
+                    <br/>User Pin (if left blank, it will be generated automatically) :  <input type="text" name="UserPin" value="">
                 <?php } ?>
                 <input type="hidden" name="otp_action" value="create_otp">
                 <input id="otp_submit_action" type='submit' value='Create'>

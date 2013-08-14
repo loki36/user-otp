@@ -23,6 +23,8 @@
  *
  */
 
+include_once("user_otp/lib/utils.php");
+
 OC_Util::checkAdminUser();
 
 OCP\Util::addscript('user_otp', 'adminSettings');
@@ -68,9 +70,10 @@ $i++;
 // input type process tab OTP config
 $i=0;
 $configOtp[$i]['name']='EncryptionKey'; 
-$configOtp[$i]['label']='Encryption Key';
+$configOtp[$i]['label']='Encryption Key (if left blank, it will be generated automatically)';
 $configOtp[$i]['type']='text';
-$configOtp[$i]['default_value']='DefaultCliEncryptionKey'; $i++;
+$VALID_CHAR = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghiklmnopqrstuvwxyz";
+$configOtp[$i]['default_value']=generateRandomString(16,32,2,$VALID_CHAR); $i++;
 
 $configOtp[$i]['name']='MaxBlockFailures'; 
 $configOtp[$i]['label']='Max Block Failures';
@@ -138,6 +141,9 @@ foreach ($allTab as $tab){
                 break;
             default:
                 if ($_POST && isset($_POST[$input['name']]) ) {        
+					if($input['name']==="EncryptionKey" && $_POST[$input['name']]==""){
+						$_POST[$input['name']]=$input['default_value'];
+					}
                     OCP\Config::setAppValue('user_otp',$input['name'],$_POST[$input['name']]);
                 }
                 $tmpl->assign(
