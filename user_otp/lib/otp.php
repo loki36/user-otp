@@ -80,6 +80,40 @@ class OC_USER_OTP extends OC_User_Backend{
 			}
 		}
 	}
+		
+	/**
+	 * @brief delete a user
+	 * @param string $uid The username of the user to delete
+	 * @return bool
+	 *
+	 * Deletes a user
+	 */
+	public function deleteUser( $uid ) {
+		return $this->__call("deleteUser",array($uid));
+	}
+	
+	/**
+	 * @brief Create a new user
+	 * @param $uid The username of the user to create
+	 * @param $password The password of the new user
+	 * @returns true/false
+	 *
+	 * Creates a new user. Basic checking of username is done in OC_User
+	 * itself, not in its subclasses.
+	 */
+	public function createUser( $uid, $password ) {
+		return $this->__call("createUser",array($uid,$password));
+	}
+
+	/**
+	 * @brief Get a list of all users
+	 * @returns array with all uids
+	 *
+	 * Get a list of all users.
+	 */
+	public function getUsers($search = '', $limit = null, $offset = null) {
+		return $this->__call("getUsers",array($search,$limit,$offset));
+	}
 
 	/**
 	 * @brief check if a user exists
@@ -97,6 +131,24 @@ class OC_USER_OTP extends OC_User_Backend{
 		}else{
 			return true;
 		}
+	}
+
+	/**
+	 * @brief get the user's home directory
+	 * @param string $uid the username
+	 * @return boolean
+	 */
+	public function getHome($uid) {
+		return $this->__call("getHome",array($uid));
+	}
+
+	/**
+ 	 * @brief get display name of the user
+	 * @param string $uid user ID of the user
+	 * @return string display name
+	 */
+	public function getDisplayName($uid) {
+		return $this->__call("getDisplayName",array($uid));;
 	}
 	
 	/**
