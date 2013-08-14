@@ -89,8 +89,12 @@ $configOtp[$i]['default_value']=false; $i++;
 
 $configOtp[$i]['name']='UserAlgorithm'; 
 $configOtp[$i]['label']='User Algorithm (TOTP/HOTP)';
-$configOtp[$i]['type']='text';
-$configOtp[$i]['default_value']='TOTP'; $i++;
+$configOtp[$i]['type']='select';
+$configOtp[$i]['default_value']='TOTP'; 
+$configOtp[$i]['values']['TOTP']['value']='TOTP';  
+$configOtp[$i]['values']['TOTP']['label']="TOTP";
+$configOtp[$i]['values']['HOTP']['value']='HOTP';  
+$configOtp[$i]['values']['HOTP']['label']="HOTP";$i++;
 
 $configOtp[$i]['name']='TokenBase32Encode'; 
 $configOtp[$i]['label']='Token Base32 Encode (need for Google Authenticator)';
