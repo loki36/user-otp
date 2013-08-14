@@ -25,7 +25,7 @@
 ?>
 <form id="otp_personal_form">
     <div id="userotpSettings" class="personalblock">
-        <legend><strong>TOTP Configuration</strong></legend>
+        <legend><strong>OTP Configuration</strong></legend>
         <?php if($_['UserExists']) { ?>
             <p>
                 User Token Seed : <?php p($_['UserTokenSeed']); ?> 
