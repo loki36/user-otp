@@ -3,6 +3,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU AFFERO GENERAL PUBLIC LICENSE for more details.
 
 One Time Password Backend can create TOTP and HOTP and generate QrCode
+Based on library multiOTP http://www.multiotp.net/
 test with Owncloud 5.0.7
 test with Google Authenticator and android Token
 
