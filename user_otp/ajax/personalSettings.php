@@ -32,7 +32,7 @@ OCP\JSON::checkAppEnabled('user_otp');
 OCP\JSON::callCheck();
 
 // Get data
-$mOtp =  new multiotp(OCP\Config::getAppValue(
+$mOtp =  new MultiOtpDb(OCP\Config::getAppValue(
     'user_otp','EncryptionKey','DefaultCliEncryptionKey')
 );
 $mOtp->EnableVerboseLog();
@@ -50,7 +50,7 @@ if(
    $mOtp->CheckUserExists(OCP\User::getUser())
 ){
 	$img="apps/user_otp/lib/multiotp/users/".OCP\User::getUser().".png";
-    if($mOtp->DeleteUser(OCP\User::getUser()) && unlink($img)){
+    if($mOtp->DeleteUser(OCP\User::getUser()) /*&& unlink($img)*/){
         OCP\JSON::success(array("data" => array( "message" => $l->t("OTP Changed") )));
     }else{
         OCP\JSON::error(array("data" => array( "message" => $l->t("check apps folder rights") )));

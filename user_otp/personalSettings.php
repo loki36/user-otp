@@ -25,7 +25,7 @@
 
 OCP\Util::addscript('user_otp', 'personalSettings');
 
-$mOtp =  new multiotp(
+$mOtp =  new MultiOtpDb(
     OCP\Config::getAppValue('user_otp','EncryptionKey','DefaultCliEncryptionKey')
 );
 $mOtp->EnableVerboseLog();
@@ -42,14 +42,16 @@ if($mOtp->CheckUserExists(OCP\User::getUser())){
     $tmpl->assign('UserExists',true);
 
     $mOtp->SetUser(OCP\User::getUser());
-    $img = OCP\Config::getAppValue(
-        'user_otp',
-        'UsersFolder',
-        getcwd()."apps/user_otp/lib/multiotp/users/"
-    ).OCP\User::getUser().".png";
-    $UserTokenQrCode =  $mOtp->GetUserTokenQrCode(OCP\User::getUser(),'',$img);
+    //~ $img = OCP\Config::getAppValue(
+        //~ 'user_otp',
+        //~ 'UsersFolder',
+        //~ getcwd()."apps/user_otp/lib/multiotp/users/"
+    //~ ).OCP\User::getUser().".png";
+    //~ $UserTokenQrCode =  $mOtp->GetUserTokenQrCode(OCP\User::getUser(),'',$img);
 
-    $img="../../apps/user_otp/lib/multiotp/users/".OCP\User::getUser().".png";
+    //~ $img="../../apps/user_otp/lib/multiotp/users/".OCP\User::getUser().".png";
+    //~ $img="../../apps/user_otp/lib/qrcode.php";
+    $img=\OCP\Util::linkToRoute('user_otp_qrcode');
 
     $tmpl->assign('UserTokenUrlLink',$mOtp->GetUserTokenUrlLink());
     $tmpl->assign('UserTokenQrCode',$img);

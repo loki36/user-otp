@@ -1785,6 +1785,7 @@ class Multiotp
         {
             $result = FALSE;
         }
+        
         elseif ($this->ReadUserData())
         {
             $the_user       = $this->GetUser();
@@ -1796,10 +1797,10 @@ class Multiotp
             $q_display_name = (('' != $display_name)?$display_name:$the_user);
             
             if($ga_encode){
-				$q_seed=base32_encode(hex2bin($q_seed));
-			}else{
-				$q_seed=hex2bin($q_seed);
-			}
+              $q_seed=base32_encode(hex2bin($q_seed));
+            }else{
+              $q_seed=hex2bin($q_seed);
+            }
 
             switch (strtolower($q_algorithm))
             {

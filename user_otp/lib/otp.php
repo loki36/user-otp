@@ -23,7 +23,7 @@
  *
  */
 
-include_once("user_otp/lib/multiotp/multiotp.class.php");
+include_once("user_otp/lib/multiotpdb.php");
 
 define("_AUTH_STANDARD_","0");
 define("_AUTH_OTP_OR_STANDARD_","1");
@@ -54,7 +54,7 @@ class OC_USER_OTP extends OC_User_Backend{
      */
     public function __construct(){
 		OC_Log::write('OC_USER_OTP', __FUNCTION__.'().', OC_Log::DEBUG);
-        $this->mOtp =  new multiotp(OCP\Config::getAppValue(
+        $this->mOtp =  new MultiOtpDb(OCP\Config::getAppValue(
             'user_otp','EncryptionKey','DefaultCliEncryptionKey')
         );
         $this->mOtp->SetUsersFolder(
