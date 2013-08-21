@@ -23,6 +23,8 @@
  *
  */
 
+include_once("user_otp/lib/utils.php");
+
 $l=OC_L10N::get('settings');
 
 OCP\JSON::checkLoggedIn();
@@ -30,17 +32,11 @@ OCP\JSON::checkAppEnabled('user_otp');
 OCP\JSON::callCheck();
 
 // Get data
-$mOtp =  new multiotp(OCP\Config::getAppValue(
+$mOtp =  new MultiOtpDb(OCP\Config::getAppValue(
     'user_otp','EncryptionKey','DefaultCliEncryptionKey')
 );
 $mOtp->EnableVerboseLog();
-$mOtp->SetUsersFolder(
-    OCP\Config::getAppValue(
-        'user_otp',
-        'UsersFolder',
-        getcwd()."/apps/user_otp/lib/multiotp/users/"
-    )
-);
+//$mOtp->SetDisplayLogOption(1);
 
 if(
    $_POST &&
@@ -50,22 +46,34 @@ if(
     if($mOtp->DeleteUser(OCP\User::getUser())){
         OCP\JSON::success(array("data" => array( "message" => $l->t("OTP Changed") )));
     }else{
-        OCP\JSON::error(array("data" => array( "message" => $l->t("Invalid request") )));
+        OCP\JSON::error(array("data" => array( "message" => $l->t("check apps folder rights") )));
     }
 }else if (
     $_POST &&
     $_POST["otp_action"]==="create_otp" &&
     !$mOtp->CheckUserExists(OCP\User::getUser())
 ){
-    // format token seed :
+    // format token seedll :
     if($_POST["UserTokenSeed"]===""){
-        $UserTokenSeed="";
-    }else if (OCP\Config::getAppValue('user_otp','TokenBase32Encode',true)){
-        $UserTokenSeed=bin2hex(base32_decode($_POST["UserTokenSeed"]));
+		//if (OCP\Config::getAppValue('user_otp','TokenBase32Encode',true) ){
+			$GA_VALID_CHAR = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
+			$UserTokenSeed=generateRandomString(8,64,8,$GA_VALID_CHAR);
+		//}
     }else{
-        $UserTokenSeed=$_POST["UserTokenSeed"];
-    }
-
+		$UserTokenSeed=$_POST["UserTokenSeed"];
+	}
+  //$UserTokenSeed="234567234567AZAZ";
+  //$UserTokenSeed="Hello!";
+    //~ if (OCP\Config::getAppValue('user_otp','TokenBase32Encode',true)){
+        //~ $UserTokenSeed=bin2hex(base32_decode($UserTokenSeed));
+    //~ }//else{
+		//$UserTokenSeed=bin2hex($UserTokenSeed);
+    $UserTokenSeed=bin2hex(base32_decode($UserTokenSeed));
+    //$UserTokenSeed=bin2hex(base32_decode($UserTokenSeed));
+    //echo $UserTokenSeed." / ".base32_encode($UserTokenSeed);exit;
+    //echo $UserTokenSeed." / ".hex2bin($UserTokenSeed);exit;
+	//}
+//echo "toto";
     $result = $mOtp->CreateUser(
         OCP\User::getUser(),
         (OCP\Config::getAppValue('user_otp','UserPrefixPin','0')?1:0),
@@ -74,11 +82,12 @@ if(
         $_POST["UserPin"],
         OCP\Config::getAppValue('user_otp','UserTokenNumberOfDigits','6'),
         OCP\Config::getAppValue('user_otp','UserTokenTimeIntervalOrLastEvent','30')
-    );
+    );//var_dump($result);
+    //exit;
     if($result){
         OCP\JSON::success(array("data" => array( "message" => $l->t("OTP Changed") )));
     }else{
-        OCP\JSON::error(array("data" => array( "message" => $l->t("Invalid request") )));
+        OCP\JSON::error(array("data" => array( "message" => $l->t("check apps folder rights") )));
     }
 }else{
     OCP\JSON::error(array("data" => array( "message" => $l->t("Invalid request") )));

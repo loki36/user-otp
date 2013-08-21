@@ -38,14 +38,26 @@ OCP\App::registerPersonal('user_otp','personalSettings');
 //    OC_User::clearBackends();
 //}
 
-if(OCP\Config::getAppValue('user_otp','authMethod',_AUTH_DEFAULT_)!==_AUTH_STANDARD_){
-    OC_User::clearBackends();
-    OC_User::useBackend('OTP');
-}
+// Nothing to do if user is already logged
+//if (!OCP\User::isLoggedIn()){
+	if(OCP\Config::getAppValue('user_otp','authMethod',_AUTH_DEFAULT_)!==_AUTH_STANDARD_){
+		//OC_Log::write('user_otp', 'app load', OC_Log::DEBUG);
+		$usedBackends = OC_User::getUsedBackends();
+		OC_User::clearBackends();
+		OC_USER_OTP::registerBackends($usedBackends);
+		OC_User::useBackend('OTP');
+		//$otpBackend = new OC_USER_OTP($usedBackends);
+		//OC_User::useBackend($otpBackend);
+		//~ foreach($usedBackends as $backend){
+			//~ OC_User::useBackend($backend);
+		//~ }
+		//var_dump($otpBackend);exit;
+	}
 
-if (!OCP\User::isLoggedIn() && OCP\Config::getAppValue('user_otp','authMethod',_AUTH_DEFAULT_) === _AUTH_TWOFACTOR_) {
-    // Load js code in order to add passcode field into the normal login form
-    OCP\Util::addScript('user_otp', 'utils');
+if (!OCP\User::isLoggedIn()){
+	if (OCP\Config::getAppValue('user_otp','authMethod',_AUTH_DEFAULT_) === _AUTH_TWOFACTOR_) {
+		// Load js code in order to add passcode field into the normal login form
+		OCP\Util::addScript('user_otp', 'utils');
+	}
 }
-
 ?>
