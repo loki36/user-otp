@@ -25,7 +25,7 @@
 ?>
 <form id="otp_personal_form">
     <div id="userotpSettings" class="personalblock">
-        <legend><strong>TOTP Configuration</strong></legend>
+        <legend><strong>OTP Configuration</strong></legend>
         <?php if($_['UserExists']) { ?>
             <p>
                 User Token Seed : <?php p($_['UserTokenSeed']); ?> 
@@ -45,15 +45,16 @@
                 Token Url Link : <a href="<?php p($_['UserTokenUrlLink']); ?>"><?php p($_['UserTokenUrlLink']); ?></a>
             </p>
             <p>
-                UserTokenQrCode : <img src="<?php p($_['UserTokenQrCode']); ?>">
+				With android token apps select base32 before input seed<br/>
+        UserTokenQrCode : <img src="<?php p($_['UserTokenQrCode']); ?>">
             </p>
             <input type="hidden" id="otp_action" name="otp_action" value="delete_otp">
             <input id="otp_submit_action" type='button' value='Delete'>
         <?php }else{ ?>
             <p>
-                User Token Seed : <input type="text" name="UserTokenSeed" value="">
+                User Token Seed (if left blank, it will be generated automatically) : <input type="text" name="UserTokenSeed" value="">
                 <?php if($_['UserPrefixPin']){ ?>
-                    / User Pin :  <input type="text" name="UserPin" value="">
+                    <br/>User Pin (if left blank, it will be generated automatically) :  <input type="text" name="UserPin" value="">
                 <?php } ?>
                 <input type="hidden" name="otp_action" value="create_otp">
                 <input id="otp_submit_action" type='submit' value='Create'>

@@ -45,11 +45,19 @@
                             <?php foreach ($input['values'] as $radio): ?>
                             <input type="radio" name="<?php p($name); ?>" value="<?php p($radio['value'])?>" <?php if ($_[$input['name']]===$radio['value']) p(' checked'); ?>> <?php p($radio['label'])?><br/>
                             <?php endforeach; ?>
-                        <?php } ?>
+                        <?php }else if ($input['type'] === "select") { ?>
+							<?php $name=$input['name']; ?>
+							<select name="<?php p($name); ?>">
+							<?php foreach ($input['values'] as $select): ?>
+                            <option value="<?php p($select['value'])?>" <?php if ($_[$input['name']]===$select['value']) p(' selected'); ?>> <?php p($select['label'])?></option>
+                            <?php endforeach; ?>
+                            </select>
+						<?php } ?>
                     </p>
                 <?php endforeach; ?>
             </fieldset>
         <?php endforeach; ?>
-        <input type='submit' value='Save'>
+        <input type="hidden" name="requesttoken" value="<?php p($_['requesttoken']);?>" />
+        <input type='submit' value='<?php p($l->t('Save'));?>'>
     </div>
 </form>

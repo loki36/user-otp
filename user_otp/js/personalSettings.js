@@ -11,7 +11,7 @@ $(document).ready(function(){
 //                $('#passwordchanged').show();
                    $( "#otp_personal_form" ).submit();
             }else{
-              alert("error");
+              alert("Error : " + data.data.message);
                 //$('#passworderror').html( data.data.message );
                 //$('#passworderror').show();
             }
