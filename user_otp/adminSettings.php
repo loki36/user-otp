@@ -76,17 +76,17 @@ $VALID_CHAR = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghiklmnopqrstuvwxyz";
 $configOtp[$i]['default_value']=generateRandomString(16,32,2,$VALID_CHAR); $i++;
 
 $configOtp[$i]['name']='MaxBlockFailures'; 
-$configOtp[$i]['label']='Max Block Failures';
+$configOtp[$i]['label']='Max try before a temporary block';
 $configOtp[$i]['type']='text';
 $configOtp[$i]['default_value']='6'; $i++;
 
-$configOtp[$i]['name']='UsersFolder'; 
-$configOtp[$i]['label']='Users Folder';
-$configOtp[$i]['type']='text';
-$configOtp[$i]['default_value']=getcwd()."/apps/user_otp/lib/multiotp/users/"; $i++;
+//~ $configOtp[$i]['name']='UsersFolder'; 
+//~ $configOtp[$i]['label']='Users Folder';
+//~ $configOtp[$i]['type']='text';
+//~ $configOtp[$i]['default_value']=getcwd()."/apps/user_otp/lib/multiotp/users/"; $i++;
 
 $configOtp[$i]['name']='UserPrefixPin'; 
-$configOtp[$i]['label']='User Prefix Pin';
+$configOtp[$i]['label']='User Prefix Pin (add a 4 digit fix prefix before token)';
 $configOtp[$i]['type']='checkbox';
 $configOtp[$i]['default_value']=false; $i++;
 
@@ -99,18 +99,18 @@ $configOtp[$i]['values']['TOTP']['label']="TOTP";
 $configOtp[$i]['values']['HOTP']['value']='HOTP';  
 $configOtp[$i]['values']['HOTP']['label']="HOTP";$i++;
 
-$configOtp[$i]['name']='TokenBase32Encode'; 
-$configOtp[$i]['label']='Token Base32 Encode (need for Google Authenticator)';
-$configOtp[$i]['type']='checkbox';
-$configOtp[$i]['default_value']=true; $i++;
+//~ $configOtp[$i]['name']='TokenBase32Encode'; 
+//~ $configOtp[$i]['label']='Token Base32 Encode (need for Google Authenticator)';
+//~ $configOtp[$i]['type']='checkbox';
+//~ $configOtp[$i]['default_value']=true; $i++;
 
 $configOtp[$i]['name']='UserTokenNumberOfDigits'; 
-$configOtp[$i]['label']='User Token Number Of Digits';
+$configOtp[$i]['label']='User Token Number Of Digits (must be 6 in order to works with Google Authenticator)';
 $configOtp[$i]['type']='text';
 $configOtp[$i]['default_value']='6'; $i++;
 
 $configOtp[$i]['name']='UserTokenTimeIntervalOrLastEvent'; 
-$configOtp[$i]['label']='User Token Time Interval Or Last Event';
+$configOtp[$i]['label']='User Token Time Interval Or Last Event (must be 30 in order to works with Google Authenticator)';
 $configOtp[$i]['type']='text';
 $configOtp[$i]['default_value']='30'; $i++;
 

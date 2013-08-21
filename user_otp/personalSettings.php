@@ -29,12 +29,12 @@ $mOtp =  new MultiOtpDb(
     OCP\Config::getAppValue('user_otp','EncryptionKey','DefaultCliEncryptionKey')
 );
 $mOtp->EnableVerboseLog();
-$mOtp->SetUsersFolder(
-    OCP\Config::getAppValue(
-        'user_otp','UsersFolder',
-        getcwd()."/apps/user_otp/lib/multiotp/users/"
-    )
-);
+//~ $mOtp->SetUsersFolder(
+    //~ OCP\Config::getAppValue(
+        //~ 'user_otp','UsersFolder',
+        //~ getcwd()."/apps/user_otp/3rdparty/multiotp/users/"
+    //~ )
+//~ );
 
 $tmpl = new OCP\Template('user_otp', 'personalSettings');
 
@@ -42,25 +42,18 @@ if($mOtp->CheckUserExists(OCP\User::getUser())){
     $tmpl->assign('UserExists',true);
 
     $mOtp->SetUser(OCP\User::getUser());
-    //~ $img = OCP\Config::getAppValue(
-        //~ 'user_otp',
-        //~ 'UsersFolder',
-        //~ getcwd()."apps/user_otp/lib/multiotp/users/"
-    //~ ).OCP\User::getUser().".png";
-    //~ $UserTokenQrCode =  $mOtp->GetUserTokenQrCode(OCP\User::getUser(),'',$img);
-
-    //~ $img="../../apps/user_otp/lib/multiotp/users/".OCP\User::getUser().".png";
-    //~ $img="../../apps/user_otp/lib/qrcode.php";
+    
     $img=\OCP\Util::linkToRoute('user_otp_qrcode');
 
     $tmpl->assign('UserTokenUrlLink',$mOtp->GetUserTokenUrlLink());
     $tmpl->assign('UserTokenQrCode',$img);
-    if(OCP\Config::getAppValue('user_otp','TokenBase32Encode',true)){
-        $tmpl->assign('UserTokenSeed',base32_encode(hex2bin($mOtp->GetUserTokenSeed())));
-        $tmpl->assign('TokenBase32Encode',true);
-    }else{
-        $tmpl->assign('UserTokenSeed',hex2bin($mOtp->GetUserTokenSeed()));    
-    }
+    //~ if(OCP\Config::getAppValue('user_otp','TokenBase32Encode',true)){
+        //~ $tmpl->assign('UserTokenSeed',base32_encode(hex2bin($mOtp->GetUserTokenSeed())));
+        //~ $tmpl->assign('TokenBase32Encode',true);
+    //~ }else{
+        //~ $tmpl->assign('UserTokenSeed',hex2bin($mOtp->GetUserTokenSeed()));    
+    //~ }
+    $tmpl->assign('UserTokenSeed',base32_encode(hex2bin($mOtp->GetUserTokenSeed()))); 
     $tmpl->assign('UserPin',$mOtp->GetUserPin());
     $tmpl->assign('UserPrefixPin',$mOtp->GetUserPrefixPin());
     $tmpl->assign('UserLocked',$mOtp->GetUserLocked());

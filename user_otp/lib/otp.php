@@ -57,11 +57,11 @@ class OC_USER_OTP extends OC_User_Backend{
         $this->mOtp =  new MultiOtpDb(OCP\Config::getAppValue(
             'user_otp','EncryptionKey','DefaultCliEncryptionKey')
         );
-        $this->mOtp->SetUsersFolder(
-            OCP\Config::getAppValue(
-                'user_otp','UsersFolder',getcwd()."/apps/user_otp/lib/multiotp/users/"
-            )
-        );
+        //~ $this->mOtp->SetUsersFolder(
+            //~ OCP\Config::getAppValue(
+                //~ 'user_otp','UsersFolder',getcwd()."/apps/user_otp/lib/multiotp/users/"
+            //~ )
+        //~ );
         if(defined('DEBUG') && DEBUG===true){
             $this->mOtp->EnableVerboseLog();
         }
@@ -173,7 +173,8 @@ class OC_USER_OTP extends OC_User_Backend{
 	
 	public function __call($name, $arguments){
 		OC_Log::write('OC_USER_OTP', $name.'().', OC_Log::DEBUG);
-		$userBackend=$this->getRealBackend($uid);
+		$userBackend=$this->getRealBackend(OCP\User::getUser());
+    //var_dump($userBackend);
 		if($userBackend===null){
 			return false;
 		}

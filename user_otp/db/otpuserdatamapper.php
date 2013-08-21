@@ -40,6 +40,7 @@ class OtpUserDataMapper{ // extends Mapper {
         return null;
       }
       $OtpUserData = new OtpUserData();
+      //$row['qrcode']=base64_decode($row['qrcode']);
       $OtpUserData->fromRow($row);
 
       return $OtpUserData;
@@ -56,6 +57,7 @@ class OtpUserDataMapper{ // extends Mapper {
       if(!$row){
         return null;
       }
+      //return base64_decode($row['qrcode']);
       return $row['qrcode'];
     }
     
@@ -119,6 +121,7 @@ class OtpUserDataMapper{ // extends Mapper {
         $OtpUserData->getLastLogin(),
         $OtpUserData->getErrorCounter(),
         $OtpUserData->getLocked(),
+        //base64_encode($OtpUserData->getQrcode()),
         $OtpUserData->getQrcode(),
         $OtpUserData->getUser(),
       ));

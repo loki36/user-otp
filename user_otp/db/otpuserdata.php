@@ -31,7 +31,9 @@ class OtpUserData {
           $DbKey = preg_replace("/ /","",ucwords(preg_replace("/_/"," ",$key)));
           //echo "$DbKey =>$value\n";
           if(isset($this->data[$DbKey])){
-            $this->data[$DbKey] = $value;
+            //$this->data[$DbKey] = $value;
+            $setter = "set".$DbKey;
+            $this->$setter($value);
           }
         }
     }
