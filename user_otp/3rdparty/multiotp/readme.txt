@@ -3,7 +3,7 @@ multiOTP is a GNU LGPL implementation of a strong two-factor authentication PHP 
 (c) 2010-2013 SysCo systemes de communication sa
 http://www.multiOTP.net/
 
-Current build: 4.0.4 (2013-08-20)
+Current build: 4.0.6 (2013-08-25)
 
 The multiOTP package is the lightest package available that provides so many
 strong authentication functionalities and goodies, and best of all, for anyone
@@ -115,6 +115,15 @@ What's new in 3.2.x releases
 
 CHANGE LOG OF RELEASED VERSIONS
 ===============================
+2013-08-23 4.0.6  SysCo/al base32_encode() is now RFC compliant with uppercases
+                           GetUserTokenQrCode() and GetTokenQrCode() where buggy
+                           GetScriptFolder() use now __FILE__ if the full path is included
+                           When doing a check in the CLI header, @... is automatically removed from the
+                            username if the user doesn't exist, and the check is done on the clean name
+                           Added a lot of tests to enhance release quality
+2013-08-21 4.0.5  SysCo/al Fixed the check of the cache lifetime
+                           Adding a temporary server blacklist during the same instances
+                           Default server timeout is now set to 1 second
 2013-08-20 4.0.4  SysCo/al Adding an optional group attribute for the user
                             (which will be send with the Radius Filter-Id option)
                            Adding scratch passwords generation (if the token is lost)
@@ -492,7 +501,7 @@ and you may also check multiotp.cli.header.php which implements the class.
 MULTIOTP COMMAND LINE TOOL
 ==========================
 
-multiOTP 4.0.4 (2013-08-20), running with embedded PHP version 4.4.4
+multiOTP 4.0.6 (2013-08-25), running with embedded PHP version 4.4.4
 (c) 2010-2013 SysCo systemes de communication sa
 http://www.multiOTP.net   (you can try the [Donate] button ;-)
 
@@ -715,6 +724,7 @@ Examples:
  multiotp -scratchlist gademo
 
  multiotp -set gademo description="VPN code for gademo"
+ multiotp –set gademo sms=41791234567
 
  multiotp -debug -import 10OTP_data01_upgrade.sql
  multiotp -debug -import-xml tokens.xml

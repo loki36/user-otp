@@ -49,8 +49,8 @@
  * PHP 4.4.4 or higher is supported.
  *
  * @author    Andre Liechti, SysCo systemes de communication sa, <developer@sysco.ch>
- * @version   4.0.4
- * @date      2013-08-20
+ * @version   4.0.6
+ * @date      2013-08-25
  * @since     2013-08-06
  * @copyright (c) 2013 by SysCo systemes de communication sa
  * @copyright GNU Lesser General Public License
@@ -77,6 +77,7 @@
  *
  * Change Log
  *
+ *   2013-08-25 4.0.6  SysCo/al Enhanced default page
  *   2013-08-20 4.0.4  SysCo/al Initial release
  *
  *********************************************************************/
@@ -136,8 +137,8 @@
  * PHP 4.4.4 or higher is supported.
  *
  * @author    Andre Liechti, SysCo systemes de communication sa, <developer@sysco.ch>
- * @version   4.0.4
- * @date      2013-08-20
+ * @version   4.0.6
+ * @date      2013-08-25
  * @since     2010-06-08
  * @copyright (c) 2010-2013 by SysCo systemes de communication sa
  * @copyright GNU Lesser General Public License
@@ -296,8 +297,13 @@
  *     http://code.google.com/p/google-authenticator/
  *
  *
- *
  * Users feedbacks and comments
+ *
+ * 2013-08-22 Frank Bongrand
+ *   Thanks a lot for a valuable feedback concerning some minor bugs in 4.0.4
+ *
+ * 2013-08-21 Henk van der Helm
+ *   Thanks a lot for a valuable feedback concerning some minor bugs in 4.0.4
  *
  * 2013-08-15 Donator AB (Sweden)
  *   MANY thanks for your appreciated $$$ sponsorship to support us to add self-registration in a next release.
@@ -361,20 +367,29 @@
  *
  * Change Log
  *
- *   2013-08-20 4.0.4  SysCo/al Adding an optional group attribute for the user
+ *   2013-08-25 4.0.6  SysCo/al base32_encode() is now RFC compliant with uppercases
+ *                              GetUserTokenQrCode() and GetTokenQrCode() where buggy
+ *                              GetScriptFolder() use now __FILE__ if the full path is included
+ *                              When doing a check in the CLI header, @... is automatically removed from the
+ *                               username if the user doesn't exist, and the check is done on the clean name
+ *                              Added a lot of tests to enhance release quality
+ *   2013-08-21 4.0.5  SysCo/al Fixed the check of the cache lifetime
+ *                              Added a temporary server blacklist during the same instances
+ *                              Default server timeout is now set to 1 second
+ *   2013-08-20 4.0.4  SysCo/al Added an optional group attribute for the user
  *                               (which will be send with the Radius Filter-Id option)
- *                              Adding scratch passwords generation (if the token is lost)
+ *                              Added scratch passwords generation (if the token is lost)
  *                              Automatic database schema upgrade using method UpgradeSchemaIfNeeded()
- *                              Adding client/server support with local cache
- *                              Adding CHAP authentication support (PAP is of course still supported)
+ *                              Added client/server support with local cache
+ *                              Added CHAP authentication support (PAP is of course still supported)
  *                              The encryption key is now a parameter of the class constructor
  *                              The method SetEncryptionKey('MyPersonalEncryptionKey') IS DEPRECATED
  *                              The method DefineMySqlConnection IS DEPRECATED
  *                              Full MySQL support, including tables creation (see example and SetSqlXXXX methods)
- *                              Adding email, sms and seed_password to users attributes
- *                              Adding sms support (aspsms, clickatell, intellisms, exec)
- *                              Adding prefix support for debug mode (in order to send Reply-Message := to Radius)
- *                              Adding a lot of new methods to handle easier the users and the tokens
+ *                              Added email, sms and seed_password to users attributes
+ *                              Added sms support (aspsms, clickatell, intellisms, exec)
+ *                              Added prefix support for debug mode (in order to send Reply-Message := to Radius)
+ *                              Added a lot of new methods to handle easier the users and the tokens
  *                              General speedup by using available native functions for hash_hmac and others
  *                              Default max_time_window has been lowered to 600 seconds (thanks Stefan for suggestion)
  *                              Integrated Google Authenticator support with integrated base 32 seed handling
@@ -386,19 +401,19 @@
  *   2011-10-25 3.9.2  SysCo/al Some quick fixes after intensive check
  *                              Improved get_script_dir() in CLI for Linux/Windows compatibility
  *   2011-09-15 3.9.1  SysCo/al Some quick fixes concerning multiple users
- *   2011-09-13 3.9.0  SysCo/al Adding support for account with multiple users
+ *   2011-09-13 3.9.0  SysCo/al Added support for account with multiple users
  *   2011-07-06 3.2.0  SysCo/al Encryption hash handling with additional error message 33
  *                               (if the key has changed)
- *                              Adding more examples
- *                              Adding generic user with multiple account
+ *                              Added more examples
+ *                              Added generic user with multiple account
  *                               (Real account name is combined: "user" and "account password")
- *                              Adding log options, now default doesn't log token value anymore
+ *                              Added log options, now default doesn't log token value anymore
  *                              Debugging MySQL backend support for the token handling
  *                              Fixed automatic detection of \ or / for script path detection
  *   2010-12-19 3.1.1  SysCo/al Better MySQL backend support, including in CLI version
  *   2010-09-15 3.1.0  SysCo/al Removed bad extra spaces in the multiotp.php file for Linux
  *                              MySQL backend support
- *   2010-09-02 3.0.0  SysCo/al Adding tokens handling support
+ *   2010-09-02 3.0.0  SysCo/al Added tokens handling support
  *                               including importing XML tokens definition file
  *                               (http://tools.ietf.org/html/draft-hoyer-keyprov-pskc-algorithm-profiles-00)
  *                              Enhanced flat database file format (multiotp is still compatible with old versions)
@@ -410,7 +425,7 @@
  *   2010-07-21 2.0.2  SysCo/al Fix to create correctly the folders "users" and "log" if needed
  *   2010-07-19 2.0.1  SysCo/al Foreach was not working well in "compiled" Windows command line
  *   2010-07-19 2.0.0  SysCo/al New design using a class, mOTP support, cleaning of the code
- *   2010-06-15 1.1.5  SysCo/al Adding OATH/TOTP support
+ *   2010-06-15 1.1.5  SysCo/al Added OATH/TOTP support
  *   2010-06-15 1.1.4  SysCo/al Project renamed to multiotp to avoid overlapping
  *   2010-06-08 1.1.3  SysCo/al Typo in script folder detection
  *   2010-06-08 1.1.2  SysCo/al Typo in variable name
@@ -424,8 +439,8 @@
  * @brief  Main class definition of the multiOTP project.
  *
  * @author  Andre Liechti, SysCo systemes de communication sa, <developer@sysco.ch>
- * @version 4.0.4
- * @date    2013-08-20
+ * @version 4.0.6
+ * @date    2013-08-25
  * @since   2010-07-18
  */
  class Multiotp
@@ -476,9 +491,9 @@
     var $_debug_via_html;           // Set the debug output to HTML standard
     var $_linux_file_mode;          // File mode of the created linux files in octal (for example '0644')
     var $_server_challenge;         // Server challenge for client-server mutual authentication
-    var $_servers_last_timeout;     // Last time all servers where timed out
-    var $_servers_retry_delay;      // Next time servers will be retried in s (in the same object)
     var $_xml_dump_in_log;          // For internal debugging only
+    var $_servers_temp_bad_list;    // Temporary list of servers that are not currently responding well
+    var $_test_server_secret;       // Temporary server secret for tests
 
     
     function Multiotp($encryption_key = '', $initialize_backend = FALSE, $base_dir = '')
@@ -490,14 +505,14 @@
      * @retval  void
      *
      * @author  Andre Liechti, SysCo systemes de communication sa, <developer@sysco.ch>
-     * @version 4.0.4
-     * @date    2013-08-20
+     * @version 4.0.6
+     * @date    2013-08-25
      * @since   2010-07-18
      */
     {
         $this->_class                   = 'multiOTP';
-        $this->_version                 = '4.0.4'; // You should add a suffix for your changes (for example 4.0.0-andy-07)
-        $this->_date                    = '2013-08-20'; // You should add a suffix for your changes (for example YYYY-MM-DD / YYY2-M2-D2)
+        $this->_version                 = '4.0.6'; // You should add a suffix for your changes (for example 4.0.0-andy-07)
+        $this->_date                    = '2013-08-25'; // You should add a suffix for your changes (for example YYYY-MM-DD / YYY2-M2-D2)
         $this->_copyright               = '(c) 2010-2013 SysCo systemes de communication sa'; // This is a copyright, don't change it !
         $this->_website                 = 'http://www.multiOTP.net'; // Website dedicated to this LGPL library, please don't change it !
         
@@ -543,6 +558,8 @@
                                                  // enable a database backend and set the migration option ;-) !
 
         $this->_reply_array_for_radius = array();
+        
+        $this->_servers_temp_bad_list = array();
 
         $this->_initialize_backend = $initialize_backend;
         
@@ -553,9 +570,6 @@
         $this->_linux_file_mode = '';
 
         $this->_server_challenge = $this->_encryption_key;
-
-        $this->_servers_last_timeout = 0;
-        $this->_servers_retry_delay  = 10;
 
         $this->_keep_local = FALSE;
         
@@ -589,7 +603,7 @@
                                                      'server_cache_level'      => "int(10) DEFAULT 0",
                                                      'server_cache_lifetime'   => "int(10) DEFAULT 15552000",
                                                      'server_secret'           => "varchar(255) DEFAULT ''",
-                                                     'server_timeout'          => "int(10) DEFAULT 5",
+                                                     'server_timeout'          => "int(10) DEFAULT 1",
                                                      'server_type'             => "varchar(255) DEFAULT 'xml'",
                                                      'server_url'              => "varchar(255) DEFAULT ''",
                                                      'sms_api_id'              => "varchar(255) DEFAULT ''",
@@ -817,7 +831,7 @@
         $this->_config_data['server_cache_level'] = 0;
         $this->_config_data['server_cache_lifetime'] = 15552000; // 6 monthes
         $this->_config_data['server_secret'] = 'ClientServerSecret';
-        $this->_config_data['server_timeout'] = 5;
+        $this->_config_data['server_timeout'] = 1;
         $this->_config_data['server_type'] = 'xml';
 
         // SMS number of digits
@@ -1071,7 +1085,7 @@
         return $this->_config_data['group_attribute'];
     }
 
-
+    
     function SetSqlServer($server)
     {
         $this->_config_data['sql_server'] = $server;
@@ -2745,93 +2759,52 @@
     }
 
 
-    /*********************************************************************
-     *
-     * Name: GetUserTokenQrCode
-     * Short description: Create the QRcode for the current user
-     *
-     * Creation 2013-02-17
-     * Update 2013-02-17
-     * @package multiotp
-     * @version 1.0.0
-     * @author SysCo/al
+    /**
+     * @brief   Create the QRcode for the current user.
      *
      * @param   string  $user
      * @param   string  $display_name
      * @param   string  $file_name
      * @return  boolean or binary
      *
-     *********************************************************************/
+     * @author  Andre Liechti, SysCo systemes de communication sa, <developer@sysco.ch>
+     * @version 4.0.6
+     * @date    2013-08-25
+     * @since   2013-02-17
+     */
     function GetUserTokenQrCode($user = '', $display_name = '', $file_name = 'binary')
     {
         $result = FALSE;
-        if ('' != $user)
-        {
-            $this->SetUser($user);
-        }
         if (!function_exists('ImageCreate'))
         {
-            $result = FALSE;
             $this->WriteLog("Error: PHP GD library is not installed");
-        }
-        elseif ($this->ReadUserData())
-        {
-            $the_user       = $this->GetUser();
-            $description    = $this->GetUserDescription();
-            $q_algorithm    = $this->GetUserAlgorithm();
-            $q_period       = $this->GetUserTokenTimeInterval();
-            $q_digits       = $this->GetUserTokenNumberOfDigits();
-            $q_seed         = $this->GetUserTokenSeed();
-            $q_counter      = $this->GetUserTokenLastEvent() + 1;
-            $q_display_name = (('' != $display_name)?$display_name:(('' != $description)?$description:$the_user));
-
-            $path = $this->GetScriptFolder()."qrcode/data";
-            $image_path = $this->GetScriptFolder()."qrcode/image";
-
-            switch (strtolower($q_algorithm))
-            {
-                case 'totp':
-                    $result = MultiotpQrcode('otpauth://'.$q_algorithm.'/'.rawurlencode($q_display_name).'?period='.$q_period.'&digits='.$q_digits.'&secret='.base32_encode(hex2bin($q_seed)), $file_name, $path, $image_path);
-                    break;
-                case 'hotp':
-                    $result = MultiotpQrcode('otpauth://'.$q_algorithm.'/'.rawurlencode($q_display_name).'?counter='.$q_counter.'&digits='.$q_digits.'&secret='.base32_encode(hex2bin($q_seed)), $file_name, $path, $image_path);
-                    break;
-                /*
-                case 'motp':
-                    $result = MultiotpQrcode('otpauth://'.$q_algorithm.'/'.rawurlencode($q_display_name).'?counter='.$q_counter.'&digits='.$q_digits.'&secret='.base32_encode(hex2bin($q_seed)), $file_name, $path, $image_path);
-                    break;
-                */
-                default:
-                    // $result = MultiotpQrcode('http://www.multiotp.net/no_qrcode_compatible_client_for_this_algorithm', $file_name, $path, $image_path);
-                    $result = FALSE;
-                    $this->WriteLog("Error: No known QRcode compatible client for this algorithm");
-            }
+            return $result;
         }
         else
         {
-            $result = FALSE;
+            $data = $this->GetUserTokenUrlLink($user,$display_name);
+            if($data)
+            {
+                $result = $this->qrcode($data, $file_name);
+            }
+            return $result;
         }
-        return $result;
     }
 
 
-    /*********************************************************************
-     *
-     * Name: GetTokenQrCode
-     * Short description: Create the QRcode for the current token
-     *
-     * Creation 2013-02-18
-     * Update 2013-02-18
-     * @package multiotp
-     * @version 1.0.0
-     * @author SysCo/al
+    /**
+     * @brief   Create the QRcode for the current token.
      *
      * @param   string  $token
      * @param   string  $display_name
      * @param   string  $file_name
      * @return  boolean or binary
      *
-     *********************************************************************/
+     * @author  Andre Liechti, SysCo systemes de communication sa, <developer@sysco.ch>
+     * @version 4.0.6
+     * @date    2013-08-25
+     * @since   2013-02-18
+     */
     function GetTokenQrCode($token = '', $display_name = '', $file_name = 'binary')
     {
         $result = FALSE;
@@ -2854,24 +2827,21 @@
             $q_counter      = $this->GetTokenLastEvent() + 1;
             $q_display_name = (('' != $display_name)?$display_name:$the_token);
 
-            $path = $this->GetScriptFolder()."qrcode/data";
-            $image_path = $this->GetScriptFolder()."qrcode/image";
-
             switch (strtolower($q_algorithm))
             {
                 case 'totp':
-                    $result = MultiotpQrcode('otpauth://'.$q_algorithm.'/'.rawurlencode($q_display_name).'?period='.$q_period.'&digits='.$q_digits.'&secret='.base32_encode(hex2bin($q_seed)), $file_name, $path, $image_path);
+                    $result = $this->qrcode('otpauth://'.$q_algorithm.'/'.rawurlencode($q_display_name).'?period='.$q_period.'&digits='.$q_digits.'&secret='.base32_encode(hex2bin($q_seed)), $file_name);
                     break;
                 case 'hotp':
-                    $result = MultiotpQrcode('otpauth://'.$q_algorithm.'/'.rawurlencode($q_display_name).'?counter='.$q_counter.'&digits='.$q_digits.'&secret='.base32_encode(hex2bin($q_seed)), $file_name, $path, $image_path);
+                    $result = $this->qrcode('otpauth://'.$q_algorithm.'/'.rawurlencode($q_display_name).'?counter='.$q_counter.'&digits='.$q_digits.'&secret='.base32_encode(hex2bin($q_seed)), $file_name);
                     break;
                 /*
                 case 'motp':
-                    $result = MultiotpQrcode('otpauth://'.$q_algorithm.'/'.rawurlencode($q_display_name).'?period='.$q_period.'&digits='.$q_digits.'&secret='.base32_encode(hex2bin($q_seed)), $file_name, $path, $image_path);
+                    $result = $this->qrcode('otpauth://'.$q_algorithm.'/'.rawurlencode($q_display_name).'?period='.$q_period.'&digits='.$q_digits.'&secret='.base32_encode(hex2bin($q_seed)), $file_name);
                     break;
                 */
                 default:
-                    // $result = MultiotpQrcode('http://www.multiotp.net/no_qrcode_compatible_client_for_this_algorithm', $file_name, $path, $image_path);
+                    // $result = $this->qrcode('http://www.multiotp.net/no_qrcode_compatible_client_for_this_algorithm', $file_name);
                     $result = FALSE;
                     $this->WriteLog("Error: No known QRcode compatible client for this algorithm");
             }
@@ -3070,13 +3040,13 @@
 
     
     // Check if user exists (locally only)
-    function CheckUserExists($user = '', $do_not_check_on_server = FALSE)
+    function CheckUserExists($user = '', $no_server_check = FALSE)
     {
         $check_user = ('' != $user)?$user:$this->GetUser();
         $result = FALSE;
 
         $server_result = -1;
-        if ((!$do_not_check_on_server) && ('' != $this->GetServerUrl()))
+        if ((!$no_server_check) && ('' != $this->GetServerUrl()))
         {
             $server_result = $this->CheckUserExistsOnServer($check_user);
             if (22 == $server_result)
@@ -3833,7 +3803,25 @@
         return $this->_last_imported_tokens;
     }
 
+    
+    function ResetTemporaryBadServer()
+    {
+        $this->_servers_temp_bad_list = array();
+    }
 
+    
+    function AddTemporaryBadServer($server)
+    {
+        $this->_servers_temp_bad_list[] = $server;
+    }
+
+
+    function GetTemporaryBadServer()
+    {
+        return $this->_servers_temp_bad_list;
+    }
+
+    
     function GetTokensList()
     {
         $tokens_list = '';
@@ -4048,17 +4036,22 @@
         }
         else
         {
-            // Detect the current folder, change Windows notation to universal notation if needed
-            $current_folder = $this->ConvertToUnixPath(getcwd());
-            $current_script_folder = $this->ConvertToUnixPath(isset($_SERVER["argv"][0])?$_SERVER["argv"][0]:'');
-            if ('' == (trim($current_script_folder)))
-            {
-                $current_script_folder = isset($_SERVER['SCRIPT_FILENAME'])?$_SERVER['SCRIPT_FILENAME']:'';
-            }
+            $current_script_folder_detected = dirname('__FILE__');
             
-            if (FALSE === strpos($current_script_folder,"/"))
+            if (FALSE === strpos($this->ConvertToUnixPath($current_script_folder_detected),"/"))
             {
-                $current_script_folder_detected = dirname($current_folder."/fake.file");
+                // Detect the current folder, change Windows notation to universal notation if needed
+                $current_folder = $this->ConvertToUnixPath(getcwd());
+                $current_script_folder = $this->ConvertToUnixPath(isset($_SERVER["argv"][0])?$_SERVER["argv"][0]:'');
+                if ('' == (trim($current_script_folder)))
+                {
+                    $current_script_folder = isset($_SERVER['SCRIPT_FILENAME'])?$_SERVER['SCRIPT_FILENAME']:'';
+                }
+                
+                if (FALSE === strpos($current_script_folder,"/"))
+                {
+                    $current_script_folder_detected = dirname($current_folder."/fake.file");
+                }
             }
             else
             {
@@ -4365,6 +4358,17 @@
     }
 
     
+    // Adding extra information for the result (if any)
+    Function AddExtraRadiusInfo()
+    {
+        $group = trim($this->GetUserGroup());
+        if (('' != $group) && ('' != $this->GetGroupAttribute()))
+        {
+            $this->AddReplyArrayForRadius($this->GetGroupAttribute().' = "'.$group.'"');
+        }
+    }
+
+
     function SetVerboseLogPrefix($value)
     {
         $this->_config_data['verbose_log_prefix'] = $value;
@@ -4853,7 +4857,7 @@
     }
 
 
-    function ReadUserData($user = '', $create = FALSE, $do_not_check_on_server = FALSE)
+    function ReadUserData($user = '', $create = FALSE, $no_server_check = FALSE)
     {
     
         if ('' != $user)
@@ -5016,7 +5020,7 @@
         
         // And now, we do the ReadUserData online on the server
         $server_result = -1;
-        if ((!$do_not_check_on_server) && ('' != $this->GetServerUrl()))
+        if ((!$no_server_check) && ('' != $this->GetServerUrl()))
         {
             $server_result = $this->ReadUserDataOnServer($this->GetUser());
             if (20 < strlen($server_result))
@@ -5547,57 +5551,57 @@
     }
 
     
-    /*********************************************************************
+    /**
+     * @brief   Check the token of a user and give the result, with resync options.
      *
-     * Name: CheckUserToken
-     * Short description: Check the token of a user and give the result, with resync options
+     * @param   string  $user             User to check
+     * @param   string  $input            Token to check
+     * @param   string  $input_sync       Second token to check for resync
+     * @param   string  $display_status   Display the status bar
+     * @param   string  $ignore_lock      Ignore the fact that the user is locked
+     * @param   string  $resync_enc_pass  Resynchronization with an encrypted password
+     * @param   string  $no_server_check  Ignore any server(s) (if any)  to do the check
+     * @return  int                       Error code (0: successful authentication, 1n: info, >=20: error)
      *
-     * Creation 2013-08-20
-     * Update 2010-08-12
-     * @package multiotp
-     * @version 4.0.4
-     * @author SysCo/al
-     *
-     * @param   string  $user        User to check
-     * @param   string  $input       Token to check
-     * @param   string  $input_sync  Second token to check for resync
-     * @return  int                  Error code (0 = successful authentication, 1n = info, >= 20 = error)
-     *
-     *********************************************************************/
-    function CheckUserToken($user = '', $input = '', $input_sync = '', $display_status = FALSE, $ignore_lock = FALSE, $resync_challenged_password = FALSE, $do_not_check_on_server = FALSE)
+     * @author  Andre Liechti, SysCo systemes de communication sa, <developer@sysco.ch>
+     * @version 4.0.6
+     * @date    2013-08-25
+     * @since   2010-08-12
+     */
+    function CheckUserToken($user = '', $input = '', $input_sync = '', $display_status = FALSE, $ignore_lock = FALSE, $resync_enc_pass = FALSE, $no_server_check = FALSE)
     {
         if ('' != $user)
         {
             $this->SetUser($user);
         }
-        return $this->CheckToken($input, $input_sync, $display_status, $ignore_lock, $resync_challenged_password, $do_not_check_on_server);
+        return $this->CheckToken($input, $input_sync, $display_status, $ignore_lock, $resync_enc_pass, $no_server_check);
     }
 
 
-    /*********************************************************************
+    /**
+     * @brief   Check the token of the actual user and give the result, with resync options.
      *
-     * Name: CheckToken
-     * Short description: Check the token of the actual user and give the result, with resync options
+     * @param   string  $input            Token to check
+     * @param   string  $input_sync       Second token to check for resync
+     * @param   string  $display_status   Display the status bar
+     * @param   string  $ignore_lock      Ignore the fact that the user is locked
+     * @param   string  $resync_enc_pass  Resynchronization with an encrypted password
+     * @param   string  $no_server_check  Ignore any server(s) (if any)  to do the check
+     * @return  int                       Error code (0: successful authentication, 1n: info, >=20: error)
      *
-     * Creation 2010-06-07
-     * Update 2013-08-20
-     * @package multiotp
-     * @version 4.0.4
-     * @author SysCo/al
-     *
-     * @param   string  $input       Token to check
-     * @param   string  $input_sync  Second token to check for resync
-     * @return  int                  Error code (0 = successful authentication, 1n = info, >= 20 = error)
-     *
-     *********************************************************************/
-    function CheckToken($input = '', $input_sync = '', $display_status = FALSE, $ignore_lock = FALSE, $resync_challenged_password = FALSE, $do_not_check_on_server = FALSE)
+     * @author  Andre Liechti, SysCo systemes de communication sa, <developer@sysco.ch>
+     * @version 4.0.6
+     * @date    2013-08-25
+     * @since   2010-06-07
+     */
+    function CheckToken($input = '', $input_sync = '', $display_status = FALSE, $ignore_lock = FALSE, $resync_enc_pass = FALSE, $no_server_check = FALSE)
     {
         $calculated_token = '';
         $input_to_check = trim(str_replace('-','',$input));
         $real_user = $this->GetUser();
         
         $server_result = -1;
-        if ((!$do_not_check_on_server) && ('' != $this->GetServerUrl()))
+        if ((!$no_server_check) && ('' != $this->GetServerUrl()))
         {
             if ($this->ReadUserData($real_user)) // For multi-account definition, we are also looking on the server(s) if any
             {
@@ -5722,12 +5726,9 @@
                     $this->WriteLog("OK: user ".$this->GetUser()." successfully logged in with SMS token");
                     $this->WriteUserData();
                     
-                    // Adding extra information for the result (if any)
                     if (0 == $result)
                     {
-                        $group = trim($this->GetUserGroup());
-                        if ('' != $group)
-                        $this->AddReplyArrayForRadius($this->GetGroupAttribute().' = "'.$group.'"');
+                        $this->AddExtraRadiusInfo();
                     }
 
                     return $result;
@@ -5753,14 +5754,10 @@
                     $this->WriteLog("OK: user ".$this->GetUser()." successfully logged in with a scratch password");
                     $this->WriteUserData();
                     
-                    // Adding extra information for the result (if any)
                     if (0 == $result)
                     {
-                        $group = trim($this->GetUserGroup());
-                        if ('' != $group)
-                        $this->AddReplyArrayForRadius($this->GetGroupAttribute().' = "'.$group.'"');
+                        $this->AddExtraRadiusInfo();
                     }
-
                     return $result;
                 }
             }
@@ -5806,7 +5803,7 @@
                 return $result;
             }
             
-            if ((1 == $this->GetUserLocked()) && ('' == $input_sync) && (!$resync_challenged_password) && (!$ignore_lock))
+            if ((1 == $this->GetUserLocked()) && ('' == $input_sync) && (!$resync_enc_pass) && (!$ignore_lock))
             {
                 $result = 24; // ERROR: user locked;
                 $this->WriteLog("Error: user ".$this->GetUser()." locked after ".$this->GetUserErrorCounter()." failed authentications");
@@ -5845,7 +5842,7 @@
                 switch (strtolower($this->GetUserAlgorithm()))
                 {
                     case 'motp':
-                        if (('' == $input_sync) && (!$resync_challenged_password))
+                        if (('' == $input_sync) && (!$resync_enc_pass))
                         {
                             $max_steps = 2 * $step_window;
                         }
@@ -5870,7 +5867,7 @@
                             }
                             if ($input_to_check == $code_confirmed)
                             {
-                                if (('' == $input_sync) && (!$resync_challenged_password))
+                                if (('' == $input_sync) && (!$resync_enc_pass))
                                 {
                                     if (($now_steps+$additional_step+$delta_step) > $last_login_step)
                                     {
@@ -5933,7 +5930,7 @@
                         }
                         break;
                     case 'hotp';
-                        if (('' == $input_sync)&& (!$resync_challenged_password))
+                        if (('' == $input_sync)&& (!$resync_enc_pass))
                         {
                             $max_steps = $event_window;
                         }
@@ -5958,7 +5955,7 @@
                             }
                             if ($input_to_check == $code_confirmed)
                             {
-                                if (('' == $input_sync) && (!$resync_challenged_password))
+                                if (('' == $input_sync) && (!$resync_enc_pass))
                                 {
                                     $this->SetUserTokenLastLogin($now_epoch);
                                     $this->SetUserTokenLastEvent($last_event+$check_step);
@@ -6011,7 +6008,7 @@
                         }
                         break;
                     case 'totp';
-                        if (('' == $input_sync) && (!$resync_challenged_password))
+                        if (('' == $input_sync) && (!$resync_enc_pass))
                         {
                             $max_steps = 2 * $step_window;
                         }
@@ -6036,7 +6033,7 @@
                             }
                             if ($input_to_check == $code_confirmed)
                             {
-                                if (('' == $input_sync) && (!$resync_challenged_password))
+                                if (('' == $input_sync) && (!$resync_enc_pass))
                                 {
                                     if (($now_steps+$additional_step+$delta_step) > $last_login_step)
                                     {
@@ -6135,14 +6132,10 @@
             $this->WriteUserData();
         } // end of the else block of the test: if (!$this->ReadUserData($real_user))
 
-        // Adding extra information for the result (if any)
         if (0 == $result)
         {
-            $group = trim($this->GetUserGroup());
-            if ('' != $group)
-            $this->AddReplyArrayForRadius($this->GetGroupAttribute().' = "'.$group.'"');
+            $this->AddExtraRadiusInfo();
         }
-        
         return $result;
     }
 
@@ -6810,6 +6803,8 @@ EOL;
         $xml_urls = $this->GetServerUrl();
         $xml_timeout = $this->GetServerTimeout();
         $xml_data_encoded = urlencode($xml_data);
+
+$this->WriteLog("DEBUG Info: Host received the following request: $xml_data");
         
         $response = $this->PostHttpDataXmlRequest($xml_data_encoded, $xml_urls, $xml_timeout);
 
@@ -6905,143 +6900,161 @@ EOL;
     }
 
 
-    function PostHttpDataXmlRequest($xml_data, $xml_urls, $xml_timeout = 5)
+    function PostHttpDataXmlRequest($xml_data, $xml_urls, $xml_timeout = 1)
     {
-    
-        if (($this->_servers_last_timeout + $this->_servers_retry_delay) > time())
-        {
-            // The last timeout is "too fresh"
-            if ($this->_xml_dump_in_log)
-            {
-                $this->WriteLog("DEBUG: timeout was recently detected.");
-            }
-            return FALSE;
-        }
-    
-    
         $result = FALSE;
-        $content = 'data='.$xml_data;
+        $content_to_post = 'data='.$xml_data;
         $xml_url = explode(";",$xml_urls);
         
         foreach ($xml_url as $xml_url_one)
         {
-            $pos = strpos($xml_url_one, '://');
-            if (FALSE === $pos)
+            $server_to_ban = $xml_url_one;
+            $skip = FALSE;
+            foreach ($this->GetTemporaryBadServer() as $temp_bad_server)
             {
-                $protocol = '';
-            }
-            else
-            {
-                switch (strtolower(substr($xml_url_one,0,$pos)))
+                if ($temp_bad_server == $server_to_ban)
                 {
-                    case 'https':
-                    case 'ssl':
-                        $protocol = 'ssl://';
-                        break;
-                    case 'tls':
-                        $protocol = 'tls://';
-                        break;
-                    default:
-                        $protocol = '';
-                        break;
+                    $skip = TRUE;
+                }
+            }
+            
+            if (!$skip)
+            {
+                $pos = strpos($xml_url_one, '://');
+                if (FALSE === $pos)
+                {
+                    $protocol = '';
+                }
+                else
+                {
+                    switch (strtolower(substr($xml_url_one,0,$pos)))
+                    {
+                        case 'https':
+                        case 'ssl':
+                            $protocol = 'ssl://';
+                            break;
+                        case 'tls':
+                            $protocol = 'tls://';
+                            break;
+                        default:
+                            $protocol = '';
+                            break;
+                    }
+                    
+                    $xml_url_one = substr($xml_url_one,$pos+3);
                 }
                 
-                $xml_url_one = substr($xml_url_one,$pos+3);
-            }
-            
-            $pos = strpos($xml_url_one, '/');
-            if (FALSE === $pos)
-            {
-                $host = $xml_url_one;
-                $url = '/';
-            }
-            else
-            {
-                $host = substr($xml_url_one,0,$pos);
-                $url = substr($xml_url_one,$pos); // And not +1 as we want the / at the beginning
-            }
-            
-            $pos = strpos($host, ':');
-            if (FALSE === $pos)
-            {
-                $port = 80;
-            }
-            else
-            {
-                $port = substr($host,$pos+1);
-                $host = substr($host,0,$pos);
-            }
-            
-            $errno = 0;
-            $errdesc = 0;
-            $fp = @fsockopen($protocol.$host, $port, $errno, $errdesc, $xml_timeout);
-            if (FALSE !== $fp)
-            {
-                fputs($fp, "POST ".$url." HTTP/1.0\r\n");
-                fputs($fp, "Content-Type: application/x-www-form-urlencoded\r\n");
-                fputs($fp, "Content-Length: ".strlen($content)."\r\n");
-                fputs($fp, "User-Agent: multiOTP\r\n");
-                fputs($fp, "Host: ".$host."\r\n");
-                fputs($fp, "\r\n");
-                fputs($fp, $content);
-                fputs($fp, "\r\n");
-
-                stream_set_blocking($fp, TRUE);
-                stream_set_timeout($fp, $xml_timeout);
-                $info = stream_get_meta_data($fp); 
-        
-                $reply = '';
-                $last_length = 0;
-                while ((!feof($fp)) && ((!$info['timed_out']) || ($last_length != strlen($reply))))
+                $pos = strpos($xml_url_one, '/');
+                if (FALSE === $pos)
                 {
-                    $last_length = strlen($reply);
-                    $reply.= fgets($fp, 1024);
-                    $info = stream_get_meta_data($fp);
-                    @ob_flush(); // Avoid notice if any (if the buffer is empty and therefore cannot be flushed)
-                    flush(); 
+                    $host = $xml_url_one;
+                    $url = '/';
                 }
-                fclose($fp);
-
-                if ($info['timed_out'])
+                else
                 {
+                    $host = substr($xml_url_one,0,$pos);
+                    $url = substr($xml_url_one,$pos); // And not +1 as we want the / at the beginning
+                }
+                
+                $pos = strpos($host, ':');
+                if (FALSE === $pos)
+                {
+                    $port = 80;
+                }
+                else
+                {
+                    $port = substr($host,$pos+1);
+                    $host = substr($host,0,$pos);
+                }
+                
+                $errno = 0;
+                $errdesc = 0;
+                $fp = @fsockopen($protocol.$host, $port, $errno, $errdesc, $xml_timeout);
+                if (FALSE !== $fp)
+                {
+                    $info['timed_out'] = FALSE;
+                    fputs($fp, "POST ".$url." HTTP/1.0\r\n");
+                    fputs($fp, "Content-Type: application/x-www-form-urlencoded\r\n");
+                    fputs($fp, "Content-Length: ".strlen($content_to_post)."\r\n");
+                    fputs($fp, "User-Agent: multiOTP\r\n");
+                    fputs($fp, "Host: ".$host."\r\n");
+                    fputs($fp, "\r\n");
+                    fputs($fp, $content_to_post);
+                    fputs($fp, "\r\n");
+
+                    stream_set_blocking($fp, TRUE);
+                    stream_set_timeout($fp, $xml_timeout);
+                    $info = stream_get_meta_data($fp); 
+            
+                    $reply = '';
+                    $last_length = 0;
+                    while ((!feof($fp)) && ((!$info['timed_out']) || ($last_length != strlen($reply))))
+                    {
+                        $last_length = strlen($reply);
+                        $reply.= fgets($fp, 1024);
+                        $info = stream_get_meta_data($fp);
+                        @ob_flush(); // Avoid notice if any (if the buffer is empty and therefore cannot be flushed)
+                        flush(); 
+                    }
+                    fclose($fp);
+
+                    if ($info['timed_out'])
+                    {
+                        if ($this->GetVerboseFlag())
+                        {
+                            $this->WriteLog("Warning: timeout after $xml_timeout seconds for $protocol$host:$port$url with a result code of $errno ($errdesc).");
+                        }
+                    }
+                    else
+                    {
+                        $pos = strpos(strtolower($reply), "\r\n\r\n");
+                        $header = substr($reply, 0, $pos);
+                        $answer = substr($reply, $pos + 4);
+                        
+                        $result = $answer;
+                        if ($this->GetVerboseFlag())
+                        {
+                            if ($errno > 0)
+                            {
+                                $this->WriteLog("Info: $protocol$host:$port$url returns a resultcode of $errno ($errdesc).");
+                            }
+                        }
+                        if (FALSE !== strpos($result,'<multiOTP'))
+                        {
+                            break;
+                        }
+                    }
+                    // If we are here, something was bad with the actual server
+                    $this->AddTemporaryBadServer($server_to_ban);
                     if ($this->GetVerboseFlag())
                     {
-                        $this->WriteLog("Warning: timeout after $xml_timeout seconds for $protocol$host:$port$url with a result code of $errno ($errdesc).");
+                        $log_info = "Info: temporary adding $server_to_ban to the list of banned servers, content not recognized";
+                        if ($this->_xml_dump_in_log)
+                        {
+                            $log_info.= ": ".$result;
+                        }
+
+                        $this->WriteLog($log_info);
                     }
                 }
                 else
                 {
-                    $pos = strpos(strtolower($reply), "\r\n\r\n");
-                    $header = substr($reply, 0, $pos);
-                    $content = substr($reply, $pos + 4);
-                    
-                    $result = $content;
+                    $this->AddTemporaryBadServer($server_to_ban);
                     if ($this->GetVerboseFlag())
                     {
-                        if ($errno > 0)
-                        {
-                            $this->WriteLog("Info: $protocol$host:$port$url returns a resultcode of $errno ($errdesc).");
-                        }
-                        /*
-                        else
-                        {
-                            $this->WriteLog("DEBUG: The address $protocol$host:$port$url has answered corectly.");
-                        }
-                        */
+                        $this->WriteLog("Warning: Host $protocol$host on port $port not reached before a timeout of $xml_timeout seconds.");
                     }
-                    if (FALSE !== strpos($result,'<multiOTP'))
-                    {
-                        break;
-                    }
-                } 
+                    
+                }
             }
             else
             {
+                // This server has been skipped
                 if ($this->GetVerboseFlag())
                 {
-                    $this->WriteLog("Info: Host $protocol$host on port $port not reached before a timeout of $xml_timeout seconds.");
+                    $this->WriteLog("Info: temporary skipping $xml_url_one due to timeout or inconsistent response.");
                 }
-                
+                $result = "";
             }
         }
 
@@ -7060,6 +7073,8 @@ EOL;
     
     function XmlServer($data)
     {
+        // $this->WriteLog("Info: Host received the following request: $data");
+
         $cache_data      = '';
         $command_name    = '';
         $error_code      = 71;
@@ -7196,7 +7211,7 @@ EOL;
                 {
                     $error_code = 21; // ERROR: User doesn't exist
 
-                    if ($this->ReadUserData($user_id, FALSE, TRUE)) // $do_not_check_on_server = TRUE;
+                    if ($this->ReadUserData($user_id, FALSE, TRUE)) // $no_server_check = TRUE;
                     {
                         $error_code = 19;
                         reset($this->_user_data);
@@ -7235,7 +7250,7 @@ EOL;
                 {
                     $error_code = 21; // ERROR: User doesn't exist
 
-                    if ($this->CheckUserExists($user_id, TRUE)) // $do_not_check_on_server = TRUE;
+                    if ($this->CheckUserExists($user_id, TRUE)) // $no_server_check = TRUE;
                     {
                         $error_code = 22;
                     }
@@ -7278,7 +7293,7 @@ EOL;
     }
 
     
-    // This method call the MultiotpQrcode with the good pathes
+    // This method is a stub that calls the MultiotpQrcode with the good pathes
     function qrcode($data = '', $file_name = '', $image_type = "P", $ecc_level = "Q", $module_size = 4, $version = 0, $structure_m = 0, $structure_n = 0, $parity = 0, $original_data = '')
     {
         $path = $this->GetScriptFolder()."qrcode/data";
@@ -7487,7 +7502,8 @@ if (!function_exists('base32_encode'))
             $outString .= chr($BASE32_TABLE[$fiveBitsString]);
         }
         
-        return $outString;
+        // As described in RFC3548, it should be in uppercase.
+        return strtoupper($outString);
     }
 }
 
