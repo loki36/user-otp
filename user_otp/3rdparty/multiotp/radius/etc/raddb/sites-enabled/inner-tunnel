@@ -49,6 +49,8 @@ authorize {
 	#
 	#  The chap module will set 'Auth-Type := CHAP' if we are
 	#  handling a CHAP request and Auth-Type has not already been set
+    #
+    #  Commented because we want to use multiOTP.net for chap
 	#chap
 
 	#
@@ -57,6 +59,8 @@ authorize {
 	#  the MS-CHAP-Challenge attribute, and add 'Auth-Type := MS-CHAP'
 	#  to the request, which will cause the server to then use
 	#  the mschap module for authentication.
+    #
+    #  Commented because we want to use multiOTP.net for mschap
 	#mschap
 
 	#
@@ -155,7 +159,7 @@ authorize {
 
     #
     # Handle multiOTP (http://www.multiotp.net/) authentication.
-    # This must be add BEFORE the first "pap" entry found in the file.
+    # This must be added BEFORE the first "pap" entry found in the file.
     multiotp
 
 	#
@@ -169,7 +173,8 @@ authorize {
 	#  This module should be listed last, so that the other modules
 	#  get a chance to set Auth-Type for themselves.
 	#
-	pap
+    #  Commented because we want to use multiOTP.net for pap
+	#pap
 }
 
 
@@ -195,7 +200,7 @@ authorize {
 authenticate {
     #
     # Handle multiOTP (http://www.multiotp.net/) authentication.
-    # This must be add BEFORE the first "Auth-Type PAP" entry found in the file.
+    # This must be added BEFORE the first "Auth-Type PAP" entry found in the file.
     Auth-Type multiotp {
         multiotp
     }

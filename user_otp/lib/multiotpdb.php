@@ -68,7 +68,7 @@ class MultiOtpDb extends multiotp{
     return $result;
   }
   
-  public function CheckUserExists($user = ''){
+  public function CheckUserExists($user = '', $no_server_check = FALSE){
     $check_user = ('' != $user)?$user:$this->GetUser();
     $OtpUserDataMapper = new OtpUserDataMapper();
     $OtpUserData = $OtpUserDataMapper->findByUser($check_user);
@@ -79,7 +79,7 @@ class MultiOtpDb extends multiotp{
     return false;
   }
   
-  public function DeleteUser($user = '')
+  public function DeleteUser($user = '', $no_error_info = FALSE)
   {
     if ('' != $user)
     {
@@ -107,50 +107,50 @@ class MultiOtpDb extends multiotp{
   
 }
 
-//overright function because in parent class it return lowercase value not ok for base32
-/***********************************************************************
- * Custom function providing base32_encode
- *   if it is not available in the actual configuration
- *
- * Source: http://pastebin.com/BLyG5khJ
- ***********************************************************************/
-    function base32_encode($inString)
-    {
-        $outString = '';
-        $compBits = '';
-        $BASE32_TABLE = array('00000' => 0x61, '00001' => 0x62, '00010' => 0x63, '00011' => 0x64,
-                              '00100' => 0x65, '00101' => 0x66, '00110' => 0x67, '00111' => 0x68,
-                              '01000' => 0x69, '01001' => 0x6a, '01010' => 0x6b, '01011' => 0x6c,
-                              '01100' => 0x6d, '01101' => 0x6e, '01110' => 0x6f, '01111' => 0x70,
-                              '10000' => 0x71, '10001' => 0x72, '10010' => 0x73, '10011' => 0x74,
-                              '10100' => 0x75, '10101' => 0x76, '10110' => 0x77, '10111' => 0x78,
-                              '11000' => 0x79, '11001' => 0x7a, '11010' => 0x32, '11011' => 0x33,
-                              '11100' => 0x34, '11101' => 0x35, '11110' => 0x36, '11111' => 0x37);
- 
-        /* Turn the compressed string into a string that represents the bits as 0 and 1. */
-        for ($i = 0; $i < strlen($inString); $i++)
-        {
-            $compBits .= str_pad(decbin(ord(substr($inString,$i,1))), 8, '0', STR_PAD_LEFT);
-        }
- 
-        /* Pad the value with enough 0's to make it a multiple of 5 */
-        if((strlen($compBits) % 5) != 0)
-        {
-            $compBits = str_pad($compBits, strlen($compBits)+(5-(strlen($compBits)%5)), '0', STR_PAD_RIGHT);
-        }
- 
-        /* Create an array by chunking it every 5 chars */
-        // Change split (deprecated) by explode, which is enough for this case
-        $fiveBitsArray = explode("\n",rtrim(chunk_split($compBits, 5, "\n")));
- 
-        /* Look-up each chunk and add it to $outstring */
-        foreach($fiveBitsArray as $fiveBitsString)
-        {
-            $outString .= chr($BASE32_TABLE[$fiveBitsString]);
-        }
-        
-        return strtoupper($outString);
-    }
+//~ //overright function because in parent class it return lowercase value not ok for base32
+//~ /***********************************************************************
+ //~ * Custom function providing base32_encode
+ //~ *   if it is not available in the actual configuration
+ //~ *
+ //~ * Source: http://pastebin.com/BLyG5khJ
+ //~ ***********************************************************************/
+    //~ function base32_encode($inString)
+    //~ {
+        //~ $outString = '';
+        //~ $compBits = '';
+        //~ $BASE32_TABLE = array('00000' => 0x61, '00001' => 0x62, '00010' => 0x63, '00011' => 0x64,
+                              //~ '00100' => 0x65, '00101' => 0x66, '00110' => 0x67, '00111' => 0x68,
+                              //~ '01000' => 0x69, '01001' => 0x6a, '01010' => 0x6b, '01011' => 0x6c,
+                              //~ '01100' => 0x6d, '01101' => 0x6e, '01110' => 0x6f, '01111' => 0x70,
+                              //~ '10000' => 0x71, '10001' => 0x72, '10010' => 0x73, '10011' => 0x74,
+                              //~ '10100' => 0x75, '10101' => 0x76, '10110' => 0x77, '10111' => 0x78,
+                              //~ '11000' => 0x79, '11001' => 0x7a, '11010' => 0x32, '11011' => 0x33,
+                              //~ '11100' => 0x34, '11101' => 0x35, '11110' => 0x36, '11111' => 0x37);
+ //~ 
+        //~ /* Turn the compressed string into a string that represents the bits as 0 and 1. */
+        //~ for ($i = 0; $i < strlen($inString); $i++)
+        //~ {
+            //~ $compBits .= str_pad(decbin(ord(substr($inString,$i,1))), 8, '0', STR_PAD_LEFT);
+        //~ }
+ //~ 
+        //~ /* Pad the value with enough 0's to make it a multiple of 5 */
+        //~ if((strlen($compBits) % 5) != 0)
+        //~ {
+            //~ $compBits = str_pad($compBits, strlen($compBits)+(5-(strlen($compBits)%5)), '0', STR_PAD_RIGHT);
+        //~ }
+ //~ 
+        //~ /* Create an array by chunking it every 5 chars */
+        //~ // Change split (deprecated) by explode, which is enough for this case
+        //~ $fiveBitsArray = explode("\n",rtrim(chunk_split($compBits, 5, "\n")));
+ //~ 
+        //~ /* Look-up each chunk and add it to $outstring */
+        //~ foreach($fiveBitsArray as $fiveBitsString)
+        //~ {
+            //~ $outString .= chr($BASE32_TABLE[$fiveBitsString]);
+        //~ }
+        //~ 
+        //~ return strtoupper($outString);
+    //~ }
 
 //~ class Base32 {
 //~ 
