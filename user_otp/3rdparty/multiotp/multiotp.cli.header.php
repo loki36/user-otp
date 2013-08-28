@@ -58,8 +58,8 @@
  * @author: SysCo/al
  * @since CreationDate: 2010-06-08
  * @copyright (c) 2010 by SysCo systemes de communication sa
- * @version $LastChangedRevision: 4.0.4 $
- * @version $LastChangedDate: 2013-08-20 $
+ * @version $LastChangedRevision: 4.0.6 $
+ * @version $LastChangedDate: 2013-08-25 $
  * @version $LastChangedBy: SysCo/al $
  * @link $HeadURL: multiotp.cli.header.php $
  * @link http://www.multiotp.net
@@ -160,6 +160,12 @@
  *
  * Users feedbacks and comments
  *
+ * 2013-08-22 Frank Bongrand
+ *   Thanks a lot for a valuable feedback concerning some minor bugs in 4.0.4
+ *
+ * 2013-08-21 Henk van der Helm
+ *   Thanks a lot for a valuable feedback concerning some minor bugs in 4.0.4
+ *
  * 2013-08-15 Donator AB (Sweden)
  *   MANY thanks for your appreciated $$$ sponsorship to support us to add self-registration in the next release.
  *
@@ -215,20 +221,29 @@
  *
  * Change Log
  *
- *   2013-08-20 4.0.4  SysCo/al Adding an optional group attribute for the user
+ *   2013-08-25 4.0.6  SysCo/al base32_encode() is now RFC compliant with uppercases
+ *                              GetUserTokenQrCode() and GetTokenQrCode() where buggy
+ *                              GetScriptFolder() use now __FILE__ if the full path is included
+ *                              When doing a check in the CLI header, @... is automatically removed from the
+ *                               username if the user doesn't exist, and the check is done on the clean name
+ *                              Added a lot of tests to enhance release quality
+ *   2013-08-21 4.0.5  SysCo/al Fixed the check of the cache lifetime
+ *                              Added a temporary server blacklist during the same instances
+ *                              Default server timeout is now set to 1 second
+ *   2013-08-20 4.0.4  SysCo/al Added an optional group attribute for the user
  *                               (which will be send with the Radius Filter-Id option)
- *                              Adding scratch passwords generation (if the token is lost)
+ *                              Added scratch passwords generation (if the token is lost)
  *                              Automatic database schema upgrade using method UpgradeSchemaIfNeeded()
- *                              Adding client/server support with local cache
- *                              Adding CHAP authentication support (PAP is of course still supported)
+ *                              Added client/server support with local cache
+ *                              Added CHAP authentication support (PAP is of course still supported)
  *                              The encryption key is now a parameter of the class constructor
  *                              The method SetEncryptionKey('MyPersonalEncryptionKey') IS DEPRECATED
  *                              The method DefineMySqlConnection IS DEPRECATED
  *                              Full MySQL support, including tables creation (see example and SetSqlXXXX methods)
- *                              Adding email, sms and seed_password to users attributes
- *                              Adding sms support (aspsms, clickatell, intellisms, exec)
- *                              Adding prefix support for debug mode (in order to send Reply-Message := to Radius)
- *                              Adding a lot of new methods to handle easier the users and the tokens
+ *                              Added email, sms and seed_password to users attributes
+ *                              Added sms support (aspsms, clickatell, intellisms, exec)
+ *                              Added prefix support for debug mode (in order to send Reply-Message := to Radius)
+ *                              Added a lot of new methods to handle easier the users and the tokens
  *                              General speedup by using available native functions for hash_hmac and others
  *                              Default max_time_window has been lowered to 600 seconds (thanks Stefan for suggestion)
  *                              Integrated Google Authenticator support with integrated base 32 seed handling
@@ -279,27 +294,33 @@ require_once('multiotp.class.php');
 // Trick to define the current folder as the script folder
 function get_script_dir()
 {
-    // Detect the current folder, change Windows notation to universal notation if needed
-    $current_folder = convert_to_unix_path(getcwd());
-    $current_script_folder = convert_to_unix_path($_SERVER["argv"][0]);
-    if ("" == (trim($current_script_folder)))
+    $current_script_folder_detected = dirname('__FILE__');
+
+    if (FALSE === strpos(convert_to_unix_path($current_script_folder_detected),"/"))
     {
-        $current_script_folder = $_SERVER['SCRIPT_FILENAME'];
-    }
-    
-    if (FALSE === strpos($current_script_folder,"/"))
-    {
-        $current_script_folder_detected = dirname($current_folder."/fake.file");
-    }
-    else
-    {
-        $current_script_folder_detected = dirname($current_script_folder);
+        // Detect the current folder, change Windows notation to universal notation if needed
+        $current_folder = convert_to_unix_path(getcwd());
+        $current_script_folder = convert_to_unix_path($_SERVER["argv"][0]);
+        if ("" == (trim($current_script_folder)))
+        {
+            $current_script_folder = $_SERVER['SCRIPT_FILENAME'];
+        }
+        
+        if (FALSE === strpos($current_script_folder,"/"))
+        {
+            $current_script_folder_detected = dirname($current_folder."/fake.file");
+        }
+        else
+        {
+            $current_script_folder_detected = dirname($current_script_folder);
+        }
     }
 
     if (substr($current_script_folder_detected,-1) != "/")
     {
         $current_script_folder_detected.="/";
     }
+    // return convert_to_windows_path_if_needed($current_script_folder_detected);
     return convert_to_windows_path_if_needed($current_script_folder_detected);
 }
 
@@ -483,7 +504,6 @@ for ($arg_loop=1; $arg_loop < $_SERVER["argc"]; $arg_loop++)
             $encrypted_password = TRUE;
         }
     }
-    
     elseif ("-check" == strtolower($_SERVER["argv"][$arg_loop]))
     {
         $command = "check";
@@ -762,11 +782,32 @@ switch ($command)
         {
             if (!$multiotp->CheckUserExists($all_args[1]))
             {
-                $clean_phone = $multiotp->CleanPhoneNumber($all_args[1]);
-                if ($multiotp->CheckUserExists($clean_phone))
+                if (FALSE !== strpos($all_args[1], '@'))
                 {
-                    $all_args[1] = $clean_phone;
-                    $multiotp->SetUser($all_args[1]);
+                    $cleaned_user = substr($all_args[1], 0, strpos($all_args[1], '@'));
+                    if ($multiotp->CheckUserExists($cleaned_user))
+                    {
+                        $all_args[1] = $cleaned_user;
+                        $multiotp->SetUser($all_args[1]);
+                    }
+                }
+                elseif (FALSE !== strpos($all_args[1], "\\"))
+                {
+                    $cleaned_user = substr($all_args[1], strpos($all_args[1], "\\")+1);
+                    if ($multiotp->CheckUserExists($cleaned_user))
+                    {
+                        $all_args[1] = $cleaned_user;
+                        $multiotp->SetUser($all_args[1]);
+                    }
+                }
+                else
+                {
+                    $clean_phone = $multiotp->CleanPhoneNumber($all_args[1]);
+                    if ($multiotp->CheckUserExists($clean_phone))
+                    {
+                        $all_args[1] = $clean_phone;
+                        $multiotp->SetUser($all_args[1]);
+                    }
                 }
             }
         }
@@ -1660,6 +1701,7 @@ switch ($command)
             echo " multiotp -scratchlist gademo".$crlf;
             echo $crlf;
             echo " multiotp -set gademo description=\"VPN code for gademo\"".$crlf;
+            echo " multiotp –set gademo sms=41791234567".$crlf;
             echo $crlf;
             echo " multiotp -debug -import 10OTP_data01_upgrade.sql".$crlf;
             echo " multiotp -debug -import-xml tokens.xml".$crlf;
@@ -1781,12 +1823,39 @@ else
     }
     if (count($multiotp->GetReplyArrayForRadius()) > 0)
     {
+        $radius_additional = '';
         $radius_separator = '';
+        
+        /*
+         * If needed, here is the code to remove some radius attributes from the answer
+         *
+        $ignore_radius_array = explode(";","xx;yy");
         foreach ($multiotp->GetReplyArrayForRadius() as $one_radius_message)
         {
-            echo $radius_separator.$one_radius_message;
-            echo $multiotp->WriteLog('Info: Message for RADIUS: '.$one_radius_message);
-            $radius_separator = ',';
+            $ignore_attribute = FALSE;
+            $current_attribute = trim(substr($one_radius_message, 0, strpos($one_radius_message, '=')));
+            foreach ($ignore_radius_array as $one_ignore_attribute)
+            {
+                if (FALSE !== strpos(strtoupper($current_attribute),strtoupper($one_ignore_attribute)))
+                {
+                    $ignore_attribute = TRUE;
+                }
+            }
+            if (!$ignore_attribute)
+            {
+                $radius_additional.= $radius_separator.$one_radius_message;
+                $radius_separator = ',';
+            }
+        }
+        */
+
+        if (0 < strlen($radius_additional))
+        {
+            if ($multiotp->GetVerboseFlag())
+            {
+                $multiotp->WriteLog('Info: Attributes sent to the RADIUS server: '.$radius_additional);
+            }
+            echo $radius_additional."\r\n";
         }
     }
 }
