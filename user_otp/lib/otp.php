@@ -232,6 +232,9 @@ class OC_USER_OTP extends OC_User_Backend{
                     return false;
                 break;
                 case _AUTH_TWOFACTOR_:
+                  if(!isset($_POST['otpPassword']) || $_POST['otpPassword']===""){
+                    return false;
+                  }
                   $result = $this->mOtp->CheckToken($_POST['otpPassword']);
                     if ($result===0){
                       return $userBackend->checkPassword($uid, $password);
