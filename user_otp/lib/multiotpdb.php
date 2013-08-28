@@ -68,7 +68,7 @@ class MultiOtpDb extends multiotp{
     return $result;
   }
   
-  public function CheckUserExists($user = ''){
+  public function CheckUserExists($user = '', $no_server_check = FALSE){
     $check_user = ('' != $user)?$user:$this->GetUser();
     $OtpUserDataMapper = new OtpUserDataMapper();
     $OtpUserData = $OtpUserDataMapper->findByUser($check_user);
@@ -79,7 +79,7 @@ class MultiOtpDb extends multiotp{
     return false;
   }
   
-  public function DeleteUser($user = '')
+  public function DeleteUser($user = '', $no_error_info = FALSE)
   {
     if ('' != $user)
     {
