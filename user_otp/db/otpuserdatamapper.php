@@ -47,7 +47,7 @@ class OtpUserDataMapper{ // extends Mapper {
     }
     
     public function findQrcodeByUser($user){
-      $sql = 'SELECT qrcode FROM `' . $this->getTableName() . '` ' .
+      $sql = 'SELECT `qrcode` FROM `' . $this->getTableName() . '` ' .
       'WHERE `user` = ? ';
 
       $query = \OCP\DB::prepare($sql);
@@ -73,7 +73,7 @@ class OtpUserDataMapper{ // extends Mapper {
     
     public function insert(OtpUserData $OtpUserData){
       $sql = 'INSERT INTO `' . $this->getTableName() . '` ' .
-      '(user,request_prefix_pin,algorithm,token_seed,user_pin,number_of_digits,time_interval,last_event,last_login,error_counter,locked) '.
+      '(`user`,`request_prefix_pin`,`algorithm`,`token_seed`,`user_pin`,`number_of_digits`,`time_interval`,`last_event`,`last_login`,`error_counter`,`locked`) '.
       'VALUES(?,?,?,?,?,?,?,?,?,?,?) ';
 //print_r($OtpUserData);//exit;
       $query = \OCP\DB::prepare($sql);
@@ -96,18 +96,18 @@ class OtpUserDataMapper{ // extends Mapper {
     
     public function update(OtpUserData $OtpUserData){
       $sql = 'UPDATE  `' . $this->getTableName() . '` ' .
-      'SET request_prefix_pin =?,'.
-      'algorithm =?,'.
-      'token_seed =?,'.
-      'user_pin =?,'.
-      'number_of_digits =?,'.
-      'time_interval =?,'.
-      'last_event =?,'.
-      'last_login =?,'.
-      'error_counter =?,'.
-      'locked =?,'.
-      'qrcode =? '.
-      'WHERE user=? ';
+      'SET `request_prefix_pin` =?,'.
+      '`algorithm` =?,'.
+      '`token_seed` =?,'.
+      '`user_pin` =?,'.
+      '`number_of_digits` =?,'.
+      '`time_interval` =?,'.
+      '`last_event` =?,'.
+      '`last_login` =?,'.
+      '`error_counter` =?,'.
+      '`locked` =?,'.
+      '`qrcode` =? '.
+      'WHERE `user`=? ';
 //print_r($OtpUserData);//exit;
       $query = \OCP\DB::prepare($sql);
       $result = $query->execute(array(
