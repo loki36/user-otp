@@ -108,7 +108,7 @@ class OtpUserDataMapper{ // extends Mapper {
       '`locked` =?,'.
       '`qrcode` =? '.
       'WHERE `user`=? ';
-//print_r($OtpUserData);//exit;
+//print_r($OtpUserData);
       $query = \OCP\DB::prepare($sql);
       $result = $query->execute(array(
         $OtpUserData->getRequestPrefixPin(),
