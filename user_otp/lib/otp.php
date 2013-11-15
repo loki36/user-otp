@@ -177,6 +177,21 @@ class OC_USER_OTP extends OC_User_Backend{
 		$reflectionMethod = new ReflectionMethod(get_class($userBackend),$name);
 		return $reflectionMethod->invokeArgs($userBackend,$arguments);
 	}
+	
+	public function __set($name){
+		//OC_Log::write('OC_USER_OTP', $name.'().', OC_Log::DEBUG);
+		$userBackend=$this->getRealBackend(OCP\User::getUser());
+    //var_dump($userBackend);
+		if($userBackend===null){
+			return false;
+		}
+		
+		if(isset($userBackend->$name)){
+			return $userBackend->$name;
+		}else{
+			return false;
+		}
+	}
 
     /**
      * check password function
