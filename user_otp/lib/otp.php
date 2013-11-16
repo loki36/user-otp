@@ -178,7 +178,7 @@ class OC_USER_OTP extends OC_User_Backend{
 		return $reflectionMethod->invokeArgs($userBackend,$arguments);
 	}
 	
-	public function __set($name){
+	public function __get($name){
 		//OC_Log::write('OC_USER_OTP', $name.'().', OC_Log::DEBUG);
 		$userBackend=$this->getRealBackend(OCP\User::getUser());
     //var_dump($userBackend);
