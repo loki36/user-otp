@@ -73,8 +73,11 @@ class OC_USER_OTP extends OC_User_Backend{
           OC_Log::write('user_otp', 'instance '.$backend.' backend.', OC_Log::DEBUG);
           self::$_backends[$backend] = new $backend();
           
-          if(self::$_backends[$backend] instanceof  OCA\user_ldap\USER_LDAP){
-			  //OC_Log::write('OC_USER_OTP', __FUNCTION__.'().', OC_Log::DEBUG);
+          if(
+            self::$_backends[$backend] instanceof OCA\user_ldap\USER_LDAP ||
+            self::$_backends[$backend] instanceof OCA\user_ldap\User_Proxy
+          ){
+			  OC_Log::write('OC_USER_OTP az', __FUNCTION__.'().', OC_Log::DEBUG);
 			  $configPrefixes = OCA\user_ldap\lib\Helper::getServerConfigurationPrefixes(true);
 				if(count($configPrefixes) == 1) {
 					$connector = new OCA\user_ldap\lib\Connection($configPrefixes[0]);
