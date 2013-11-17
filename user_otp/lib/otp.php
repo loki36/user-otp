@@ -123,6 +123,18 @@ class OC_USER_OTP extends OC_User_Backend{
 	public function createUser( $uid, $password ) {
 		return $this->__call("createUser",array($uid,$password));
 	}
+	
+	/**
+	 * @brief Set password
+	 * @param $uid The username
+	 * @param $password The new password
+	 * @returns true/false
+	 *
+	 * Change the password of a user
+	 */
+	public function setPassword( $uid, $password ) {
+		return $this->__call("setPassword",array($uid,$password));
+	}
 
 	/**
 	 * @brief Get a list of all users
@@ -191,7 +203,7 @@ class OC_USER_OTP extends OC_User_Backend{
 	}
 	
 	public function __call($name, $arguments){
-		//OC_Log::write('OC_USER_OTP', $name.'().', OC_Log::DEBUG);
+		OC_Log::write('OC_USER_OTP', $name.'().', OC_Log::DEBUG);
 		$userBackend=$this->getRealBackend(OCP\User::getUser());
     //var_dump($userBackend);
 		if($userBackend===null){
