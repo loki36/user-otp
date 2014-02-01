@@ -66,16 +66,18 @@ class OC_USER_OTP extends OC_User_Backend{
         
     }
     
-	//~ public function getSupportedActions() {
-		//~ $actions = 0;
-		//~ foreach($this->possibleActions AS $action => $methodName) {
-			//~ if(method_exists($this->getRealBackend(OCP\User::getUser()), $methodName)) {
-				//~ $actions |= $action;
-			//~ }
-		//~ }
-//~ 
-		//~ return $actions;
-	//~ }
+	public function getSupportedActions() {
+		$actions = 0;
+		foreach($this->possibleActions AS $action => $methodName) {
+			$userBackend=$this->getRealBackend(OCP\User::getUser());
+			if($userBackend===null){$userBackend=$this;}
+			if(method_exists($userBackend, $methodName)) {
+				$actions |= $action;
+			}
+		}
+
+		return $actions;
+	}
     
     public static function registerBackends($usedBackends){
       //OC_Log::write('OC_USER_OTP', __FUNCTION__.'().', OC_Log::DEBUG);
