@@ -79,6 +79,7 @@
     <field>
       <name>qrcode</name>
       <type>blob</type>
+      <notnull>false</notnull>
     </field>
     <index>
       <name>user_otp_user_index</name>

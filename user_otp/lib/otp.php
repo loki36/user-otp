@@ -66,12 +66,52 @@ class OC_USER_OTP extends OC_User_Backend{
         
     }
     
+	public function getSupportedActions() {
+		$actions = 0;
+		foreach($this->possibleActions AS $action => $methodName) {
+			$userBackend=$this->getRealBackend(OCP\User::getUser());
+			if($userBackend===null){$userBackend=$this;}
+			if(method_exists($userBackend, $methodName)) {
+				$actions |= $action;
+			}
+		}
+
+		return $actions;
+	}
+    
     public static function registerBackends($usedBackends){
       //OC_Log::write('OC_USER_OTP', __FUNCTION__.'().', OC_Log::DEBUG);
       if(self::$_backends === null){
         foreach ($usedBackends as $backend){
           OC_Log::write('user_otp', 'instance '.$backend.' backend.', OC_Log::DEBUG);
           self::$_backends[$backend] = new $backend();
+          
+          if(
+            self::$_backends[$backend] instanceof OCA\user_ldap\USER_LDAP ||
+            self::$_backends[$backend] instanceof OCA\user_ldap\User_Proxy
+          ){
+			  OC_Log::write('OC_USER_OTP az', __FUNCTION__.'().', OC_Log::DEBUG);
+			  $configPrefixes = OCA\user_ldap\lib\Helper::getServerConfigurationPrefixes(true);
+				if(count($configPrefixes) == 1) {
+					$connector = new OCA\user_ldap\lib\Connection($configPrefixes[0]);
+					$userBackend  = new OCA\user_ldap\USER_LDAP();
+					$userBackend->setConnector($connector);
+					$groupBackend = new OCA\user_ldap\GROUP_LDAP();
+					$groupBackend->setConnector($connector);
+				} else {
+					$userBackend  = new OCA\user_ldap\User_Proxy($configPrefixes);
+					$groupBackend  = new OCA\user_ldap\Group_Proxy($configPrefixes);
+				}
+				
+				self::$_backends[$backend] = $userBackend;
+
+				if(count($configPrefixes) > 0) {
+					// register user backend
+					//~ OC_User::useBackend($userBackend);
+					OC_Group::useBackend($groupBackend);
+				}
+		  }
+          
         }
       }
     }
@@ -98,6 +138,18 @@ class OC_USER_OTP extends OC_User_Backend{
 	 */
 	public function createUser( $uid, $password ) {
 		return $this->__call("createUser",array($uid,$password));
+	}
+	
+	/**
+	 * @brief Set password
+	 * @param $uid The username
+	 * @param $password The new password
+	 * @returns true/false
+	 *
+	 * Change the password of a user
+	 */
+	public function setPassword( $uid, $password ) {
+		return $this->__call("setPassword",array($uid,$password));
 	}
 
 	/**
@@ -167,7 +219,7 @@ class OC_USER_OTP extends OC_User_Backend{
 	}
 	
 	public function __call($name, $arguments){
-		//OC_Log::write('OC_USER_OTP', $name.'().', OC_Log::DEBUG);
+		OC_Log::write('OC_USER_OTP', $name.'().', OC_Log::DEBUG);
 		$userBackend=$this->getRealBackend(OCP\User::getUser());
     //var_dump($userBackend);
 		if($userBackend===null){
