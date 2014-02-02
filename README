@@ -34,4 +34,12 @@ Changelog:
 	 	owncloud 6 bug fix #28
 	 	remove windows binary from the 3rd party
 	 	bug fix personal setting error #29
+	 
+	 V2 :
+		lot of bug fix
+		update multiOTP lib (4.0.4)
+		store otp user information in owncloud DB
+		should work with all user backend!
+		add two factor authenticator options
+
 	 	
