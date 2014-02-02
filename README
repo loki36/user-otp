@@ -7,7 +7,7 @@ Based on library multiOTP http://www.multiotp.net/ develop by "SysCo systèmes d
 require Owncloud >= 5
 test with "Google Authenticator" and "android Token"
 
-Version 2
+Version 2.1
 
 Installation:
 Upload user_otp directory under the 'apps' directory of your ownCloud.
@@ -26,3 +26,12 @@ Usage:
   
 Todo:
 - Admin interface to manage otp user information (provisionning / send seed and qrcode by email / delete)
+
+Changelog:
+	V2.1 2014-02-02:
+		bug fix SQL Error using Postgresql as DB #25
+		bug fix Password not change! #27
+	 	owncloud 6 bug fix #28
+	 	remove windows binary from the 3rd party
+	 	bug fix personal setting error #29
+	 	
