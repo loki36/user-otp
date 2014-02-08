@@ -15,7 +15,7 @@ $(document).ready(function(){
             '<input id="otpPassword" type="password" placeholder="" data-typetoggle="#show" value="" name="otpPassword"'+ 'original-title="">'+
 '<input type="text" name="password-clone" tabindex="0" autocomplete="off" style="display: none;" original-title="">'+
 '<label class="infield" for="otpPassword">One Time Password</label>'+
-'<img id="password-icon" class="svg" alt="" src="/core/img/actions/password.svg">'+
+'<img id="password-icon" class="svg" alt="" src="'+document.URL+'/core/img/actions/password.svg">'+
 '<input id="show" type="checkbox" name="show" original-title="">'+
 '<label for="show"></label>'+
 '</p>');
