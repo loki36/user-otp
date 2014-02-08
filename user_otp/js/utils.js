@@ -12,15 +12,19 @@ $(document).ready(function(){
         $('#password').parent().addClass("infield groupmiddle");
         $('#password').parent().after(
             '<p class="infield groupbottom">'+
-            '<input id="otpPassword" type="password" placeholder="" data-typetoggle="#show" value="" name="otpPassword"'+ 'original-title="">'+
-'<input type="text" name="password-clone" tabindex="0" autocomplete="off" style="display: none;" original-title="">'+
-'<label class="infield" for="otpPassword">One Time Password</label>'+
-'<img id="password-icon" class="svg" alt="" src="'+document.URL+'/core/img/actions/password.svg">'+
-'<input id="show" type="checkbox" name="show" original-title="">'+
-'<label for="show"></label>'+
-'</p>');
+            '<input id="otpPassword" type="password" placeholder="" value="" name="otpPassword"'+ 'original-title="">'+
+			'<label class="infield" for="otpPassword">One Time Password</label>'+
+			'<img id="password-icon" class="svg" alt="" src="'+document.URL+'/core/img/actions/password.svg">'+
+			'<input id="show" type="checkbox" name="show" original-title="">'+
+			'</p>'
+		);
         $('#remember_login').hide();
         $('#remember_login+label').hide();
         //$('#submit').hide();
+        
+        var sheet = document.styleSheets[0];
+        sheet.insertRule('#otpPassword {padding-left: 1.8em;width: 11.7em !important;}', sheet.cssRules.length);
+
 
 });
+
