@@ -176,7 +176,8 @@ class OC_USER_OTP extends OC_User_Backend{
 		if($backend===null){
 			return false;
 		}else{
-			return true;
+			//little tricky but if user wants create a user uid is not same as the backend register !!!
+			return $backend->userExists($uid);
 		}
 	}
 
