@@ -12,7 +12,7 @@ $(document).ready(function(){
         $('#password').parent().addClass("infield groupmiddle");
         $('#password').parent().after(
             '<p class="infield groupbottom">'+
-            '<input id="otpPassword" type="password" required="" placeholder="" value="" name="otpPassword"'+ 'original-title="">'+
+            '<input id="otpPassword" type="password" placeholder="" value="" name="otpPassword"'+ 'original-title="">'+
 			'<label class="infield" for="otpPassword" style="opacity: 1;">One Time Password</label>'+
 			'<img id="password-icon" class="svg" alt="" src="'+document.URL+'/core/img/actions/password.svg">'+
 			'</p>'
