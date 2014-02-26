@@ -59,7 +59,9 @@ class OtpUserDataMapper{ // extends Mapper {
       }
       if(base64_encode(base64_decode($row['qrcode'])) === $row['qrcode']){
         return base64_decode($row['qrcode']);
-      }else{
+      }elseif(is_resource($row['qrcode'])){
+		 return base64_decode(fgets($row['qrcode'])); 
+	  }else{
         return $row['qrcode'];
       }
     }
