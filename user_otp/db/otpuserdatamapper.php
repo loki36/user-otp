@@ -57,11 +57,11 @@ class OtpUserDataMapper{ // extends Mapper {
       if(!$row){
         return null;
       }
-      if(base64_encode(base64_decode($row['qrcode'])) === $row['qrcode']){
-        return base64_decode($row['qrcode']);
-      }elseif(is_resource($row['qrcode'])){
+      if(is_resource($row['qrcode'])){
 		 return base64_decode(fgets($row['qrcode'])); 
-	  }else{
+	  }elseif(base64_encode(base64_decode($row['qrcode'])) === $row['qrcode']){
+        return base64_decode($row['qrcode']);
+      }else{
         return $row['qrcode'];
       }
     }
