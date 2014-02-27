@@ -71,6 +71,14 @@ $(document).ready(function () {
 			function (result) {
 				if (result.status != 'success') {
 					OC.Notification.show(t('admin', result.data.message));
+					if (UserList.notificationTimeout){
+						window.clearTimeout(UserList.notificationTimeout);
+					}
+					UserList.notificationTimeout = window.setTimeout(
+						function(){
+							OC.Notification.hide();
+							UserList.notificationTimeout = null;
+						}, 5000);
 				}else{
 					location.reload();
 				}
@@ -92,6 +100,14 @@ $(document).ready(function () {
 			function (result) {
 				if (result.status != 'success') {
 					OC.Notification.show(t('admin', result.data.message));
+					if (UserList.notificationTimeout){
+						window.clearTimeout(UserList.notificationTimeout);
+					}
+					UserList.notificationTimeout = window.setTimeout(
+						function(){
+							OC.Notification.hide();
+							UserList.notificationTimeout = null;
+						}, 5000);
 				}else{
 					location.reload();
 				}
@@ -108,8 +124,24 @@ $(document).ready(function () {
 			function (result) {
 				if (result.status != 'success') {
 					OC.Notification.show(t('admin', result.data.message));
+					if (UserList.notificationTimeout){
+						window.clearTimeout(UserList.notificationTimeout);
+					}
+					UserList.notificationTimeout = window.setTimeout(
+						function(){
+							OC.Notification.hide();
+							UserList.notificationTimeout = null;
+						}, 5000);
 				}else{
 					OC.Notification.show(t('admin', result.data.message));
+					if (UserList.notificationTimeout){
+						window.clearTimeout(UserList.notificationTimeout);
+					}
+					UserList.notificationTimeout = window.setTimeout(
+						function(){
+							OC.Notification.hide();
+							UserList.notificationTimeout = null;
+						}, 5000);
 				}
 			}
 		);
