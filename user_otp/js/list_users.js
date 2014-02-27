@@ -15,8 +15,6 @@ var OtpUserList = {
 	 * finishDelete() completes the process. This allows for 'undo'.
 	 */
 	do_delete: function (uid) {
-		alert('Not working yet');
-		exit;
 		if (typeof OtpUserList.deleteUid !== 'undefined') {
 			//Already a user in the undo queue
 			OtpUserList.finishDelete(null);
@@ -31,13 +29,35 @@ var OtpUserList = {
 		OC.Notification.showHtml(t('settings', 'deleted') + ' ' + escapeHTML(uid) + '<span class="undo">' + t('settings', 'undo') + '</span>');
 	},
 	
-	do_create: function (uid) {
-		alert('Not working yet');
+	finishDelete: function (ready) {
+
+		// Check deletion has not been undone
+		if (!OtpUserList.deleteCanceled && OtpUserList.deleteUid) {
+
+			// Delete user via ajax
+			$.ajax({
+				type: 'POST',
+				url: OC.filePath('user_otp', 'ajax', 'personalSettings.php'),
+				async: false,
+				data: { otp_action: 'delete_otp',uid: UserList.deleteUid },
+				success: function (result) {
+					if (result.status === 'success') {
+						// Remove undo option, & remove user from table
+						OC.Notification.hide();
+						//$('tr').filterAttr('data-uid', OtpUserList.deleteUid).remove();
+						OtpUserList.deleteCanceled = true;
+						location.reload();
+						if (ready) {
+							ready();
+						}
+					} else {
+						OC.dialogs.alert(result.data.message, t('settings', 'Unable to remove user'));
+					}
+				}
+			});
+		}
 	},
-	
-	send_email: function (uid) {
-		alert('Not working yet');
-	},
+
 };
 
 $(document).ready(function () {
@@ -45,31 +65,68 @@ $(document).ready(function () {
 	$('table').on('click', 'td.remove-otp>a', function (event) {
 		var row = $(this).parent().parent();
 		var uid = $(row).attr('data-uid');
-		//$(row).hide();
+		$.post(
+			OC.filePath('user_otp', 'ajax', 'personalSettings.php'),
+			{otp_action: 'delete_otp',uid: uid},
+			function (result) {
+				if (result.status != 'success') {
+					OC.Notification.show(t('admin', result.data.message));
+				}else{
+					location.reload();
+				}
+			}
+		);
 		// Call function for handling delete/undo
-		OtpUserList.do_delete(uid);
+		//OtpUserList.do_delete(uid);
 	});
 	
 	$('table').on('click', 'td.create-otp>a', function (event) {
 		var row = $(this).parent().parent();
 		var uid = $(row).attr('data-uid');
-		//var UserPin = $('input[name=UserPinInput]').val();
-		//var UserTokenSeed = $('input[name=UserTokenSeedInput]').val();
 		var UserPin = $(row).find("input[name=UserPinInput]").first().val();
 		var UserTokenSeed = $(row).find('input[name=UserTokenSeedInput]').first().val();
-		alert(UserPin+ " " +UserTokenSeed);
-		console.dir($(row));
-		//$(row).hide();
-		// Call function for handling delete/undo
-		OtpUserList.do_create(uid);
+		//alert(UserPin+ " " +UserTokenSeed);
+		$.post(
+			OC.filePath('user_otp', 'ajax', 'personalSettings.php'),
+			{otp_action: 'create_otp',uid: uid, UserPin: UserPin, UserTokenSeed: UserTokenSeed},
+			function (result) {
+				if (result.status != 'success') {
+					OC.Notification.show(t('admin', result.data.message));
+				}else{
+					location.reload();
+				}
+			}
+		);
 	});
 	
 	$('table').on('click', 'td.send-email>a', function (event) {
 		var row = $(this).parent().parent();
 		var uid = $(row).attr('data-uid');
-		//$(row).hide();
-		// Call function for handling delete/undo
-		OtpUserList.send_email(uid);
+		$.post(
+			OC.filePath('user_otp', 'ajax', 'personalSettings.php'),
+			{otp_action: 'send_email_otp',uid: uid},
+			function (result) {
+				if (result.status != 'success') {
+					OC.Notification.show(t('admin', result.data.message));
+				}else{
+					OC.Notification.show(t('admin', result.data.message));
+				}
+			}
+		);
+	});
+	
+	// Handle undo notifications
+	OC.Notification.hide();
+	$('#notification').on('click', '.undo', function () {
+		if ($('#notification').data('deleteuser')) {
+			$('tbody tr').filterAttr('data-uid', OtpUserList.deleteUid).show();
+			OtpUserList.deleteCanceled = true;
+		}
+		OC.Notification.hide();
+	});
+	OtpUserList.useUndo = ('onbeforeunload' in window);
+	$(window).bind('beforeunload', function () {
+		OtpUserList.finishDelete(null);
 	});
 	
 });
