@@ -95,8 +95,8 @@ if(
 	if ($mail !== NULL) {
 		try{
 			//putenv('SERVER_NAME=bongrand.fr');
-			$result = OC_Mail::send($mail, $toUid, '['.getenv('SERVER_NAME')."] - OTP", $txtmsg, 'Mail_Notification@'.getenv('SERVER_NAME'), 'Owncloud', 1 );	
-			//$result = OC_Mail::send($mail, $toUid, '['.getenv('SERVER_NAME')."] - OTP", $txtmsg, 'Mail_Notification@bongrand.fr', 'Owncloud', 1 );	
+			$result = OC_Mail::send($mail, $uid, '['.getenv('SERVER_NAME')."] - OTP", $txtmsg, 'Mail_Notification@'.getenv('SERVER_NAME'), 'Owncloud', 1 );	
+			//$result = OC_Mail::send($mail, $uid, '['.getenv('SERVER_NAME')."] - OTP", $txtmsg, 'Mail_Notification@bongrand.fr', 'Owncloud', 1 );	
 			OCP\JSON::success(array("data" => array( "message" => $l->t("email sent to ".$mail) )));
 		}catch(Exception $e){
 			 OCP\JSON::error(array("data" => array( "message" => $l->t($e->getMessage()) )));
