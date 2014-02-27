@@ -12,6 +12,7 @@ OC_App::loadApps();
 OC_Util::addScript( 'settings', 'users' );
 OC_Util::addScript( 'core', 'multiselect' );
 OC_Util::addScript( 'core', 'singleselect' );
+OC_Util::addScript( 'user_otp', 'list_users' );
 OC_Util::addScript('core', 'jquery.inview');
 OC_Util::addStyle( 'settings', 'settings' );
 OC_App::setActiveNavigationEntry( 'core_users' );
@@ -63,6 +64,8 @@ foreach($accessibleusers as $uid => $displayName) {
 	$UserTokenSeed="";
 	$UserLocked="";
 	$UserAlgorithm="";
+	$UserPin="";
+	$UserPrefixPin="";
 	
 	//get otp information :
 	$OtpExist = $mOtp->CheckUserExists($uid);
@@ -71,6 +74,8 @@ foreach($accessibleusers as $uid => $displayName) {
 		$UserTokenSeed=base32_encode(hex2bin($mOtp->GetUserTokenSeed()));
 		$UserLocked=$mOtp->GetUserLocked();
 		$UserAlgorithm=$mOtp->GetUserAlgorithm();
+		$UserPin=$mOtp->GetUserPin();
+		$UserPrefixPin=$mOtp->GetUserPrefixPin();
 	}
 
 	$users[] = array(
@@ -84,6 +89,8 @@ foreach($accessibleusers as $uid => $displayName) {
 		'UserTokenSeed' => $UserTokenSeed,
 		'UserLocked'=>$UserLocked,
 		'UserAlgorithm'=>$UserAlgorithm,
+		'UserPin'=>$UserPin,
+		'UserPrefixPin'=>$UserPrefixPin,
 	);
 }
 
@@ -93,6 +100,7 @@ foreach( $accessiblegroups as $i ) {
 }
 
 $tmpl = new OC_Template( "user_otp", "list_users", "user" );
+$tmpl->assign('PrefixPin',(OCP\Config::getAppValue('user_otp','UserPrefixPin','0')?1:0));
 $tmpl->assign( 'users', $users );
 $tmpl->assign( 'groups', $groups );
 $tmpl->assign( 'isadmin', (int) $isadmin);
