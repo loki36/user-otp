@@ -57,8 +57,13 @@ class OtpUserDataMapper{ // extends Mapper {
       if(!$row){
         return null;
       }
-      //return base64_decode($row['qrcode']);
-      return $row['qrcode'];
+      if(is_resource($row['qrcode'])){
+		 return base64_decode(fgets($row['qrcode'])); 
+	  }elseif(base64_encode(base64_decode($row['qrcode'])) === $row['qrcode']){
+        return base64_decode($row['qrcode']);
+      }else{
+        return $row['qrcode'];
+      }
     }
     
     public function deleteByUser($user){

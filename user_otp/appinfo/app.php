@@ -60,4 +60,54 @@ if (!OCP\User::isLoggedIn()){
 		OCP\Util::addScript('user_otp', 'utils');
 	}
 }
+
+//OCP\Util::addScript('user_otp', 'top_right_menu');
+//var_dump('toto');
+?>
+<!--
+<script type="text/javascript">
+$(document).ready(function(){
+
+   //$('#expanddiv li:last-child').append('toto');
+   var items = document.querySelectorAll("#expanddiv li");
+   var users = items[items.length-4];
+   //alert(users);
+   //users.append('toto');
+   var elm = users; //document.getElementById("name");
+	var newElm = document.createElement("li");
+	newElm.innerHTML = "<a href='"+<?php echo \OCP\Util::linkToRoute('user_otp_list_users') ?> +"'>OTP Users</a>";
+	//alert(document.location.href);
+	elm.parentNode.insertBefore(newElm, elm.nextSibling);
+        
+});
+</script>
+-->
+
+<?php
+
+$isadmin = OC_User::isAdminUser(OC_User::getUser());
+if($isadmin){
+\OCP\App::addNavigationEntry(array(
+
+    // the string under which your app will be referenced in owncloud
+    'id' => 'user_otp',
+
+    // sorting weight for the navigation. The higher the number, the higher
+    // will it be listed in the navigation
+    'order' => 74,
+
+    // the route that will be shown on startup
+    'href' => \OCP\Util::linkToRoute('user_otp_list_users'),
+
+    // the icon that will be shown in the navigation
+    // this file needs to exist in img/example.png
+    'icon' => \OCP\Util::imagePath('settings', 'admin.svg'),
+
+    // the title of your application. This will be used in the
+    // navigation or on the settings page of your app
+    'name' => 'OTP Users'
+));
+}
+
+
 ?>

@@ -31,6 +31,13 @@ OCP\JSON::checkLoggedIn();
 OCP\JSON::checkAppEnabled('user_otp');
 OCP\JSON::callCheck();
 
+if( $_POST && $_POST["uid"] && OC_User::isAdminUser(OCP\User::getUser()) ){
+	OC_JSON::checkSubAdminUser();
+	$uid = $_POST["uid"];
+}else{
+	$uid = OCP\User::getUser();
+}
+
 // Get data
 $mOtp =  new MultiOtpDb(OCP\Config::getAppValue(
     'user_otp','EncryptionKey','DefaultCliEncryptionKey')
@@ -41,17 +48,67 @@ $mOtp->EnableVerboseLog();
 if(
    $_POST &&
    $_POST["otp_action"]==="delete_otp" &&
-   $mOtp->CheckUserExists(OCP\User::getUser())
+   $mOtp->CheckUserExists($uid)
 ){
-    if($mOtp->DeleteUser(OCP\User::getUser())){
+    if($mOtp->DeleteUser($uid)){
         OCP\JSON::success(array("data" => array( "message" => $l->t("OTP Changed") )));
     }else{
         OCP\JSON::error(array("data" => array( "message" => $l->t("check apps folder rights") )));
     }
 }else if (
     $_POST &&
+    $_POST["otp_action"]==="send_email_otp" &&
+    $mOtp->CheckUserExists($uid)
+){
+
+    $mOtp->SetUser($uid);
+    
+    if(OCP\Config::getAppValue('user_otp','TokenBase32Encode',true)){
+        $UserTokenSeed=base32_encode(hex2bin($mOtp->GetUserTokenSeed()));
+        //$tmpl->assign('TokenBase32Encode',true);
+    }else{
+        $UserTokenSeed=hex2bin($mOtp->GetUserTokenSeed());    
+    }
+    
+	$key = 'email';
+	$mail ="";
+	$query=OC_DB::prepare('SELECT `configvalue` FROM `*PREFIX*preferences` WHERE `configkey` = ? AND `userid`=?');
+	$result=$query->execute(array($key, $uid));
+	if(!OC_DB::isError($result)) {
+		$row=$result->fetchRow();
+		$mail = $row['configvalue'];
+	}
+
+	$txtmsg = '<html><p>Hi, '.$uid.', <br><br>';
+	$txtmsg .= '<p>find your OTP Configuration<br>';
+	$txtmsg .= 'User Algorithm : '.$mOtp->GetUserAlgorithm().'<br>';
+	if($mOtp->GetUserPrefixPin()){
+		$txtmsg .= 'User Pin : '.$mOtp->GetUserPin().'<br>';
+	}
+	$txtmsg .= 'User Token Seed : '.$UserTokenSeed."<br>";
+	$txtmsg .= 'User Token Time Interval Or Last Event : '.(strtolower($mOtp->GetUserAlgorithm())==='htop'?$mOtp->GetUserTokenLastEvent():$mOtp->GetUserTokenTimeInterval())."<br>";
+	$txtmsg .= 'Token Url Link : '.$mOtp->GetUserTokenUrlLink()."<br>";
+	$txtmsg .= 'With android token apps select base32 before input seed<br>';
+	$txtmsg .= '<img src="data:image/png;base64,'.base64_encode($mOtp->GetUserTokenQrCode($mOtp->GetUser(),'','binary')).'"/><br><br>';
+
+	$txtmsg .= $l->t('<p>This e-mail is automatic, please, do not reply to it.</p></html>');
+	if ($mail !== NULL) {
+		try{
+			//putenv('SERVER_NAME=bongrand.fr');
+			//$result = OC_Mail::send($mail, $uid, '['.getenv('SERVER_NAME')."] - OTP", $txtmsg, 'Mail_Notification@'.getenv('SERVER_NAME'), 'Owncloud', 1 );	
+			$result = OC_Mail::send($mail, $uid, '['.getenv('SERVER_NAME')."] - OTP", $txtmsg, 'Mail_Notification@bongrand.fr', 'Owncloud', 1 );	
+			OCP\JSON::success(array("data" => array( "message" => $l->t("email sent to ".$mail) )));
+		}catch(Exception $e){
+			 OCP\JSON::error(array("data" => array( "message" => $l->t($e->getMessage()) )));
+		}
+	}else{
+		//echo "Email address error<br>";
+		OCP\JSON::error(array("data" => array( "message" => $l->t("Email address error : ".$mail) )));
+	}
+}else if (
+    $_POST &&
     $_POST["otp_action"]==="create_otp" &&
-    !$mOtp->CheckUserExists(OCP\User::getUser())
+    !$mOtp->CheckUserExists($uid)
 ){
     // format token seedll :
     if($_POST["UserTokenSeed"]===""){
@@ -75,7 +132,7 @@ if(
 	//}
 //echo "toto";
     $result = $mOtp->CreateUser(
-        OCP\User::getUser(),
+        $uid,
         (OCP\Config::getAppValue('user_otp','UserPrefixPin','0')?1:0),
         OCP\Config::getAppValue('user_otp','UserAlgorithm','TOTP'),
         $UserTokenSeed,

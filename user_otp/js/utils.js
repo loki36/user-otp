@@ -12,15 +12,39 @@ $(document).ready(function(){
         $('#password').parent().addClass("infield groupmiddle");
         $('#password').parent().after(
             '<p class="infield groupbottom">'+
-            '<input id="otpPassword" type="password" placeholder="" data-typetoggle="#show" value="" name="otpPassword"'+ 'original-title="">'+
-'<input type="text" name="password-clone" tabindex="0" autocomplete="off" style="display: none;" original-title="">'+
-'<label class="infield" for="otpPassword">One Time Password</label>'+
-'<img id="password-icon" class="svg" alt="" src="/core/img/actions/password.svg">'+
-'<input id="show" type="checkbox" name="show" original-title="">'+
-'<label for="show"></label>'+
-'</p>');
+            '<input id="otpPassword" type="password" placeholder="" value="" name="otpPassword"'+ 'original-title="">'+
+			'<label class="infield" for="otpPassword" style="opacity: 1;">One Time Password</label>'+
+			'<img id="password-icon" class="svg" alt="" src="'+document.URL+'/core/img/actions/password.svg">'+
+			'</p>'
+		);
         $('#remember_login').hide();
         $('#remember_login+label').hide();
         //$('#submit').hide();
+        
+        var sheet = document.styleSheets[0];
+        sheet.insertRule('#otpPassword {padding-left: 1.8em;width: 11.7em !important;}', sheet.cssRules.length);
+        sheet.insertRule(
+			'#otpPassword+label+img {'+
+				'position:absolute; left:1.25em; top:1.65em;'+
+				'-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=30)"; filter:alpha(opacity=30); opacity:.3;'+
+			'}'
+		, sheet.cssRules.length);
+		
+		$("label").inFieldLabels();
+		//~ $('#otpPassword').change( function() {
+				//~ if ($(this).val() !== "") {
+					//~ alert('test');
+					//~ $('#otpPassword+label').show();
+				//~ }
+				//~ else {
+					//~ $('#otpPassword+label').hide();
+				//~ }
+			//~ });
+		//$('input#otpPassword').keyup(checkShowCredentials);
+		//~ var setShowPassword = function(input, label) {
+			//~ input.showPassword().keyup();
+		//~ };
+		//~ setShowPassword($('#otpPassword'), $('label[for=otpPassword]'));
 
 });
+

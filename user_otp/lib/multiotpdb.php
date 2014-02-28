@@ -57,8 +57,8 @@ class MultiOtpDb extends multiotp{
     }
    
     if($result){
-      //$this->GetUserTokenQrCode($this->GetUser(),'','/var/www/owncloud/apps/user_otp/3rdparty/multiotp/test.png');
-      $OtpUserData->setQrcode($this->GetUserTokenQrCode($this->GetUser(),'','binary'));
+      //$OtpUserData->setQrcode($this->GetUserTokenQrCode($this->GetUser(),'','binary'));
+      $OtpUserData->setQrcode(base64_encode($this->GetUserTokenQrCode($this->GetUser(),'','binary')));
       //var_dump($this->GetUserTokenQrCode($this->GetUser(),'','binary'));
       $result = $OtpUserDataMapper->update($OtpUserData);
     }

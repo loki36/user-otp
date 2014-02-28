@@ -42,7 +42,7 @@
     <field>
       <name>user_pin</name>
       <type>text</type>
-      <length>4</length>
+      <length>16</length>
     </field>
     <field>
       <name>number_of_digits</name>

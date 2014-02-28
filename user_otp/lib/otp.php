@@ -176,10 +176,11 @@ class OC_USER_OTP extends OC_User_Backend{
 		if($backend===null){
 			return false;
 		}else{
-			return true;
+			//little tricky but if user wants create a user uid is not the same as the backend registered!!!
+			return $backend->userExists($uid);
 		}
 	}
-
+ 
 	/**
 	 * @brief get the user's home directory
 	 * @param string $uid the username
