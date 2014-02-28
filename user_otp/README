@@ -1,13 +1,15 @@
 This application is distributed WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU AFFERO GENERAL PUBLIC LICENSE for more details.
 
 One Time Password Backend can create TOTP and HOTP and generate QrCode
 Based on library multiOTP http://www.multiotp.net/ develop by "SysCo systèmes de communication" (thanks)
-require Owncloud >= 5
 test with "Google Authenticator" and "android Token"
+Can works with Yubikey see doc here : http://www.sj-vs.net/two-factor-authentication-for-owncloud-using-one-time-passwords-otp-from-yubikey/
+Administrator interface to manage users OTP
+require Owncloud >= 5 
 
-Version 2.1
+Version 2.2
 
 Installation:
 Upload user_otp directory under the 'apps' directory of your ownCloud.
@@ -18,28 +20,43 @@ Click on 'user_otp' in the application list. Then click the 'Enable' button.
 Usage:
 - Navigate to the 'Admin' page to set the server encryption key;
 - Click 'Save';
-- Navigate to 'Personal' page  to create Your OTP
+- Navigate to 'Personal' page to create Your OTP
+
 - keep an admin user working without otp in case of a lost of otp seed
-  if not you can delete otp user config in the db with the query 
-  "delete from *PREFIX*user_otp where `user` = 'YOURUSERLOGIN' 
+  if not you can delete otp user config in the db with the query
+  "delete from *PREFIX*user_otp where `user` = 'YOURUSERLOGIN'
   replace *PREFIX* by owncloud table prefix 'oc_' by default
+
+- Use the navigation entry "OTP users" (on left bar, with admin account) 
+  to manage user's OTP
+- if you want to be able to send email to users with OTP config 
+  your server must be correctly configure : 
+  http://doc.owncloud.org/server/6.0/admin_manual/configuration/configuration_mail.html
+ 
   
 Todo:
-- Admin interface to manage otp user information (provisionning / send seed and qrcode by email / delete)
+- improve Admin interface to manage otp user information (mass provisionning / ...)
 
 Changelog:
-	V2.1 2014-02-02:
-		bug fix SQL Error using Postgresql as DB #25
-		bug fix Password not change! #27
-	 	owncloud 6 bug fix #28
-	 	remove windows binary from the 3rd party
-	 	bug fix personal setting error #29
-	 
-	 V2 :
-		lot of bug fix
-		update multiOTP lib (4.0.4)
-		store otp user information in owncloud DB
-		should work with all user backend!
-		add two factor authenticator options
+  V2.2 2014-02-28:
+    enhancement page liste users with otp for admin #40
+    enhancement Small changes to make this compatible with Yubikey (HOTP) #33 (thanks to Bas)
+    bug fix user-otp prevents creation of new ownCloud users #36
+    bug fix setting up user token seed fails on OC6 with PostgreSQL 9.1 #38 (thanks to rainforest1155)
+    bug fix two factor auth for user not have a two factor auth #39
+    bug fix Password-field behaviour for "Two Factor Authendication"is different #6  
+    bug fix Broken path to password.svg - variable owncloud root path #32  
 
-	 	
+  V2.1 2014-02-02:
+    bug fix SQL Error using Postgresql as DB #25
+    bug fix Password not change! #27
+    owncloud 6 bug fix #28
+    remove windows binary from the 3rd party
+    bug fix personal setting error #29
+
+  V2 :
+    lot of bug fix
+    update multiOTP lib (4.0.4)
+    store otp user information in owncloud DB
+    should work with all user backend!
+    add two factor authenticator options
