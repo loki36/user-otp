@@ -149,7 +149,7 @@ class OC_USER_OTP extends OC_User_Backend{
 	 * Change the password of a user
 	 */
 	public function setPassword( $uid, $password ) {
-		return $this->__call("setPassword",array($uid,$password));
+		return $this->__call("setPassword",array('uid'=>$uid,'password'=>$password));
 	}
 
 	/**
@@ -224,7 +224,14 @@ class OC_USER_OTP extends OC_User_Backend{
 		$userBackend=$this->getRealBackend(OCP\User::getUser());
     //var_dump($userBackend);
 		if($userBackend===null){
-			return false;
+			//bug fix lost password link
+			//print_r($arguments);
+			if(isset($arguments['uid'])){
+				//print_r($arguments['uid']);
+				$userBackend=$this->getRealBackend($arguments['uid']);
+			}else{
+				return false;
+			}
 		}
 		
 		$reflectionMethod = new ReflectionMethod(get_class($userBackend),$name);
