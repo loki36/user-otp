@@ -238,10 +238,16 @@ class OC_USER_OTP extends OC_User_Backend{
      * @return boolean
      */
     public function checkPassword($uid, $password) {
+		//print_r($_SERVER);
 		OC_Log::write('OC_USER_OTP', __FUNCTION__.'().', OC_Log::DEBUG);
 		$userBackend=$this->getRealBackend($uid);
 		if ($userBackend===null){
 			return false;
+		}
+		
+		// enable change password without ipunt OTP
+		if($_SERVER['PATH_INFO']=="/settings/personal/changepassword"){
+			return $userBackend->checkPassword($uid, $password);
 		}
 		
 		//if access is made by remote.php and option is note set to force mtop, keep standard auth methode
