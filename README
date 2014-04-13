@@ -9,7 +9,11 @@ Can works with Yubikey see doc here : http://www.sj-vs.net/two-factor-authentica
 Administrator interface to manage users OTP
 require Owncloud >= 5 
 
-Version 2.2
+if you want help to make bug fix, enhancement or translation your welcome. 
+Just fork the github project and submit your pull request
+GIT : https://github.com/loki36/user-otp
+
+Version 2.3
 
 Installation:
 Upload user_otp directory under the 'apps' directory of your ownCloud.
@@ -36,8 +40,15 @@ Usage:
   
 Todo:
 - improve Admin interface to manage otp user information (mass provisionning / ...)
+- add user rescue otp code as lost password process
 
 Changelog:
+  V2.3 2014-04-14:
+    enhancement enter regular password and OTP within same field #44
+    enhancement admin option for user can't disable otp option (only changed it) #48
+    bug fix lost password link not working when otp is enable #47
+    bug fix user (including admin) can't change password with OTP+password required option  # 50
+
   V2.2 2014-02-28:
     enhancement page liste users with otp for admin #40
     enhancement Small changes to make this compatible with Yubikey (HOTP) #33 (thanks to Bas)

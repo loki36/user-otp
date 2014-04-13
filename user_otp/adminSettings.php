@@ -119,6 +119,16 @@ $configOtp[$i]['label']='Disable OTP with remote.php (webdav and sync)';
 $configOtp[$i]['type']='checkbox';
 $configOtp[$i]['default_value']=true; $i++;
 
+$configOtp[$i]['name']='disableDeleteOtpForUsers'; 
+$configOtp[$i]['label']='Disable delete OTP for users (only regenerated)';
+$configOtp[$i]['type']='checkbox';
+$configOtp[$i]['default_value']=false; $i++;
+
+$configOtp[$i]['name']='inputOtpAfterPassword'; 
+$configOtp[$i]['label']='Used passorwd field only and add OTP after the password';
+$configOtp[$i]['type']='checkbox';
+$configOtp[$i]['default_value']=false; $i++;
+
 foreach ($allTab as $tab){
     foreach ($$tab["arrayConf"] as $input){
         switch ($input['type']){

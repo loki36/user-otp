@@ -105,9 +105,21 @@ if(
 	}
 }else if (
     $_POST &&
-    $_POST["otp_action"]==="create_otp" &&
-    !$mOtp->CheckUserExists($uid)
+    ($_POST["otp_action"]==="create_otp" || $_POST["otp_action"]==="replace_otp")
 ){
+	if($mOtp->CheckUserExists($uid) && $_POST["otp_action"]==="replace_otp"){		
+		if(!$mOtp->DeleteUser($uid)){
+			OCP\JSON::error(array("data" => array( "message" => $l->t("error during deleting otp") )));
+			return;
+		}
+	}
+	
+	if($_POST["otp_action"]==="create_otp" && $mOtp->CheckUserExists($uid)){
+		OCP\JSON::error(array("data" => array( "message" => $l->t("otp already exists") )));
+		return;
+	}
+    
+    
     // format token seedll :
     if($_POST["UserTokenSeed"]===""){
 		//if (OCP\Config::getAppValue('user_otp','TokenBase32Encode',true) ){

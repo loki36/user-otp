@@ -17,8 +17,8 @@ $(document).ready(function(){
 			'<img id="password-icon" class="svg" alt="" src="'+document.URL+'/core/img/actions/password.svg">'+
 			'</p>'
 		);
-        $('#remember_login').hide();
-        $('#remember_login+label').hide();
+        //$('#remember_login').hide();
+        //$('#remember_login+label').hide();
         //$('#submit').hide();
         
         var sheet = document.styleSheets[0];

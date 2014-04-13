@@ -149,7 +149,7 @@ class OC_USER_OTP extends OC_User_Backend{
 	 * Change the password of a user
 	 */
 	public function setPassword( $uid, $password ) {
-		return $this->__call("setPassword",array($uid,$password));
+		return $this->__call("setPassword",array('uid'=>$uid,'password'=>$password));
 	}
 
 	/**
@@ -224,7 +224,14 @@ class OC_USER_OTP extends OC_User_Backend{
 		$userBackend=$this->getRealBackend(OCP\User::getUser());
     //var_dump($userBackend);
 		if($userBackend===null){
-			return false;
+			//bug fix lost password link
+			//print_r($arguments);
+			if(isset($arguments['uid'])){
+				//print_r($arguments['uid']);
+				$userBackend=$this->getRealBackend($arguments['uid']);
+			}else{
+				return false;
+			}
 		}
 		
 		$reflectionMethod = new ReflectionMethod(get_class($userBackend),$name);
@@ -238,10 +245,16 @@ class OC_USER_OTP extends OC_User_Backend{
      * @return boolean
      */
     public function checkPassword($uid, $password) {
+		//print_r($_SERVER);
 		OC_Log::write('OC_USER_OTP', __FUNCTION__.'().', OC_Log::DEBUG);
 		$userBackend=$this->getRealBackend($uid);
 		if ($userBackend===null){
 			return false;
+		}
+		
+		// enable change password without ipunt OTP
+		if($_SERVER['PATH_INFO']=="/settings/personal/changepassword"){
+			return $userBackend->checkPassword($uid, $password);
 		}
 		
 		//if access is made by remote.php and option is note set to force mtop, keep standard auth methode
@@ -282,6 +295,21 @@ class OC_USER_OTP extends OC_User_Backend{
                     return false;
                 break;
                 case _AUTH_TWOFACTOR_:
+                  if(OCP\Config::getAppValue('user_otp','inputOtpAfterPassword','0')==='1') {
+					    $this->mOtp->SetUser($uid);
+					    $otpSize = $this->mOtp->GetTokenNumberOfDigits() + (
+					      strlen($this->mOtp->GetUserPin())* $this->mOtp->GetUserPrefixPin()
+					    );
+						$_POST['otpPassword']=substr($password,-$otpSize);
+						$password = substr($password,0,strlen($password) - $otpSize);
+						//~ var_dump($this->mOtp->GetUserPrefixPin());
+						//~ var_dump($otpSize);
+						//~ var_dump($password);
+						//~ var_dump($_POST['otpPassword']);
+				  }
+				  
+				  //~ exit;
+                  
                   if(!isset($_POST['otpPassword']) || $_POST['otpPassword']===""){
                     return false;
                   }

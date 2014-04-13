@@ -55,7 +55,7 @@ OCP\App::registerPersonal('user_otp','personalSettings');
 	}
 
 if (!OCP\User::isLoggedIn()){
-	if (OCP\Config::getAppValue('user_otp','authMethod',_AUTH_DEFAULT_) === _AUTH_TWOFACTOR_) {
+	if (OCP\Config::getAppValue('user_otp','authMethod',_AUTH_DEFAULT_) === _AUTH_TWOFACTOR_ && OCP\Config::getAppValue('user_otp','inputOtpAfterPassword','0')==='0') {
 		// Load js code in order to add passcode field into the normal login form
 		OCP\Util::addScript('user_otp', 'utils');
 	}
