@@ -48,8 +48,17 @@
 				With android token apps select base32 before input seed<br/>
         UserTokenQrCode : <img src="<?php p($_['UserTokenQrCode']); ?>">
             </p>
-            <input type="hidden" id="otp_action" name="otp_action" value="delete_otp">
-            <input id="otp_submit_action" type='button' value='Delete'>
+            <?php if(!$_['disableDeleteOtpForUsers']) {?>				
+				<input type="hidden" id="otp_action" name="otp_action" value="delete_otp">
+				<input id="otp_submit_action" type='button' value='Delete'>
+			<?php }else{ ?>
+				User Token Seed (if left blank, it will be generated automatically) : <input type="text" name="UserTokenSeed" value="">
+                <?php if($_['UserPrefixPin']){ ?>
+                    <br/>User Pin (if left blank, it will be generated automatically) :  <input type="text" name="UserPin" value="">
+                <?php } ?>
+				<input type="hidden" id="otp_action" name="otp_action" value="replace_otp">
+				<input id="otp_submit_action" type='button' value='replace'>
+			<?php } ?>
         <?php }else{ ?>
             <p>
                 User Token Seed (if left blank, it will be generated automatically) : <input type="text" name="UserTokenSeed" value="">

@@ -38,6 +38,8 @@ $mOtp->EnableVerboseLog();
 
 $tmpl = new OCP\Template('user_otp', 'personalSettings');
 
+$tmpl->assign('disableDeleteOtpForUsers',OCP\Config::getAppValue('user_otp','disableDeleteOtpForUsers','0'));
+
 if($mOtp->CheckUserExists(OCP\User::getUser())){
     $tmpl->assign('UserExists',true);
 

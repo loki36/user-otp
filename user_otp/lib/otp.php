@@ -295,6 +295,21 @@ class OC_USER_OTP extends OC_User_Backend{
                     return false;
                 break;
                 case _AUTH_TWOFACTOR_:
+                  if(OCP\Config::getAppValue('user_otp','inputOtpAfterPassword','0')==='1') {
+					    $this->mOtp->SetUser($uid);
+					    $otpSize = $this->mOtp->GetTokenNumberOfDigits() + (
+					      strlen($this->mOtp->GetUserPin())* $this->mOtp->GetUserPrefixPin()
+					    );
+						$_POST['otpPassword']=substr($password,-$otpSize);
+						$password = substr($password,0,strlen($password) - $otpSize);
+						//~ var_dump($this->mOtp->GetUserPrefixPin());
+						//~ var_dump($otpSize);
+						//~ var_dump($password);
+						//~ var_dump($_POST['otpPassword']);
+				  }
+				  
+				  //~ exit;
+                  
                   if(!isset($_POST['otpPassword']) || $_POST['otpPassword']===""){
                     return false;
                   }
