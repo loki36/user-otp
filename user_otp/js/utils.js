@@ -7,6 +7,8 @@ saml.type = 'text/javascript';
 
 $(document).ready(function(){
 
+		var url = document.URL;
+		url = url.substring(0, url.lastIndexOf("/"));
         //$('#password').parent().hide();
         $('#password').parent().removeClass("infield groupbottom");
         $('#password').parent().addClass("infield groupmiddle");
@@ -14,7 +16,7 @@ $(document).ready(function(){
             '<p class="infield groupbottom">'+
             '<input id="otpPassword" type="password" placeholder="" value="" name="otpPassword"'+ 'original-title="">'+
 			'<label class="infield" for="otpPassword" style="opacity: 1;">One Time Password</label>'+
-			'<img id="password-icon" class="svg" alt="" src="'+document.URL+'/core/img/actions/password.svg">'+
+			'<img id="password-icon" class="svg" alt="" src="'+url+'/core/img/actions/password.svg">'+
 			'</p>'
 		);
         //$('#remember_login').hide();
@@ -25,7 +27,7 @@ $(document).ready(function(){
         sheet.insertRule('#otpPassword {padding-left: 1.8em;width: 11.7em !important;}', sheet.cssRules.length);
         sheet.insertRule(
 			'#otpPassword+label+img {'+
-				'position:absolute; left:1.25em; top:1.65em;'+
+				'position:absolute; left:1.25em; top:1.1em;'+
 				'-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=30)"; filter:alpha(opacity=30); opacity:.3;'+
 			'}'
 		, sheet.cssRules.length);
