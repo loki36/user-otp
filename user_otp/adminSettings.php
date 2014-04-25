@@ -125,7 +125,7 @@ $configOtp[$i]['type']='checkbox';
 $configOtp[$i]['default_value']=false; $i++;
 
 $configOtp[$i]['name']='inputOtpAfterPwd'; 
-$configOtp[$i]['label']='Used passorwd field only and add OTP after the password';
+$configOtp[$i]['label']='Used password field only and add OTP after the password';
 $configOtp[$i]['type']='checkbox';
 $configOtp[$i]['default_value']=false; $i++;
 
