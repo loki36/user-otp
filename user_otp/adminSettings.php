@@ -124,7 +124,7 @@ $configOtp[$i]['label']='Disable delete OTP for users (only regenerated)';
 $configOtp[$i]['type']='checkbox';
 $configOtp[$i]['default_value']=false; $i++;
 
-$configOtp[$i]['name']='inputOtpAfterPassword'; 
+$configOtp[$i]['name']='inputOtpAfterPwd'; 
 $configOtp[$i]['label']='Used passorwd field only and add OTP after the password';
 $configOtp[$i]['type']='checkbox';
 $configOtp[$i]['default_value']=false; $i++;
@@ -133,7 +133,7 @@ foreach ($allTab as $tab){
     foreach ($$tab["arrayConf"] as $input){
         switch ($input['type']){
             case "checkbox":
-                if(isset($_POST['authMethod'])){
+                if(isset($_POST['authMethod']) || isset($_POST['inputOtpAfterPwd'])){
                     if(isset($_POST[$input['name']])){
 						OCP\Config::setAppValue('user_otp',$input['name'],true);
 					}else{

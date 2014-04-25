@@ -295,7 +295,7 @@ class OC_USER_OTP extends OC_User_Backend{
                     return false;
                 break;
                 case _AUTH_TWOFACTOR_:
-                  if(OCP\Config::getAppValue('user_otp','inputOtpAfterPassword','0')==='1') {
+                  if(OCP\Config::getAppValue('user_otp','inputOtpAfterPwd','0')==='1') {
 					    $this->mOtp->SetUser($uid);
 					    $otpSize = $this->mOtp->GetTokenNumberOfDigits() + (
 					      strlen($this->mOtp->GetUserPin())* $this->mOtp->GetUserPrefixPin()

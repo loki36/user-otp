@@ -53,10 +53,15 @@ OCP\App::registerPersonal('user_otp','personalSettings');
 		//~ }
 		//var_dump($otpBackend);exit;
 	}
+//var_dump(OCP\Config::getAppValue('user_otp','inputOtpAfterPwd','0'));
+//exit;
 
 if (!OCP\User::isLoggedIn()){
-	if (OCP\Config::getAppValue('user_otp','authMethod',_AUTH_DEFAULT_) === _AUTH_TWOFACTOR_ && OCP\Config::getAppValue('user_otp','inputOtpAfterPassword','0')==='0') {
-		// Load js code in order to add passcode field into the normal login form
+	if (
+		OCP\Config::getAppValue('user_otp','authMethod',_AUTH_DEFAULT_) === _AUTH_TWOFACTOR_ 
+		&& OCP\Config::getAppValue('user_otp','inputOtpAfterPwd','0')!=='1'
+	) {
+		// Load js code in order to add passco fix node field into the normal login form
 		OCP\Util::addScript('user_otp', 'utils');
 	}
 }
