@@ -34,7 +34,7 @@
             <fieldset id="<?php p($tab['name']) ?>">
                 <?php foreach ($_[$tab['arrayConf']] as $input): ?>
                     <p>
-                        <?php p($input['label']); ?> : 
+                        <?php print_unescaped($input['label']); ?> : 
                         <?php if($input['type'] === "text") { ?>
                             <input type="text" name="<?php p($input['name']); ?>" value="<?php echo $_[$input['name']]?>">
                         <?php }else if ($input['type'] === "checkbox") { ?>

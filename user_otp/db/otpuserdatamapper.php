@@ -78,7 +78,7 @@ class OtpUserDataMapper{ // extends Mapper {
     
     public function insert(OtpUserData $OtpUserData){
       $sql = 'INSERT INTO `' . $this->getTableName() . '` ' .
-      '(`user`,`request_prefix_pin`,`algorithm`,`token_seed`,`user_pin`,`number_of_digits`,`time_interval`,`last_event`,`last_login`,`error_counter`,`locked`) '.
+      '(`user`,`request_prefix_pin`,`algorithm`,`token_seed`,`user_pin`,`number_of_digits`,`time_interval`,`last_event`,`last_login`,`max_event_window`,`error_counter`,`locked`) '.
       'VALUES(?,?,?,?,?,?,?,?,?,?,?) ';
 //print_r($OtpUserData);//exit;
       $query = \OCP\DB::prepare($sql);
@@ -92,6 +92,7 @@ class OtpUserDataMapper{ // extends Mapper {
         $OtpUserData->getTimeInterval(),
         $OtpUserData->getLastEvent(),
         $OtpUserData->getLastLogin(),
+        $OtpUserData->getMaxEventWindow(),
         $OtpUserData->getErrorCounter(),
         $OtpUserData->getLocked(),
       ));
@@ -109,6 +110,7 @@ class OtpUserDataMapper{ // extends Mapper {
       '`time_interval` =?,'.
       '`last_event` =?,'.
       '`last_login` =?,'.
+      '`max_event_window` =?,'.
       '`error_counter` =?,'.
       '`locked` =?,'.
       '`qrcode` =? '.
@@ -124,6 +126,7 @@ class OtpUserDataMapper{ // extends Mapper {
         $OtpUserData->getTimeInterval(),
         $OtpUserData->getLastEvent(),
         $OtpUserData->getLastLogin(),
+        $OtpUserData->getMaxEventWindow(),
         $OtpUserData->getErrorCounter(),
         $OtpUserData->getLocked(),
         //base64_encode($OtpUserData->getQrcode()),

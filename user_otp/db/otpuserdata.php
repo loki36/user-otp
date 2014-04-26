@@ -14,6 +14,7 @@ class OtpUserData {
       "TimeInterval"=>"",
       "LastEvent"=>"",
       "LastLogin"=>"",
+      "MaxEventWindow"=>"",
       "ErrorCounter"=>"",
       "Locked"=>"",
       "Qrcode"=>"",
