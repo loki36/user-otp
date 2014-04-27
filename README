@@ -13,7 +13,7 @@ if you want help to make bug fix, enhancement or translation your welcome.
 Just fork the github project and submit your pull request
 GIT : https://github.com/loki36/user-otp
 
-Version 2.3
+Version 2.4
 
 Installation:
 Upload user_otp directory under the 'apps' directory of your ownCloud.
@@ -43,6 +43,15 @@ Todo:
 - add user rescue otp code as lost password process
 
 Changelog:
+  V2.4 2014-04-27:
+	enhancement stop browsers trying to "remember the OTP but only the "real" password #56
+	enhancement change on admin page HOTP params #41
+	enhancement it would be nice to be able to set an own "accuracy" #57
+	update multiOTP class from 4.0.6 to 4.2.4.2 #58
+	bug fix no OTP field #53
+	bug fix css #55
+	bug fix text error "passorwd" #54	
+  
   V2.3 2014-04-14:
     enhancement enter regular password and OTP within same field #44
     enhancement admin option for user can't disable otp option (only changed it) #48

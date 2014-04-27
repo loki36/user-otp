@@ -63,6 +63,7 @@ class OC_USER_OTP extends OC_User_Backend{
         $this->mOtp->SetMaxBlockFailures(
             OCP\Config::getAppValue('user_otp','MaxBlockFailures',6)
         );
+         $this->mOtp->SetMaxEventWindow(OCP\Config::getAppValue('user_otp','UserTokenMaxEventWindow',100));
         
     }
     
@@ -295,7 +296,7 @@ class OC_USER_OTP extends OC_User_Backend{
                     return false;
                 break;
                 case _AUTH_TWOFACTOR_:
-                  if(OCP\Config::getAppValue('user_otp','inputOtpAfterPassword','0')==='1') {
+                  if(OCP\Config::getAppValue('user_otp','inputOtpAfterPwd','0')==='1') {
 					    $this->mOtp->SetUser($uid);
 					    $otpSize = $this->mOtp->GetTokenNumberOfDigits() + (
 					      strlen($this->mOtp->GetUserPin())* $this->mOtp->GetUserPrefixPin()

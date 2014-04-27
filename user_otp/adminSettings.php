@@ -110,9 +110,14 @@ $configOtp[$i]['type']='text';
 $configOtp[$i]['default_value']='6'; $i++;
 
 $configOtp[$i]['name']='UserTokenTimeIntervalOrLastEvent'; 
-$configOtp[$i]['label']='User Token Time Interval Or Last Event (must be 30 in order to works with Google Authenticator)';
+$configOtp[$i]['label']='<br/>User Token Time Interval (time in seconde between two TOTP) (must be 30 in order to works with Google Authenticator)<br/> Or Last Event (number of past HOTP) (If you’ve just re-initialised your Yubikey, then set this to 0) ';
 $configOtp[$i]['type']='text';
 $configOtp[$i]['default_value']='30'; $i++;
+
+$configOtp[$i]['name']='UserTokenMaxEventWindow'; 
+$configOtp[$i]['label']='User Token Max Event Window (default : 100)';
+$configOtp[$i]['type']='text';
+$configOtp[$i]['default_value']='100'; $i++;
 
 $configOtp[$i]['name']='disableOtpOnRemoteScript'; 
 $configOtp[$i]['label']='Disable OTP with remote.php (webdav and sync)';
@@ -124,8 +129,8 @@ $configOtp[$i]['label']='Disable delete OTP for users (only regenerated)';
 $configOtp[$i]['type']='checkbox';
 $configOtp[$i]['default_value']=false; $i++;
 
-$configOtp[$i]['name']='inputOtpAfterPassword'; 
-$configOtp[$i]['label']='Used passorwd field only and add OTP after the password';
+$configOtp[$i]['name']='inputOtpAfterPwd'; 
+$configOtp[$i]['label']='Used password field only and add OTP after the password';
 $configOtp[$i]['type']='checkbox';
 $configOtp[$i]['default_value']=false; $i++;
 
@@ -133,7 +138,7 @@ foreach ($allTab as $tab){
     foreach ($$tab["arrayConf"] as $input){
         switch ($input['type']){
             case "checkbox":
-                if(isset($_POST['authMethod'])){
+                if(isset($_POST['authMethod']) || isset($_POST['inputOtpAfterPwd'])){
                     if(isset($_POST[$input['name']])){
 						OCP\Config::setAppValue('user_otp',$input['name'],true);
 					}else{
