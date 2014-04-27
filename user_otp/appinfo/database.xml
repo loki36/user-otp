@@ -67,12 +67,6 @@
       <length>80</length>
     </field>
     <field>
-      <name>max_event_window</name>
-      <type>text</type>
-      <length>80</length>
-      <default>100</default>
-    </field>
-    <field>
       <name>error_counter</name>
       <type>text</type>
       <length>80</length>

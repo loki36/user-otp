@@ -63,6 +63,7 @@ class OC_USER_OTP extends OC_User_Backend{
         $this->mOtp->SetMaxBlockFailures(
             OCP\Config::getAppValue('user_otp','MaxBlockFailures',6)
         );
+         $this->mOtp->SetMaxEventWindow(OCP\Config::getAppValue('user_otp','UserTokenMaxEventWindow',100));
         
     }
     
