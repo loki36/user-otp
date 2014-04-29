@@ -130,6 +130,8 @@ class OtpUserDataMapper{ // extends Mapper {
         $OtpUserData->getQrcode(),
         $OtpUserData->getUser(),
       ));
+      
+      //~ print_r($query);exit;
 
       return $result;
     }

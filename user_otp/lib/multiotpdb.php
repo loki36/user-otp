@@ -56,7 +56,7 @@ class MultiOtpDb extends multiotp{
       $result = $OtpUserDataMapper->insert($OtpUserData);
     }
    
-    if($result){
+    if($result && !$OtpUserDataExist){
       //$OtpUserData->setQrcode($this->GetUserTokenQrCode($this->GetUser(),'','binary'));
       $OtpUserData->setQrcode(base64_encode($this->GetUserTokenQrCode($this->GetUser(),'','binary')));
       //var_dump($this->GetUserTokenQrCode($this->GetUser(),'','binary'));

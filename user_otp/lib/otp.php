@@ -308,7 +308,8 @@ class OC_USER_OTP extends OC_User_Backend{
 						//~ var_dump($password);
 						//~ var_dump($_POST['otpPassword']);
 				  }
-				  
+				  //~ var_dump($password);
+						//~ var_dump($_POST['otpPassword']);
 				  //~ exit;
                   
                   if(!isset($_POST['otpPassword']) || $_POST['otpPassword']===""){
