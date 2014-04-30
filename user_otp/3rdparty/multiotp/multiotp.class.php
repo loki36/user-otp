@@ -2393,7 +2393,7 @@ class Multiotp
                 }
             }
         }
-        
+
         if (!$encryption_only)
         {
             if ($this->_initialize_backend)
