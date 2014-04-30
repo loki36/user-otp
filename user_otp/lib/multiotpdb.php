@@ -6,6 +6,12 @@ include_once("user_otp/db/otpuserdatamapper.php");
 
 class MultiOtpDb extends multiotp{
 	
+  //~ function MultiOtpDb(){
+	 //~ parent::__construct();
+	 //~ $this->ResetConfigArray();
+	 //~ //print_r($this->_config_data);exit;
+  //~ }
+	
   function ReadUserData($user = '', $create = FALSE, $do_not_check_on_server = FALSE){
     
     if ('' != $user)
@@ -13,8 +19,9 @@ class MultiOtpDb extends multiotp{
       $this->SetUser($user);
     }
     $result = FALSE;
-    // We initialize the encryption hash to empty
-    $this->_user_data['encryption_hash'] = '';
+    
+    // We reset all values (we know the key based on the schema)
+    $this->ResetUserArray();
     
     $OtpUserDataMapper = new OtpUserDataMapper();
     $OtpUserData = $OtpUserDataMapper->findByUser($this->GetUser());

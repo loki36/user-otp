@@ -13,7 +13,7 @@ if you want help to make bug fix, enhancement or translation your welcome.
 Just fork the github project and submit your pull request
 GIT : https://github.com/loki36/user-otp
 
-Version 2.4
+Version 2.4.1
 
 Installation:
 Upload user_otp directory under the 'apps' directory of your ownCloud.
@@ -43,6 +43,9 @@ Todo:
 - add user rescue otp code as lost password process
 
 Changelog:
+  V2.4 2014-04-29: (2.4.1)
+    bug fix DB:MySQL ERROR: Unable to write the changes in the file #61
+  
   V2.4 2014-04-27:
 	enhancement stop browsers trying to "remember the OTP but only the "real" password #56
 	enhancement change on admin page HOTP params #41
