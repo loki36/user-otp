@@ -14,8 +14,6 @@ unset($items['admin']);
 $_['subadmingroups'] = array_flip($items);
 ?>
 
-<script type="text/javascript" src="<?php print_unescaped(OC_Helper::linkToRoute('isadmin'));?>"></script>
-
 <table class="hascontrols grid" data-groups="<?php p(json_encode($allGroups));?>">
 	<thead>
 		<tr>
@@ -23,9 +21,6 @@ $_['subadmingroups'] = array_flip($items);
 			<th id='headerAvatar' style="text-align:center;width:50px;"></th>
 			<?php endif; ?>
 			<th id='headerName' style="width:100px;"><?php p($l->t('Username'))?></th>
-<!--
-			<th id="headerDisplayName"><?php // p($l->t( 'Full Name' )); ?></th>
--->
 			<th id="headerHasOtp" style="width:50px;"><?php p($l->t( 'Has OTP' )); ?></th>
 			<th id="headerLocked" style="width:50px;"><?php p($l->t( 'Locked' )); ?></th>
 			<th id="headerAlgorithm" style="width:50px;"><?php p($l->t( 'Algorithm' )); ?></th>
@@ -46,10 +41,7 @@ $_['subadmingroups'] = array_flip($items);
 			<td class="avatar"><div class="avatardiv"></div></td>
 			<?php endif; ?>
 			<td class="name"><?php p($user["name"]); ?></td>
-<!--
-			<td class="displayName"><span><?php // p($user["displayName"]); ?></span>
-			</td>
--->
+
 			<td class=""><span><?php p($user["OtpExist"]); ?></span></td>
 			<td class=""><span><?php p($user["UserLocked"]); ?></span></td>
 			<td class=""><span><?php p($user["UserAlgorithm"]); ?></span></td>
@@ -64,15 +56,13 @@ $_['subadmingroups'] = array_flip($items);
 			<?php endif;?>
 			<td class="">
 				<?php if($user["OtpExist"]):?>
-<!--
-					<span id="UserTokenSeed" style="display:inline-block; background-color:red; width:100px;"><?php p($user["UserTokenSeed"]); ?></span>
--->
+
 					 <input type="text" value="<?php p($user["UserTokenSeed"]); ?>" style="width:100%;">
 				<?php else: ?>
 				  <input type="text" name="UserTokenSeedInput" value="" style="width:100%;">
-				<?php endif;?>	
+				<?php endif;?>
 			</td>
-			
+
 			<td class="remove-otp" style="text-align:center;">
 				<?php if($user["OtpExist"]):?>
 					<a href="#" class="action delete" original-title="<?php p($l->t('Delete OTP'))?>">
