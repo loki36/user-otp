@@ -257,11 +257,15 @@ class OC_USER_OTP extends OC_User_Backend{
 		if($_SERVER['PATH_INFO']=="/settings/personal/changepassword"){
 			return $userBackend->checkPassword($uid, $password);
 		}
-		
-		//if access is made by remote.php and option is note set to force mtop, keep standard auth methode
+		//print_r($_SERVER['PATH_INFO']);exit;
+		// if access is made by remote.php and option is note set to force mtop, keep standard auth methode
 		// this for keep working webdav access and sync apps
+    // And news api for android new app
 		if(
-			basename($_SERVER['SCRIPT_NAME']) === 'remote.php'
+			( 
+        basename($_SERVER['SCRIPT_NAME']) === 'remote.php' || 
+        preg_match("#^/apps/news/api/v1-2(.*)$#i", $_SERVER['PATH_INFO']) 
+      )
 			&& OCP\Config::getAppValue('user_otp','disableOtpOnRemoteScript',true)
 		){
 			return $userBackend->checkPassword($uid, $password);
