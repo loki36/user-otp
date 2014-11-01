@@ -848,7 +848,7 @@ class Multiotp
         
         $this->_linux_file_mode = '';
 
-
+        $this->ResetConfigArray();
         $this->ReadConfigData(TRUE); // Read the configuration data, for the encryption information only
         if (('' == $encryption_key) || ('MuLtIoTpEnCrYpTiOn' == $encryption_key) || ('DefaultCliEncryptionKey' == $encryption_key))
         {
