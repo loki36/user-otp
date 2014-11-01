@@ -14,26 +14,27 @@ $(document).ready(function(){
         $('#password').attr( "autocomplete", "on" );
         $('#password').parent().after(
             '<p class="infield groupbottom">'+
-            '<input id="otpPassword" type="password" placeholder="" value="" name="otpPassword"'+ 'original-title="" autocomplete="off" style="padding-left:36px; width=223px">'+
+            '<input id="otpPassword" type="password" placeholder="One Time Password" value="" name="otpPassword"'+ 'original-title="" autocomplete="off" >'+
 			'<label class="infield" for="otpPassword" style="opacity: 1;">One Time Password</label>'+
 			'<img id="password-icon" class="svg" alt="" src="'+url+'/core/img/actions/password.svg">'+
 			'</p>'
 		);
 
     $("#submit").removeAttr("disabled");
-		//~ $('#otpPassword').change( function() {
-				//~ if ($(this).val() !== "") {
-					//~ alert('test');
-					//~ $('#otpPassword+label').show();
-				//~ }
-				//~ else {
-					//~ $('#otpPassword+label').hide();
-				//~ }
-			//~ });
-		//$('input#otpPassword').keyup(checkShowCredentials);
-		//~ var setShowPassword = function(input, label) {
-			//~ input.showPassword().keyup();
-		//~ };
-		//~ setShowPassword($('#otpPassword'), $('label[for=otpPassword]'));
+
+var sheet = document.styleSheets[0]; 	
+sheet.insertRule(
+  '#otpPassword, input[name="otpPassword-clone"] {'+ 
+    'padding-left: 36px !important;'+ 
+    'width: 223px !important;'+
+  '} ', 
+  sheet.cssRules.length
+);
+sheet.insertRule( 	
+  '#otpPassword+label+img {'+ 	
+  'position:absolute; left:1.25em; top:1.1em;'+ 	
+  '-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=30)"; filter:alpha(opacity=30); opacity:.3;'+ 	
+  '}' 	
+  , sheet.cssRules.length); 	
 
 });
