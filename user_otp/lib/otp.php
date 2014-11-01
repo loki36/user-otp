@@ -84,34 +84,34 @@ class OC_USER_OTP extends OC_User_Backend{
       //OC_Log::write('OC_USER_OTP', __FUNCTION__.'().', OC_Log::DEBUG);
       if(self::$_backends === null){
         foreach ($usedBackends as $backend){
-          OC_Log::write('user_otp', 'instance '.$backend.' backend.', OC_Log::DEBUG);
+          //OC_Log::write('user_otp', 'instance '.$backend.' backend.', OC_Log::DEBUG);
           self::$_backends[$backend] = new $backend();
           
-          if(
-            self::$_backends[$backend] instanceof OCA\user_ldap\USER_LDAP ||
-            self::$_backends[$backend] instanceof OCA\user_ldap\User_Proxy
-          ){
-			  OC_Log::write('OC_USER_OTP az', __FUNCTION__.'().', OC_Log::DEBUG);
-			  $configPrefixes = OCA\user_ldap\lib\Helper::getServerConfigurationPrefixes(true);
-				if(count($configPrefixes) == 1) {
-					$connector = new OCA\user_ldap\lib\Connection($configPrefixes[0]);
-					$userBackend  = new OCA\user_ldap\USER_LDAP();
-					$userBackend->setConnector($connector);
-					$groupBackend = new OCA\user_ldap\GROUP_LDAP();
-					$groupBackend->setConnector($connector);
-				} else {
-					$userBackend  = new OCA\user_ldap\User_Proxy($configPrefixes);
-					$groupBackend  = new OCA\user_ldap\Group_Proxy($configPrefixes);
-				}
-				
-				self::$_backends[$backend] = $userBackend;
-
-				if(count($configPrefixes) > 0) {
-					// register user backend
-					//~ OC_User::useBackend($userBackend);
-					OC_Group::useBackend($groupBackend);
-				}
-		  }
+          //~ if(
+            //~ self::$_backends[$backend] instanceof OCA\user_ldap\USER_LDAP ||
+            //~ self::$_backends[$backend] instanceof OCA\user_ldap\User_Proxy
+          //~ ){
+			  //~ //OC_Log::write('OC_USER_OTP az', __FUNCTION__.'().', OC_Log::DEBUG);
+			  //~ $configPrefixes = OCA\user_ldap\lib\Helper::getServerConfigurationPrefixes(true);
+				//~ if(count($configPrefixes) == 1) {
+					//~ $connector = new OCA\user_ldap\lib\Connection($configPrefixes[0]);
+					//~ $userBackend  = new OCA\user_ldap\USER_LDAP();
+					//~ $userBackend->setConnector($connector);
+					//~ $groupBackend = new OCA\user_ldap\GROUP_LDAP();
+					//~ $groupBackend->setConnector($connector);
+				//~ } else {
+					//~ $userBackend  = new OCA\user_ldap\User_Proxy($configPrefixes);
+					//~ $groupBackend  = new OCA\user_ldap\Group_Proxy($configPrefixes);
+				//~ }
+				//~ 
+				//~ self::$_backends[$backend] = $userBackend;
+//~ 
+				//~ if(count($configPrefixes) > 0) {
+					//~ // register user backend
+					OC_User::useBackend($userBackend);
+					//~ OC_Group::useBackend($groupBackend);
+				//~ }
+		  //~ }
           
         }
       }
@@ -257,11 +257,15 @@ class OC_USER_OTP extends OC_User_Backend{
 		if($_SERVER['PATH_INFO']=="/settings/personal/changepassword"){
 			return $userBackend->checkPassword($uid, $password);
 		}
-		
-		//if access is made by remote.php and option is note set to force mtop, keep standard auth methode
+		//print_r($_SERVER['PATH_INFO']);exit;
+		// if access is made by remote.php and option is note set to force mtop, keep standard auth methode
 		// this for keep working webdav access and sync apps
+    // And news api for android new app
 		if(
-			basename($_SERVER['SCRIPT_NAME']) === 'remote.php'
+			( 
+        basename($_SERVER['SCRIPT_NAME']) === 'remote.php' || 
+        preg_match("#^/apps/news/api/v1-2(.*)$#i", $_SERVER['PATH_INFO']) 
+      )
 			&& OCP\Config::getAppValue('user_otp','disableOtpOnRemoteScript',true)
 		){
 			return $userBackend->checkPassword($uid, $password);

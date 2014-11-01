@@ -31,6 +31,18 @@ OCP\Util::addscript('user_otp', 'adminSettings');
 
 $tmpl = new OCP\Template('user_otp', 'adminSettings');
 
+//check if encription app is enabled :
+$sql = 'SELECT * FROM `*PREFIX*appconfig` ' .
+       'WHERE `appid` = ? AND configkey= ?';
+$query = \OCP\DB::prepare($sql);
+$result = $query->execute(array('files_encryption','enabled'));
+$row = $result->fetchRow();
+if($row && $row["configvalue"]==="yes"){
+  $encription_app =true;
+}else{
+  $encription_app =false;
+}
+
 // configuration tab
 $i=0;
 $allTab[$i]['name'] = "userotpSettings-1";
@@ -54,10 +66,14 @@ $config[$i]['type']='radio';
 $config[$i]['default_value']=_AUTH_DEFAULT_;
 $config[$i]['values']['_AUTH_STANDARD_']['value']=_AUTH_STANDARD_;  
 $config[$i]['values']['_AUTH_STANDARD_']['label']="Standard authentication";
+if(!$encription_app){
 $config[$i]['values']['_AUTH_OTP_OR_STANDARD_']['value']=_AUTH_OTP_OR_STANDARD_;  
 $config[$i]['values']['_AUTH_OTP_OR_STANDARD_']['label']="Standard OR OTP authentication (User can use password OR OTP) ";
 $config[$i]['values']['_AUTH_OTP_ONLY_']['value']=_AUTH_OTP_ONLY_;  
 $config[$i]['values']['_AUTH_OTP_ONLY_']['label']="Replace password by OTP (User needs OTP to connect, if user is in the OTP db file) ";
+}else{
+  $config[$i]['label'].=' [Some authentication method are disabled due to file_encrytpion app is enabled]';
+}
 $config[$i]['values']['_AUTH_TWOFACTOR_']['value']=_AUTH_TWOFACTOR_;  
 $config[$i]['values']['_AUTH_TWOFACTOR_']['label']="Two-factor authentication (User needs password AND OTP to connect, if user is in the OTP db file) ";
 $i++;

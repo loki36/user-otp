@@ -7,13 +7,13 @@ Based on library multiOTP http://www.multiotp.net/ develop by "SysCo systèmes d
 test with "Google Authenticator" and "android Token"
 Can works with Yubikey see doc here : http://www.sj-vs.net/two-factor-authentication-for-owncloud-using-one-time-passwords-otp-from-yubikey/
 Administrator interface to manage users OTP
-require Owncloud >= 5 
+require Owncloud >= 7 
 
 if you want help to make bug fix, enhancement or translation your welcome. 
 Just fork the github project and submit your pull request
 GIT : https://github.com/loki36/user-otp
 
-Version 2.4.1
+Version 2.5
 
 Installation:
 Upload user_otp directory under the 'apps' directory of your ownCloud.
@@ -43,6 +43,13 @@ Todo:
 - add user rescue otp code as lost password process
 
 Changelog:
+  V2.5 2014-11-01:
+    bug fix ownCloud 7 compatible? #70
+    bug fix / enhancement Not working properly with encryption enabled #66
+    bug fix Timezone errors #64 
+    bug fix Cannot login with two-factor authentication #69
+    bug fix / enhancement Add support for News API #74  
+    
   V2.4 2014-04-29: (2.4.1)
     bug fix DB:MySQL ERROR: Unable to write the changes in the file #61
   

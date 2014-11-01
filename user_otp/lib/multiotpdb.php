@@ -6,10 +6,11 @@ include_once("user_otp/db/otpuserdatamapper.php");
 
 class MultiOtpDb extends multiotp{
 	
-  //~ function MultiOtpDb(){
-	 //~ parent::__construct();
-	 //~ $this->ResetConfigArray();
-	 //~ //print_r($this->_config_data);exit;
+  //~ function MultiOtpDb($encryption_key = '', $initialize_backend = FALSE, $base_dir = '', $config_dir = ''){
+    //~ $this->ResetConfigArray();
+	  //~ parent::__construct($encryption_key = '', $initialize_backend = FALSE, $base_dir = '', $config_dir = '');
+	  //~ $this->ResetConfigArray();
+	  //~ //var_dump($this->_config_data);exit;
   //~ }
 	
   function ReadUserData($user = '', $create = FALSE, $do_not_check_on_server = FALSE){
