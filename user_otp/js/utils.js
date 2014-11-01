@@ -9,7 +9,7 @@ $(document).ready(function(){
 
 		var url = document.URL;
 		url = url.substring(0, url.lastIndexOf("/"));
-        //$('#password').parent().hide();
+
         $('#password').parent().removeClass("infield groupbottom");
         $('#password').parent().addClass("infield groupmiddle");
         $('#password').attr( "autocomplete", "on" );
