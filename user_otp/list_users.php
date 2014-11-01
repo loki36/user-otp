@@ -9,7 +9,7 @@ OC_Util::checkSubAdminUser();
 OC_App::loadApps();
 
 // We have some javascript foo!
-OC_Util::addScript( 'settings', 'users/users' );
+OC_Util::addScript( 'settings', 'users' );
 OC_Util::addScript( 'user_otp', 'list_users' );
 OC_Util::addScript( 'core', 'multiselect' );
 OC_Util::addScript( 'core', 'singleselect' );
@@ -60,13 +60,13 @@ foreach($accessibleusers as $uid => $displayName) {
 	if ( $displayName !== $uid ) {
 		$name = $name . ' ('.$uid.')';
 	}
-
+	
 	$UserTokenSeed="";
 	$UserLocked="";
 	$UserAlgorithm="";
 	$UserPin="";
 	$UserPrefixPin="";
-
+	
 	//get otp information :
 	$OtpExist = $mOtp->CheckUserExists($uid);
 	if($OtpExist){
@@ -112,3 +112,4 @@ $tmpl->assign( 'numofgroups', count($accessiblegroups));
 $tmpl->assign( 'recoveryAdminEnabled', $recoveryAdminEnabled);
 $tmpl->assign('enableAvatars', \OC_Config::getValue('enable_avatars', true));
 $tmpl->printPage();
+
