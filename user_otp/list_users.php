@@ -9,7 +9,7 @@ OC_Util::checkSubAdminUser();
 OC_App::loadApps();
 
 // We have some javascript foo!
-OC_Util::addScript( 'settings', 'users/users' );
+//OC_Util::addScript( 'settings', 'users/users' );
 OC_Util::addScript( 'user_otp', 'list_users' );
 OC_Util::addScript( 'core', 'multiselect' );
 OC_Util::addScript( 'core', 'singleselect' );
