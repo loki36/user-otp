@@ -13,7 +13,7 @@ OC_App::loadApps();
 OC_Util::addScript( 'user_otp', 'list_users' );
 OC_Util::addScript( 'core', 'multiselect' );
 OC_Util::addScript( 'core', 'singleselect' );
-OC_Util::addScript('core', 'jquery.inview');
+OC_Util::addScript('user_otp', 'jquery.inview');
 OC_Util::addStyle( 'settings', 'settings' );
 OC_App::setActiveNavigationEntry( 'core_users' );
 
