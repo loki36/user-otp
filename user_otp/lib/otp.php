@@ -212,6 +212,13 @@ class OC_USER_OTP extends OC_User_Backend{
 		return $reflectionMethod->invokeArgs($userBackend,$arguments);
 	}
 
+      /**
+      * Check if the source ip is private
+      */
+     private function is_private_IP($remote_ip) {
+        return ! filter_var($remote_ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4 | FILTER_FLAG_NO_PRIV_RANGE |  FILTER_FLAG_NO_RES_RANGE);
+     }
+
     /**
      * check password function
      * @param string $uid user id
@@ -225,9 +232,9 @@ class OC_USER_OTP extends OC_User_Backend{
 		if ($userBackend===null){
 			return false;
 		}
-		
+
 		// enable change password without ipunt OTP
-		if($_SERVER['PATH_INFO']=="/settings/personal/changepassword"){
+		if (isset($_SERVER['PATH_INFO']) && $_SERVER['PATH_INFO']=="/settings/personal/changepassword"){
 			return $userBackend->checkPassword($uid, $password);
 		}
 		//print_r($_SERVER['PATH_INFO']);exit;
@@ -235,18 +242,28 @@ class OC_USER_OTP extends OC_User_Backend{
 		// this for keep working webdav access and sync apps
     // And news api for android new app
     // And ocsms app, pictures thumbnails, file sharing
-		if(
-			( 
-        basename($_SERVER['SCRIPT_NAME']) === 'remote.php' || 
-        preg_match("#^/apps/news/api/v1-2(.*)$#i", $_SERVER['PATH_INFO']) ||
-        preg_match("#^/apps/ocsms(.*)$#i", $_SERVER['PATH_INFO']) ||
-        preg_match("#^/apps/files/api/v1/thumbnail(.*)$#i", $_SERVER['PATH_INFO']) ||
-        preg_match("#^/apps/files_sharing/api/v1/shares(.*)$#i", $_SERVER['PATH_INFO'])
-      )
+		if( 
+			( basename($_SERVER['SCRIPT_NAME']) === 'remote.php' ||  
+				( isset($_SERVER['PATH_INFO']) && 
+					(
+        					preg_match("#^/apps/news/api/v1-2(.*)$#i", $_SERVER['PATH_INFO']) || 
+						preg_match("#^/apps/ocsms(.*)$#i", $_SERVER['PATH_INFO']) ||
+        					preg_match("#^/apps/files/api/v1/thumbnail(.*)$#i", $_SERVER['PATH_INFO']) || 
+						preg_match("#^/apps/files_sharing/api/v1/shares(.*)$#i", $_SERVER['PATH_INFO'])
+				   	) 
+				) 
+			)
 			&& OCP\Config::getAppValue('user_otp','disableOtpOnRemoteScript',true)
-		){
+		)
+		{
 			return $userBackend->checkPassword($uid, $password);
 		}
+
+         if (isset($_SERVER['REMOTE_ADDR']) && $this->is_private_ip($_SERVER['REMOTE_ADDR'])) {
+             OC_Log::write('OC_USER_OTP','Skipping OTP for user '.$uid.' from private ip '.$_SERVER['REMOTE_ADDR'], OC_Log::DEBUG);
+                  return $userBackend->checkPassword($uid, $password);
+        }
+
 
         if(!$this->mOtp->CheckUserExists($uid)){
             OC_Log::write('OC_USER_OTP','No OTP for user '.$uid.' use user backend', OC_Log::DEBUG);
