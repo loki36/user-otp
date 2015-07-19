@@ -257,7 +257,7 @@ class OC_USER_OTP extends OC_User_Backend{
 			return $userBackend->checkPassword($uid, $password);
 		}
 
-         if (OCP\Config::getAppValue('user_otp','bypassOtpOnIntranet',true) && isset($_SERVER['REMOTE_ADDR']) && $this->is_private_ip($_SERVER['REMOTE_ADDR'])) {
+         if (OCP\Config::getAppValue('user_otp','bypassOtpOnIntranet',false) && isset($_SERVER['REMOTE_ADDR']) && $this->is_private_ip($_SERVER['REMOTE_ADDR'])) {
              OC_Log::write('OC_USER_OTP','Skipping OTP for user '.$uid.' from private ip '.$_SERVER['REMOTE_ADDR'], OC_Log::WARN);
                   return $userBackend->checkPassword($uid, $password);
         }
