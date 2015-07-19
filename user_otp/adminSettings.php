@@ -150,6 +150,11 @@ $configOtp[$i]['label']='Used password field only and add OTP after the password
 $configOtp[$i]['type']='checkbox';
 $configOtp[$i]['default_value']=false; $i++;
 
+$configOtp[$i]['name']='bypassOtpOnIntranet';
+$configOtp[$i]['label']='Disable OTP for intranet addresses';
+$configOtp[$i]['type']='checkbox';
+$configOtp[$i]['default_value']=false; $i++;
+
 foreach ($allTab as $tab){
     foreach ($$tab["arrayConf"] as $input){
         switch ($input['type']){
