@@ -47,108 +47,109 @@ if($row && $row["configvalue"]==="yes"){
 $i=0;
 $allTab[$i]['name'] = "userotpSettings-1";
 $allTab[$i]['label'] = "Authenticator method";
-$allTab[$i]['arrayConf'] = "config";$i++;
+$allTab[$i]['arrayConf'] = "mainConfig";$i++;
 
 $allTab[$i]['name'] = "userotpSettings-2";
 $allTab[$i]['label'] = "OTP Configuration";
-$allTab[$i]['arrayConf'] = "configOtp";$i++;
+$allTab[$i]['arrayConf'] = "mainConfigOtp";$i++;
 
 // input type process general tab
 $i=0;
-//$config[$i]['name']='forceCreateUsers'; 
-//$config[$i]['label']='Force user_otp backend to create new users?';
-//$config[$i]['type']='checkbox';
-//$config[$i]['default_value']=false; $i++;
+//$mainConfig[$i]['name']='forceCreateUsers'; 
+//$mainConfig[$i]['label']='Force user_otp backend to create new users?';
+//$mainConfig[$i]['type']='checkbox';
+//$mainConfig[$i]['default_value']=false; $i++;
 
-$config[$i]['name']='authMethod'; 
-$config[$i]['label']='Select authentication method';
-$config[$i]['type']='radio';
-$config[$i]['default_value']=_AUTH_DEFAULT_;
-$config[$i]['values']['_AUTH_STANDARD_']['value']=_AUTH_STANDARD_;  
-$config[$i]['values']['_AUTH_STANDARD_']['label']="Standard authentication";
+
+$mainConfig[$i]['name']='authMethod'; 
+$mainConfig[$i]['label']='Select authentication method';
+$mainConfig[$i]['type']='radio';
+$mainConfig[$i]['default_value']=_AUTH_DEFAULT_;
+$mainConfig[$i]['values']['_AUTH_STANDARD_']['value']=_AUTH_STANDARD_;  
+$mainConfig[$i]['values']['_AUTH_STANDARD_']['label']="Standard authentication";
 if(!$encription_app){
-$config[$i]['values']['_AUTH_OTP_OR_STANDARD_']['value']=_AUTH_OTP_OR_STANDARD_;  
-$config[$i]['values']['_AUTH_OTP_OR_STANDARD_']['label']="Standard OR OTP authentication (User can use password OR OTP) ";
-$config[$i]['values']['_AUTH_OTP_ONLY_']['value']=_AUTH_OTP_ONLY_;  
-$config[$i]['values']['_AUTH_OTP_ONLY_']['label']="Replace password by OTP (User needs OTP to connect, if user is in the OTP db file) ";
+$mainConfig[$i]['values']['_AUTH_OTP_OR_STANDARD_']['value']=_AUTH_OTP_OR_STANDARD_;  
+$mainConfig[$i]['values']['_AUTH_OTP_OR_STANDARD_']['label']="Standard OR OTP authentication (User can use password OR OTP) ";
+$mainConfig[$i]['values']['_AUTH_OTP_ONLY_']['value']=_AUTH_OTP_ONLY_;  
+$mainConfig[$i]['values']['_AUTH_OTP_ONLY_']['label']="Replace password by OTP (User needs OTP to connect, if user is in the OTP db file) ";
 }else{
-  $config[$i]['label'].=' [Some authentication method are disabled due to file_encrytpion app is enabled]';
+  $mainConfig[$i]['label'].=' [Some authentication method are disabled due to file_encrytpion app is enabled]';
 }
-$config[$i]['values']['_AUTH_TWOFACTOR_']['value']=_AUTH_TWOFACTOR_;  
-$config[$i]['values']['_AUTH_TWOFACTOR_']['label']="Two-factor authentication (User needs password AND OTP to connect, if user is in the OTP db file) ";
+$mainConfig[$i]['values']['_AUTH_TWOFACTOR_']['value']=_AUTH_TWOFACTOR_;  
+$mainConfig[$i]['values']['_AUTH_TWOFACTOR_']['label']="Two-factor authentication (User needs password AND OTP to connect, if user is in the OTP db file) ";
 $i++;
 
-//$config[$i]['name']='disableBackends'; 
-//$config[$i]['label']='Disable other backends? (if checked user needs TOTP to connect if is user is in the TOTP db file)';
-//$config[$i]['type']='checkbox';
-//$config[$i]['default_value']=false; $i++;
+//$mainConfig[$i]['name']='disableBackends'; 
+//$mainConfig[$i]['label']='Disable other backends? (if checked user needs TOTP to connect if is user is in the TOTP db file)';
+//$mainConfig[$i]['type']='checkbox';
+//$mainConfig[$i]['default_value']=false; $i++;
 
 // input type process tab OTP config
 $i=0;
-$configOtp[$i]['name']='EncryptionKey'; 
-$configOtp[$i]['label']='Encryption Key (if left blank, it will be generated automatically)';
-$configOtp[$i]['type']='text';
+$mainConfigOtp[$i]['name']='EncryptionKey'; 
+$mainConfigOtp[$i]['label']='Encryption Key (if left blank, it will be generated automatically)';
+$mainConfigOtp[$i]['type']='text';
 $VALID_CHAR = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghiklmnopqrstuvwxyz";
-$configOtp[$i]['default_value']=generateRandomString(16,32,2,$VALID_CHAR); $i++;
+$mainConfigOtp[$i]['default_value']=generateRandomString(16,32,2,$VALID_CHAR); $i++;
 
-$configOtp[$i]['name']='MaxBlockFailures'; 
-$configOtp[$i]['label']='Max try before a temporary block';
-$configOtp[$i]['type']='text';
-$configOtp[$i]['default_value']='6'; $i++;
+$mainConfigOtp[$i]['name']='MaxBlockFailures'; 
+$mainConfigOtp[$i]['label']='Max try before a temporary block';
+$mainConfigOtp[$i]['type']='text';
+$mainConfigOtp[$i]['default_value']='6'; $i++;
 
-//~ $configOtp[$i]['name']='UsersFolder'; 
-//~ $configOtp[$i]['label']='Users Folder';
-//~ $configOtp[$i]['type']='text';
-//~ $configOtp[$i]['default_value']=getcwd()."/apps/user_otp/lib/multiotp/users/"; $i++;
+//~ $mainConfigOtp[$i]['name']='UsersFolder'; 
+//~ $mainConfigOtp[$i]['label']='Users Folder';
+//~ $mainConfigOtp[$i]['type']='text';
+//~ $mainConfigOtp[$i]['default_value']=getcwd()."/apps/user_otp/lib/multiotp/users/"; $i++;
 
-$configOtp[$i]['name']='UserPrefixPin'; 
-$configOtp[$i]['label']='User Prefix Pin (add a 4 digit fix prefix before token)';
-$configOtp[$i]['type']='checkbox';
-$configOtp[$i]['default_value']=false; $i++;
+$mainConfigOtp[$i]['name']='UserPrefixPin'; 
+$mainConfigOtp[$i]['label']='User Prefix Pin (add a 4 digit fix prefix before token)';
+$mainConfigOtp[$i]['type']='checkbox';
+$mainConfigOtp[$i]['default_value']=false; $i++;
 
-$configOtp[$i]['name']='UserAlgorithm'; 
-$configOtp[$i]['label']='User Algorithm (TOTP/HOTP)';
-$configOtp[$i]['type']='select';
-$configOtp[$i]['default_value']='TOTP'; 
-$configOtp[$i]['values']['TOTP']['value']='TOTP';  
-$configOtp[$i]['values']['TOTP']['label']="TOTP";
-$configOtp[$i]['values']['HOTP']['value']='HOTP';  
-$configOtp[$i]['values']['HOTP']['label']="HOTP";$i++;
+$mainConfigOtp[$i]['name']='UserAlgorithm'; 
+$mainConfigOtp[$i]['label']='User Algorithm (TOTP/HOTP)';
+$mainConfigOtp[$i]['type']='select';
+$mainConfigOtp[$i]['default_value']='TOTP'; 
+$mainConfigOtp[$i]['values']['TOTP']['value']='TOTP';  
+$mainConfigOtp[$i]['values']['TOTP']['label']="TOTP";
+$mainConfigOtp[$i]['values']['HOTP']['value']='HOTP';  
+$mainConfigOtp[$i]['values']['HOTP']['label']="HOTP";$i++;
 
-//~ $configOtp[$i]['name']='TokenBase32Encode'; 
-//~ $configOtp[$i]['label']='Token Base32 Encode (need for Google Authenticator)';
-//~ $configOtp[$i]['type']='checkbox';
-//~ $configOtp[$i]['default_value']=true; $i++;
+//~ $mainConfigOtp[$i]['name']='TokenBase32Encode'; 
+//~ $mainConfigOtp[$i]['label']='Token Base32 Encode (need for Google Authenticator)';
+//~ $mainConfigOtp[$i]['type']='checkbox';
+//~ $mainConfigOtp[$i]['default_value']=true; $i++;
 
-$configOtp[$i]['name']='UserTokenNumberOfDigits'; 
-$configOtp[$i]['label']='User Token Number Of Digits (must be 6 in order to works with Google Authenticator)';
-$configOtp[$i]['type']='text';
-$configOtp[$i]['default_value']='6'; $i++;
+$mainConfigOtp[$i]['name']='UserTokenNumberOfDigits'; 
+$mainConfigOtp[$i]['label']='User Token Number Of Digits (must be 6 in order to works with Google Authenticator)';
+$mainConfigOtp[$i]['type']='text';
+$mainConfigOtp[$i]['default_value']='6'; $i++;
 
-$configOtp[$i]['name']='UserTokenTimeIntervalOrLastEvent'; 
-$configOtp[$i]['label']='<br/>User Token Time Interval (time in seconde between two TOTP) (must be 30 in order to works with Google Authenticator)<br/> Or Last Event (number of past HOTP) (If you’ve just re-initialised your Yubikey, then set this to 0) ';
-$configOtp[$i]['type']='text';
-$configOtp[$i]['default_value']='30'; $i++;
+$mainConfigOtp[$i]['name']='UserTokenTimeIntervalOrLastEvent'; 
+$mainConfigOtp[$i]['label']='<br/>User Token Time Interval (time in seconde between two TOTP) (must be 30 in order to works with Google Authenticator)<br/> Or Last Event (number of past HOTP) (If you’ve just re-initialised your Yubikey, then set this to 0) ';
+$mainConfigOtp[$i]['type']='text';
+$mainConfigOtp[$i]['default_value']='30'; $i++;
 
-$configOtp[$i]['name']='UserTokenMaxEventWindow'; 
-$configOtp[$i]['label']='User Token Max Event Window (default : 100)';
-$configOtp[$i]['type']='text';
-$configOtp[$i]['default_value']='100'; $i++;
+$mainConfigOtp[$i]['name']='UserTokenMaxEventWindow'; 
+$mainConfigOtp[$i]['label']='User Token Max Event Window (default : 100)';
+$mainConfigOtp[$i]['type']='text';
+$mainConfigOtp[$i]['default_value']='100'; $i++;
 
-$configOtp[$i]['name']='disableOtpOnRemoteScript'; 
-$configOtp[$i]['label']='Disable OTP with remote.php (webdav and sync)';
-$configOtp[$i]['type']='checkbox';
-$configOtp[$i]['default_value']=true; $i++;
+$mainConfigOtp[$i]['name']='disableOtpOnRemoteScript'; 
+$mainConfigOtp[$i]['label']='Disable OTP with remote.php (webdav and sync)';
+$mainConfigOtp[$i]['type']='checkbox';
+$mainConfigOtp[$i]['default_value']=true; $i++;
 
-$configOtp[$i]['name']='disableDeleteOtpForUsers'; 
-$configOtp[$i]['label']='Disable delete OTP for users (only regenerated)';
-$configOtp[$i]['type']='checkbox';
-$configOtp[$i]['default_value']=false; $i++;
+$mainConfigOtp[$i]['name']='disableDeleteOtpForUsers'; 
+$mainConfigOtp[$i]['label']='Disable delete OTP for users (only regenerated)';
+$mainConfigOtp[$i]['type']='checkbox';
+$mainConfigOtp[$i]['default_value']=false; $i++;
 
-$configOtp[$i]['name']='inputOtpAfterPwd'; 
-$configOtp[$i]['label']='Used password field only and add OTP after the password';
-$configOtp[$i]['type']='checkbox';
-$configOtp[$i]['default_value']=false; $i++;
+$mainConfigOtp[$i]['name']='inputOtpAfterPwd'; 
+$mainConfigOtp[$i]['label']='Used password field only and add OTP after the password';
+$mainConfigOtp[$i]['type']='checkbox';
+$mainConfigOtp[$i]['default_value']=false; $i++;
 
 foreach ($allTab as $tab){
     foreach ($$tab["arrayConf"] as $input){

@@ -184,7 +184,9 @@ class OC_USER_OTP extends OC_User_Backend{
 			return $this->_userBackend;
 		}
 
-		foreach (self::$_backends as $backend) {
+		foreach (OC_User::getManager()->getBackends() as $backend) {
+
+			if ($backend instanceof OC_USER_OTP) { continue; }
 			if ($backend->userExists($uid)) {
 				$this->_userBackend=$backend;
 				return $this->_userBackend;
