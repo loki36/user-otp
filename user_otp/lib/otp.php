@@ -248,7 +248,7 @@ class OC_USER_OTP extends OC_User_Backend{
 			return $userBackend->checkPassword($uid, $password);
 		}
 
-        $bypass_hosts = array_map('trim', explode(';', OCP\Config::getAppValue('user_otp','exceptForThisHosts',"localhost")));
+        $bypass_hosts = array_map('trim', explode(',', OCP\Config::getAppValue('user_otp','exceptForThisHosts',"localhost")));
         foreach ($bypass_hosts as &$single_host) {
                 if ($single_host!=null && isset($_SERVER['REMOTE_ADDR'])) {
                         OC_Log::write('OC_USER_OTP','Checking \''.$_SERVER['REMOTE_ADDR'].'\' against \''.$single_host.'\'', OC_Log::DEBUG);
