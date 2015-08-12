@@ -83,11 +83,9 @@ class OC_USER_OTP extends OC_User_Backend{
     public static function registerBackends($usedBackends){
       //OC_Log::write('OC_USER_OTP', __FUNCTION__.'().', OC_Log::DEBUG);
       if(self::$_backends === null){
-        foreach ($usedBackends as $backend){
-          //OC_Log::write('user_otp', 'instance '.$backend.' backend.', OC_Log::DEBUG);
-          self::$_backends[$backend] = new $backend();
-        }
+        self::$_backends = $usedBackends;
       }
+      return;
     }
 		
 	/**
@@ -185,6 +183,7 @@ class OC_USER_OTP extends OC_User_Backend{
 		}
 
 		foreach (self::$_backends as $backend) {
+
 			if ($backend->userExists($uid)) {
 				$this->_userBackend=$backend;
 				return $this->_userBackend;
@@ -222,12 +221,14 @@ class OC_USER_OTP extends OC_User_Backend{
 		//print_r($_SERVER);
 		OC_Log::write('OC_USER_OTP', __FUNCTION__.'().', OC_Log::DEBUG);
 		$userBackend=$this->getRealBackend($uid);
+		//$request = \OC::$server->getRequest();
+		$pathInfo=OC_Request::getPathInfo();
 		if ($userBackend===null){
 			return false;
 		}
 		
 		// enable change password without ipunt OTP
-		if($_SERVER['PATH_INFO']=="/settings/personal/changepassword"){
+		if($pathInfo=="/settings/personal/changepassword"){
 			return $userBackend->checkPassword($uid, $password);
 		}
 		//print_r($_SERVER['PATH_INFO']);exit;
@@ -237,11 +238,11 @@ class OC_USER_OTP extends OC_User_Backend{
     // And ocsms app, pictures thumbnails, file sharing
 		if(
 			( 
-        basename($_SERVER['SCRIPT_NAME']) === 'remote.php' || 
-        preg_match("#^/apps/news/api/v1-2(.*)$#i", $_SERVER['PATH_INFO']) ||
-        preg_match("#^/apps/ocsms(.*)$#i", $_SERVER['PATH_INFO']) ||
-        preg_match("#^/apps/files/api/v1/thumbnail(.*)$#i", $_SERVER['PATH_INFO']) ||
-        preg_match("#^/apps/files_sharing/api/v1/shares(.*)$#i", $_SERVER['PATH_INFO'])
+        basename(OC_Request::scriptName()) === 'remote.php' || 
+        preg_match("#^/apps/news/api/v1-2(.*)$#i", $pathInfo) ||
+        preg_match("#^/apps/ocsms(.*)$#i", $pathInfo) ||
+        preg_match("#^/apps/files/api/v1/thumbnail(.*)$#i", $pathInfo) ||
+        preg_match("#^/apps/files_sharing/api/v1/shares(.*)$#i", $pathInfo)
       )
 			&& OCP\Config::getAppValue('user_otp','disableOtpOnRemoteScript',true)
 		){
