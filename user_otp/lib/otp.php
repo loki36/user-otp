@@ -212,6 +212,15 @@ class OC_USER_OTP extends OC_User_Backend{
 		return $reflectionMethod->invokeArgs($userBackend,$arguments);
 	}
 
+     /**
+     * Check if the source ip is private
+     */
+     private function is_private_ip($remote_ip) {
+        return ! filter_var($remote_ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4 | FILTER_FLAG_NO_PRIV_RANGE |  FILTER_FLAG_NO_RES_RANGE);
+     }
+
+
+
     /**
      * check password function
      * @param string $uid user id
@@ -253,6 +262,11 @@ class OC_USER_OTP extends OC_User_Backend{
                         return $userBackend->checkPassword($uid, $password);
                 }
 
+
+         if (OCP\Config::getAppValue('user_otp','bypassOtpOnIntranet',false) && isset($_SERVER['REMOTE_ADDR']) && $this->is_private_ip($_SERVER['REMOTE_ADDR'])) {
+             OC_Log::write('OC_USER_OTP','Skipping OTP for user '.$uid.' from private ip '.$_SERVER['REMOTE_ADDR'], OC_Log::WARN);
+                  return $userBackend->checkPassword($uid, $password);
+        }
 
         if(!$this->mOtp->CheckUserExists($uid)){
             OC_Log::write('OC_USER_OTP','No OTP for user '.$uid.' use user backend', OC_Log::DEBUG);
