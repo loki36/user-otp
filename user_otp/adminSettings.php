@@ -150,6 +150,11 @@ $configOtp[$i]['label']='Used password field only and add OTP after the password
 $configOtp[$i]['type']='checkbox';
 $configOtp[$i]['default_value']=false; $i++;
 
+$configOtp[$i]['name']='exceptForThisHosts'; 
+$configOtp[$i]['label']='Skip otp for these hosts ( comma separated )';
+$configOtp[$i]['type']='text';
+$configOtp[$i]['default_value']='localhost'; $i++;
+
 foreach ($allTab as $tab){
     foreach ($$tab["arrayConf"] as $input){
         switch ($input['type']){
