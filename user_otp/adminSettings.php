@@ -156,7 +156,7 @@ $configOtp[$i]['type']='checkbox';
 $configOtp[$i]['default_value']=false; $i++;
 
 foreach ($allTab as $tab){
-    foreach ($$tab["arrayConf"] as $input){
+    foreach (${$tab["arrayConf"]} as $input){
         switch ($input['type']){
             case "checkbox":
                 if(isset($_POST['authMethod']) || isset($_POST['inputOtpAfterPwd'])){
@@ -190,7 +190,7 @@ foreach ($allTab as $tab){
                 );
         }
     }
-    $tmpl->assign($tab["arrayConf"],$$tab["arrayConf"]);
+    $tmpl->assign($tab["arrayConf"],${$tab["arrayConf"]});
 }
 $tmpl->assign('allTab',$allTab);
 
